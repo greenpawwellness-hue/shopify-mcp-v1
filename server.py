@@ -881,7 +881,172 @@ async def shopify_get_shop(params: EmptyInput) -> str:
     except Exception as e:
         return _error(e)
 
+# ═══════════════════════════════════════════════════════════════════════════
+# BLOGS & ARTICLES
+# ═══════════════════════════════════════════════════════════════════════════
+# Add this whole block to server.py (or wherever your existing shopify_* tools live).
+# Best placement: right BEFORE the "WEBHOOKS" section (or anywhere between the
+# existing tool sections and the `if __name__ == "__main__":` entrypoint at the bottom).
+#
+# Adds 5 tools:
+#   shopify_list_blogs       — list blogs in the store (you have a "News" blog by default)
+#   shopify_list_articles    — list articles in a specific blog
+#   shopify_get_article      — fetch one article by ID
+#   shopify_create_article   — create a new article (defaults to draft for safety)
+#   shopify_update_article   — update an existing article
+#
+# All follow the existing patterns: Pydantic input models + @mcp.tool decorator
+# + shared _request/_error/_fmt helpers. No changes to existing code needed.
+# ═══════════════════════════════════════════════════════════════════════════
 
+class ListBlogsInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    limit:  Optional[int] = Field(default=50, ge=1, le=250, description="Max blogs to return (1-250)")
+    fields: Optional[str] = Field(default=None, description="Comma-separated fields to include")
+
+
+@mcp.tool(
+    name="shopify_list_blogs",
+    annotations={"readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": True},
+)
+async def shopify_list_blogs(params: ListBlogsInput) -> str:
+    """List all blogs in the store. Most stores have a single 'News' blog by default.
+    Use this to find the blog_id needed by the article tools."""
+    try:
+        p: Dict[str, Any] = {"limit": params.limit}
+        if params.fields:
+            p["fields"] = params.fields
+        data  = await _request("GET", "blogs.json", params=p)
+        blogs = data.get("blogs", [])
+        return _fmt({"count": len(blogs), "blogs": blogs})
+    except Exception as e:
+        return _error(e)
+
+
+class ListArticlesInput(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
+    blog_id:          int           = Field(..., description="The blog ID to list articles from")
+    limit:            Optional[int] = Field(default=50, ge=1, le=250)
+    since_id:         Optional[int] = Field(default=None, description="Pagination: return articles after this ID")
+    published_status: Optional[str] = Field(default=None, description="published, unpublished, any")
+    handle:           Optional[str] = Field(default=None, description="Filter by URL handle (slug)")
+    tag:              Optional[str] = Field(default=None, description="Filter by tag")
+    fields:           Optional[str] = Field(default=None, description="Comma-separated fields to include")
+
+
+@mcp.tool(
+    name="shopify_list_articles",
+    annotations={"readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": True},
+)
+async def shopify_list_articles(params: ListArticlesInput) -> str:
+    """List articles in a specific blog. Useful for dedup checks before creating new posts."""
+    try:
+        p: Dict[str, Any] = {"limit": params.limit}
+        for field in ["since_id", "published_status", "handle", "tag", "fields"]:
+            val = getattr(params, field)
+            if val is not None:
+                p[field] = val
+        data     = await _request("GET", f"blogs/{params.blog_id}/articles.json", params=p)
+        articles = data.get("articles", [])
+        return _fmt({"count": len(articles), "articles": articles})
+    except Exception as e:
+        return _error(e)
+
+
+class GetArticleInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    blog_id:    int = Field(..., description="The blog ID containing the article")
+    article_id: int = Field(..., description="The article ID")
+
+
+@mcp.tool(
+    name="shopify_get_article",
+    annotations={"readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": True},
+)
+async def shopify_get_article(params: GetArticleInput) -> str:
+    """Retrieve a single article by ID with full body HTML and metadata."""
+    try:
+        data = await _request("GET", f"blogs/{params.blog_id}/articles/{params.article_id}.json")
+        return _fmt(data.get("article", data))
+    except Exception as e:
+        return _error(e)
+
+
+class CreateArticleInput(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
+    blog_id:         int                            = Field(..., description="The blog ID to post the article in (use shopify_list_blogs to find it)")
+    title:           str                            = Field(..., min_length=1, description="Article title (Shopify renders this as the page H1 — do NOT include an H1 in body_html)")
+    body_html:       Optional[str]                  = Field(default=None, description="Article body HTML — paste the full populated template body here")
+    author:          Optional[str]                  = Field(default=None, description="Author name (defaults to the API user if omitted)")
+    tags:            Optional[str]                  = Field(default=None, description="Comma-separated tags, e.g. 'probiotics, gut health, supplements'")
+    summary_html:    Optional[str]                  = Field(default=None, description="Excerpt / SEO description (used on listings and social previews)")
+    handle:          Optional[str]                  = Field(default=None, description="URL slug (auto-generated from title if omitted)")
+    image:           Optional[Dict[str, Any]]       = Field(default=None, description="Featured image. Either {'src': 'https://...'} (Shopify fetches from URL) or {'attachment': '<base64>', 'filename': '...'} (direct upload)")
+    published:       Optional[bool]                 = Field(default=False, description="DEFAULT FALSE = save as DRAFT. Set True only when ready to publish.")
+    published_at:    Optional[str]                  = Field(default=None, description="ISO 8601 date for scheduled publication")
+    template_suffix: Optional[str]                  = Field(default=None, description="Custom theme template suffix (advanced)")
+    metafields:      Optional[List[Dict[str, Any]]] = Field(default=None, description="Optional metafields array for SEO title, etc.")
+
+
+@mcp.tool(
+    name="shopify_create_article",
+    annotations={"readOnlyHint": False, "destructiveHint": False, "idempotentHint": False, "openWorldHint": True},
+)
+async def shopify_create_article(params: CreateArticleInput) -> str:
+    """Create a new article in a blog. DEFAULTS TO DRAFT (published=False) for safety —
+    pass published=True explicitly to publish immediately. The created article is returned
+    with its assigned ID, handle, and admin URL for review."""
+    try:
+        article: Dict[str, Any] = {"title": params.title}
+        for field in [
+            "body_html", "author", "tags", "summary_html", "handle",
+            "image", "published", "published_at", "template_suffix", "metafields"
+        ]:
+            val = getattr(params, field)
+            if val is not None:
+                article[field] = val
+        data = await _request("POST", f"blogs/{params.blog_id}/articles.json", body={"article": article})
+        return _fmt(data.get("article", data))
+    except Exception as e:
+        return _error(e)
+
+
+class UpdateArticleInput(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
+    blog_id:         int                       = Field(..., description="The blog ID containing the article")
+    article_id:      int                       = Field(..., description="The article ID to update")
+    title:           Optional[str]             = Field(default=None)
+    body_html:       Optional[str]             = Field(default=None)
+    author:          Optional[str]             = Field(default=None)
+    tags:            Optional[str]             = Field(default=None)
+    summary_html:    Optional[str]             = Field(default=None)
+    handle:          Optional[str]             = Field(default=None)
+    image:           Optional[Dict[str, Any]]  = Field(default=None)
+    published:       Optional[bool]            = Field(default=None, description="Set True to publish, False to unpublish (revert to draft)")
+    published_at:    Optional[str]             = Field(default=None)
+    template_suffix: Optional[str]             = Field(default=None)
+
+
+@mcp.tool(
+    name="shopify_update_article",
+    annotations={"readOnlyHint": False, "destructiveHint": False, "idempotentHint": True, "openWorldHint": True},
+)
+async def shopify_update_article(params: UpdateArticleInput) -> str:
+    """Update an existing article. Only provided fields are changed; omitted fields stay as-is."""
+    try:
+        article: Dict[str, Any] = {}
+        for field in [
+            "title", "body_html", "author", "tags", "summary_html", "handle",
+            "image", "published", "published_at", "template_suffix"
+        ]:
+            val = getattr(params, field)
+            if val is not None:
+                article[field] = val
+        data = await _request("PUT", f"blogs/{params.blog_id}/articles/{params.article_id}.json", body={"article": article})
+        return _fmt(data.get("article", data))
+    except Exception as e:
+        return _error(e)
+      
 # ═══════════════════════════════════════════════════════════════════════════
 # WEBHOOKS
 # ═══════════════════════════════════════════════════════════════════════════
