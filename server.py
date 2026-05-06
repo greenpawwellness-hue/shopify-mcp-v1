@@ -9,6 +9,8 @@ Token Management:
   - Set SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET (recommended for OAuth apps)
   - Falls back to static SHOPIFY_ACCESS_TOKEN if client credentials not set
 """
+import base64
+from pathlib import Path
 import json
 import os
 import logging
@@ -935,3 +937,6 @@ async def shopify_create_webhook(params: CreateWebhookInput) -> str:
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
     mcp.run(transport=MCP_TRANSPORT)
+shopify_list_files
+shopify_upload_file
+shopify_update_file
