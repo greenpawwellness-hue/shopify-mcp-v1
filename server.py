@@ -9,6 +9,8 @@ Token Management:
   - Set SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET (recommended for OAuth apps)
   - Falls back to static SHOPIFY_ACCESS_TOKEN if client credentials not set
 """
+import base64
+   from pathlib import Path
 import json
 import os
 import logging
@@ -878,6 +880,278 @@ async def shopify_get_shop(params: EmptyInput) -> str:
     try:
         data = await _request("GET", "shop.json")
         return _fmt(data.get("shop", data))
+    except Exception as e:
+        return _error(e)
+      # ═══════════════════════════════════════════════════════════════════════════
+# FILES (MEDIA LIBRARY)
+# ═══════════════════════════════════════════════════════════════════════════
+# Add this whole block to server.py. Best placement: right BEFORE the
+# "BLOGS & ARTICLES" block you added previously (or right after — order
+# does not matter, both groups are independent).
+#
+# Adds 3 tools (lean set — covers list, upload, update):
+#   shopify_list_files       — list / search the Shopify media library
+#   shopify_upload_file      — upload a local image, returns the CDN URL
+#   shopify_update_file      — update alt text on an existing file
+#
+# Required Shopify app scopes (add in your Shopify Partner / app config):
+#   read_files
+#   write_files
+# (You already have write_content from the articles tools — these are new.)
+#
+# Required Python imports — add to the top of server.py if not already present:
+#   import base64
+#   from pathlib import Path
+# httpx, BaseModel, Field, ConfigDict, Optional, Dict, Any, List should
+# already be imported from the existing tool blocks.
+# ═══════════════════════════════════════════════════════════════════════════
+
+import base64
+from pathlib import Path
+
+
+# ───────────────────────────────────────────────────────────────────────────
+# GraphQL helper — add once near the existing _request / _fmt / _error helpers.
+# Skip this block if you already have a _graphql helper from previous additions.
+# ───────────────────────────────────────────────────────────────────────────
+
+async def _graphql(query: str, variables: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """POST a GraphQL query to Shopify's Admin API. Raises on GraphQL errors."""
+    body: Dict[str, Any] = {"query": query}
+    if variables:
+        body["variables"] = variables
+    data = await _request("POST", "graphql.json", body=body)
+    if data.get("errors"):
+        raise Exception(f"GraphQL errors: {data['errors']}")
+    return data.get("data", {})
+
+
+# ───────────────────────────────────────────────────────────────────────────
+# 1. shopify_list_files — list / search media library
+# ───────────────────────────────────────────────────────────────────────────
+
+class ListFilesInput(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
+    query: Optional[str] = Field(default=None, description="Shopify query syntax — matches filename and alt text. Examples: 'dog', 'gut health', 'filename:hero*', 'media_type:IMAGE'. Omit to list everything.")
+    first: Optional[int] = Field(default=50, ge=1, le=250, description="Max files to return (1-250)")
+    after: Optional[str] = Field(default=None, description="Pagination cursor from a prior response's pageInfo.endCursor")
+
+
+@mcp.tool(
+    name="shopify_list_files",
+    annotations={"readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": True},
+)
+async def shopify_list_files(params: ListFilesInput) -> str:
+    """List or search files in the Shopify media library (Settings → Files in admin).
+    Returns filename, alt text, CDN URL, and dimensions for each file.
+    Use the optional 'query' param to filter by filename or alt text — this is how
+    the article pipeline matches images to article topics."""
+    try:
+        gql = """
+        query ListFiles($query: String, $first: Int, $after: String) {
+          files(first: $first, after: $after, query: $query) {
+            edges {
+              cursor
+              node {
+                id
+                alt
+                createdAt
+                fileStatus
+                ... on MediaImage {
+                  mimeType
+                  image { url width height altText }
+                }
+              }
+            }
+            pageInfo { hasNextPage endCursor }
+          }
+        }
+        """
+        variables: Dict[str, Any] = {"first": params.first}
+        if params.query:
+            variables["query"] = params.query
+        if params.after:
+            variables["after"] = params.after
+        data = await _graphql(gql, variables)
+        edges = data.get("files", {}).get("edges", [])
+        page_info = data.get("files", {}).get("pageInfo", {})
+        files = []
+        for edge in edges:
+            node = edge["node"]
+            image = node.get("image") or {}
+            files.append({
+                "id": node.get("id"),
+                "alt": node.get("alt"),
+                "url": image.get("url"),
+                "width": image.get("width"),
+                "height": image.get("height"),
+                "mime_type": node.get("mimeType"),
+                "file_status": node.get("fileStatus"),
+                "created_at": node.get("createdAt"),
+                "cursor": edge.get("cursor"),
+            })
+        return _fmt({"count": len(files), "files": files, "page_info": page_info})
+    except Exception as e:
+        return _error(e)
+
+
+# ───────────────────────────────────────────────────────────────────────────
+# 2. shopify_upload_file — upload a local image, return CDN URL
+# ───────────────────────────────────────────────────────────────────────────
+
+class UploadFileInput(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
+    file_path: str = Field(..., description="Absolute path to the local image file to upload (e.g. 'C:/Users/Crystal/Desktop/.../dog.jpg')")
+    alt_text: Optional[str] = Field(default=None, description="Alt text — DOUBLES AS SEARCHABLE TAGS for the pipeline. Pack with descriptors: 'dog gut health hero landscape outdoor'")
+    filename: Optional[str] = Field(default=None, description="Override the stored filename (defaults to the local filename)")
+
+
+@mcp.tool(
+    name="shopify_upload_file",
+    annotations={"readOnlyHint": False, "destructiveHint": False, "idempotentHint": False, "openWorldHint": True},
+)
+async def shopify_upload_file(params: UploadFileInput) -> str:
+    """Upload a local image to the Shopify media library. Returns the Shopify CDN URL
+    you can paste directly into article HTML (no more file:// broken images).
+
+    Internally runs Shopify's required 3-step dance: stagedUploadsCreate →
+    PUT bytes to the staged URL → fileCreate. All wrapped in this single call."""
+    try:
+        path = Path(params.file_path)
+        if not path.exists():
+            return _error(FileNotFoundError(f"File not found: {params.file_path}"))
+
+        filename = params.filename or path.name
+        file_size = path.stat().st_size
+
+        ext = path.suffix.lower()
+        mime_map = {
+            ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png",
+            ".gif": "image/gif", ".webp": "image/webp", ".svg": "image/svg+xml",
+        }
+        mime_type = mime_map.get(ext, "image/jpeg")
+
+        # Step 1: stagedUploadsCreate — get a presigned upload URL
+        staged_query = """
+        mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {
+          stagedUploadsCreate(input: $input) {
+            stagedTargets {
+              url
+              resourceUrl
+              parameters { name value }
+            }
+            userErrors { field message }
+          }
+        }
+        """
+        staged_vars = {
+            "input": [{
+                "filename": filename,
+                "mimeType": mime_type,
+                "httpMethod": "POST",
+                "resource": "FILE",
+                "fileSize": str(file_size),
+            }]
+        }
+        staged_data = await _graphql(staged_query, staged_vars)
+        sresult = staged_data.get("stagedUploadsCreate", {})
+        targets = sresult.get("stagedTargets", [])
+        if not targets:
+            return _error(Exception(f"stagedUploadsCreate failed: {sresult.get('userErrors', [])}"))
+        target = targets[0]
+
+        # Step 2: POST file bytes to the staged URL
+        async with httpx.AsyncClient(timeout=120) as client:
+            form_fields = {p["name"]: (None, p["value"]) for p in target["parameters"]}
+            with open(path, "rb") as f:
+                file_bytes = f.read()
+            form_fields["file"] = (filename, file_bytes, mime_type)
+            upload_resp = await client.post(target["url"], files=form_fields)
+            upload_resp.raise_for_status()
+
+        # Step 3: fileCreate — register the staged upload in the Files library
+        create_query = """
+        mutation fileCreate($files: [FileCreateInput!]!) {
+          fileCreate(files: $files) {
+            files {
+              id
+              alt
+              fileStatus
+              ... on MediaImage {
+                image { url width height }
+              }
+            }
+            userErrors { field message }
+          }
+        }
+        """
+        create_input: Dict[str, Any] = {
+            "originalSource": target["resourceUrl"],
+            "contentType": "IMAGE",
+        }
+        if params.alt_text:
+            create_input["alt"] = params.alt_text
+        if params.filename:
+            create_input["filename"] = params.filename
+        create_data = await _graphql(create_query, {"files": [create_input]})
+        cresult = create_data.get("fileCreate", {})
+        files_created = cresult.get("files", [])
+        if not files_created:
+            return _error(Exception(f"fileCreate failed: {cresult.get('userErrors', [])}"))
+
+        return _fmt({
+            "uploaded": files_created[0],
+            "note": "If image.url is null, the file is still processing — re-query with shopify_list_files in 5-10 seconds to pick up the final CDN URL.",
+        })
+    except Exception as e:
+        return _error(e)
+
+
+# ───────────────────────────────────────────────────────────────────────────
+# 3. shopify_update_file — update alt text / filename on an existing file
+# ───────────────────────────────────────────────────────────────────────────
+
+class UpdateFileInput(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
+    file_id: str = Field(..., description="Shopify file GID, e.g. 'gid://shopify/MediaImage/1234567890'")
+    alt_text: Optional[str] = Field(default=None, description="New alt text (also serves as searchable tags)")
+    filename: Optional[str] = Field(default=None, description="New filename")
+
+
+@mcp.tool(
+    name="shopify_update_file",
+    annotations={"readOnlyHint": False, "destructiveHint": False, "idempotentHint": True, "openWorldHint": True},
+)
+async def shopify_update_file(params: UpdateFileInput) -> str:
+    """Update metadata on an existing file in the Shopify media library.
+    Use this to add or refine the alt-text tags after upload — the pipeline
+    relies on alt text to search/match images to article topics."""
+    try:
+        update_input: Dict[str, Any] = {"id": params.file_id}
+        if params.alt_text is not None:
+            update_input["alt"] = params.alt_text
+        if params.filename is not None:
+            update_input["filename"] = params.filename
+        gql = """
+        mutation fileUpdate($files: [FileUpdateInput!]!) {
+          fileUpdate(files: $files) {
+            files {
+              id
+              alt
+              ... on MediaImage {
+                image { url width height }
+              }
+            }
+            userErrors { field message }
+          }
+        }
+        """
+        data = await _graphql(gql, {"files": [update_input]})
+        result = data.get("fileUpdate", {})
+        files_updated = result.get("files", [])
+        if not files_updated:
+            return _error(Exception(f"fileUpdate failed: {result.get('userErrors', [])}"))
+        return _fmt(files_updated[0])
     except Exception as e:
         return _error(e)
 
