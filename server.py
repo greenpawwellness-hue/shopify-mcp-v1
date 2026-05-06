@@ -10,7 +10,7 @@ Token Management:
   - Falls back to static SHOPIFY_ACCESS_TOKEN if client credentials not set
 """
 import base64
-   from pathlib import Path
+from pathlib import Path
 import json
 import os
 import logging
@@ -882,7 +882,7 @@ async def shopify_get_shop(params: EmptyInput) -> str:
         return _fmt(data.get("shop", data))
     except Exception as e:
         return _error(e)
-      # ═══════════════════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════════════
 # FILES (MEDIA LIBRARY)
 # ═══════════════════════════════════════════════════════════════════════════
 # Add this whole block to server.py. Best placement: right BEFORE the
@@ -905,9 +905,6 @@ async def shopify_get_shop(params: EmptyInput) -> str:
 # httpx, BaseModel, Field, ConfigDict, Optional, Dict, Any, List should
 # already be imported from the existing tool blocks.
 # ═══════════════════════════════════════════════════════════════════════════
-
-import base64
-from pathlib import Path
 
 
 # ───────────────────────────────────────────────────────────────────────────
