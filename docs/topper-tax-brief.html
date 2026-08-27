@@ -441,6 +441,15 @@
     line-height: 1.45;
   }
 
+  tr.flag td {
+    background: var(--alert-soft);
+    font-weight: 500;
+  }
+
+  tr.flag td:first-child { box-shadow: inset 3px 0 0 var(--alert); padding-left: 0.9rem; }
+
+  .audit td:first-child, .audit th:first-child { width: 48%; }
+
   /* ---------- callouts ---------- */
 
   .note {
@@ -745,15 +754,70 @@
   </section>
 
   <section class="col">
+    <p class="eyebrow">The SKU you already own</p>
+    <h2>Greens doesn’t sell because it has no job</h2>
+    <p>Run the audit on your own shelf. Seven of your eight products name a problem a customer already knows they have. One names a salad.</p>
+
+    <div class="tablewrap">
+      <table class="audit">
+        <thead>
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">What the name promises</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Allergy Ease</td><td>A problem, named</td></tr>
+          <tr><td>Hip &amp; Joint Support</td><td>A problem, named</td></tr>
+          <tr><td>UTI Bladder Support</td><td>A problem, named</td></tr>
+          <tr><td>Calming &amp; Anxiety Aid</td><td>A problem, named</td></tr>
+          <tr><td>Skin &amp; Coat Health</td><td>A problem, named</td></tr>
+          <tr><td>Parasite Cleanse</td><td>A problem, named</td></tr>
+          <tr><td>Probiotics &amp; Prebiotics</td><td>A mechanism, understood</td></tr>
+          <tr class="flag"><td>Powerful Greens</td><td>An ingredient. No problem, no promise.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>And it’s worse than a naming miss, because of where it sits. Every benefit a greens blend could plausibly claim — skin, coat, digestion, immunity, energy — <strong>is already claimed more specifically by a sibling on the same shelf.</strong> A shopper arriving with an itchy dog buys Allergy Ease or Skin &amp; Coat. Greens is the product for a customer with no problem, and nobody shops for supplements without a problem. It isn’t underperforming. It’s structurally squeezed out by your own catalog.</p>
+
+    <h3>The category isn’t the issue — Ruff Greens proves it</h3>
+    <p>Same product type, wildly different outcome: Ruff Greens runs a $1 trial bag into a ~$29.95 recurring subscription, with dogs over 40 lbs going through roughly two bags a month. They never sell algae. They sell <em>less scratching, a better coat, more energy, better digestion, dramatically better breath</em> — inside four weeks, with named endorsers and a hard direct-response funnel. A greens powder can clearly carry real money. A jar of algae can’t.</p>
+
+    <div class="note note--risk">
+      <span class="note__label">On the label color</span>
+      <p>Changing it is step four of four. The order is <strong>job → name → claim → design</strong>, and you’re proposing to start at the end. Color and packaging move conversion at the margin, on a product people are already looking at. They cannot manufacture demand for a product nobody clicks. Your instinct that “greens” is the wrong word is right; the instinct that the fix is visual is the part to drop.</p>
+    </div>
+
+    <h3>Two minutes in Shopify before you change anything</h3>
+    <p>You don’t yet know whether this is a demand problem or a traffic problem, and the fix is completely different. Pull sessions, add-to-cart rate, and conversion for that one product page:</p>
+    <ul>
+      <li><strong>Almost no sessions</strong> → discovery problem. Nobody is finding it, so the label is irrelevant. Repositioning changes nothing until traffic exists.</li>
+      <li><strong>Sessions fine, add-to-cart near zero</strong> → positioning problem. This is the case the rename actually solves, and the audit above predicts it.</li>
+      <li><strong>Add-to-cart fine, checkout drops</strong> → price, shipping, or trust. Don’t touch the name.</li>
+    </ul>
+
+    <h3>If it’s positioning, this is your pilot</h3>
+    <p>There is exactly one job left unclaimed on your shelf, and it’s the one this whole brief is about: the mixed feeder. Repositioning Greens toward it costs a label run, new page copy, and a dosing chart — <strong>no reformulation, no manufacturing minimum, no new inventory.</strong> You already own the product. That makes it the cheapest possible test of the entire Topper Balance thesis: if the “your topper is a treat” hook moves a product you already have in stock, the angle is real and worth funding properly. If it doesn’t move, you’ve learned that for the price of labels instead of a production run.</p>
+
+    <div class="note">
+      <span class="note__label">The line you can’t cross on the current formula</span>
+      <p>Spirulina, chlorella, and kelp are not a balancer. The existing blend does not carry the choline, vitamin D, zinc, and vitamin E load that makes the topper mechanism true, so you cannot make the mechanism claim on it. What you’re testing here is the <em>hook and the audience</em> — whether mixed feeders respond — with the product honestly positioned as a whole-food daily for fresh-fed pets. Reformulate to the real spec only once that traffic converts.</p>
+    </div>
+
+    <p>If the numbers say discovery rather than positioning, the honest answer is to discontinue it and redirect to the outcome SKUs. A catalog with one confusing product is worse than a catalog with seven clear ones, and killing it costs you nothing you weren’t already losing.</p>
+  </section>
+
+  <section class="col">
     <p class="eyebrow">Next 30 days</p>
     <h2>Validate the cheap things first</h2>
 
     <ol class="plan">
-      <li><b>Clear the claim.</b><span>One call with a pet-food regulatory consultant on “offsets dilution” wording. This is the only item here that can kill the product after you’ve already paid for it, so it goes first.</span></li>
-      <li><b>Test the hook, not the formula.</b><span>Run “your dog’s topper is a treat” and the 10% rule as cold creative, with your existing Powerful Greens as the offer. If the education doesn’t stop the scroll, the product won’t either — and you’ll know for a few hundred dollars instead of a manufacturing minimum.</span></li>
-      <li><b>Check your own data.</b><span>Pull Shopify: do Powerful Greens buyers skew toward anything that signals fresh feeding? Any signal here is worth more than the market reports, because it’s your customers.</span></li>
+      <li><b>Diagnose Greens.</b><span>Two minutes in Shopify: sessions, add-to-cart, conversion on that one page. Traffic problem or positioning problem — everything below branches on the answer, and it costs nothing to find out. Also check whether buyers skew multi-pet while you’re in there.</span></li>
+      <li><b>Clear the claim.</b><span>One call with a pet-food regulatory consultant on “offsets dilution” wording. The only item here that can kill the product <em>after</em> you’ve paid for it, so settle it before a word of copy is written.</span></li>
+      <li><b>Relabel Greens and run the hook.</b><span>If step one says positioning: new label, new page, dosing chart, then “your dog’s topper is a treat” as cold creative against it. No reformulation, no MOQ. If the education doesn’t stop the scroll on a product you already stock, the angle isn’t real — and that’s worth knowing for the price of a label run.</span></li>
       <li><b>Qualify the formulator.</b><span>Ask contract manufacturers specifically about variable-dose mineral loading and whether they’ll support veterinary nutritionist review. White-label shops say yes to everything — ask for the nutritionist’s name.</span></li>
-      <li><b>Start NASC.</b><span>In parallel with everything above, not after. Formulate last.</span></li>
+      <li><b>Start NASC.</b><span>In parallel with everything above, not after. Reformulate last, and only if step three converts.</span></li>
     </ol>
   </section>
 
@@ -781,6 +845,7 @@
       <li><a href="https://www.petmd.com/dog/general-health/dog-vitamins">Dog vitamins: do dogs need them?</a> — PetMD</li>
       <li><a href="https://shop.balance.it/products/balance-it-canine">Balance IT Canine</a> — competitive reference</li>
       <li><a href="https://www.bbb.org/us/tx/floyd/profile/pet-food/ruff-greens-inc-0875-91061016/complaints">Ruff Greens BBB complaints</a> — subscription-practice reference</li>
+      <li><a href="https://www.bestiepaws.com/dog-supplement-review/ruff-greens-for-dogs/">Ruff Greens ingredients, benefits and costs</a> — trial funnel and outcome claims</li>
       <li><a href="https://solutionspetproducts.com/contamination-of-synthetic-minerals-with-heavy-metals-in-pet-and-agricultural-feed/">Heavy metal contamination in synthetic mineral premixes</a></li>
       <li><a href="https://vohc.org/earn-the-vohc-seal/">Earn the VOHC seal</a> — Veterinary Oral Health Council (two-trial requirement)</li>
       <li><a href="https://vohc.org/wp-content/uploads/2025/11/VOHCAcceptedProductsTable_Dogs-11-14-25.pdf">VOHC accepted products for dogs</a> — list current to November 2025</li>
