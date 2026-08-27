@@ -713,6 +713,90 @@
     </div>
 
     <p class="note"><b>This may also explain your field data.</b> If results varied across years of testing, uncontrolled chemotype variation is a likelier explanation than anything about the animals. Specifying thujone makes the formula reproducible as well as defensible — worth more to you than the compliance argument.</p>
+
+    <h3>What “dose to assayed thujone” actually means</h3>
+
+    <p>Plainly: stop specifying the plant and start specifying the compound.</p>
+
+    <p>Your raw-material spec almost certainly reads something like the first line below. It names a plant and a weight, and because thujone varies 500-fold, it does not control the active at all. The second line does.</p>
+
+    <div class="eq">
+      <span class="lbl">What you likely have now</span>
+      Wormwood (<i>Artemisia absinthium</i>), aerial parts, powdered — 175 mg
+      <br><br>
+      <span class="lbl" style="margin-top:0.5rem">What controls the dose</span>
+      Wormwood herb powder, <b>0.15–0.25% total thujone (α + β) by GC-MS</b>
+      <br>
+      Blended to deliver <b>0.35 mg thujone per capsule</b>
+    </div>
+
+    <p>The consequence is that <strong>herb weight becomes an output, not an input</strong>. A lot assaying at 0.20% thujone goes in at 175 mg. A lot assaying at 0.40% goes in at 87 mg. Both capsules deliver 0.35 mg of thujone, which is the thing your customer’s dog actually receives. This is ordinary practice for standardised botanicals — it is how anyone selling milk thistle specifies silymarin, or turmeric specifies curcuminoids. Wormwood is simply less often sold that way, which is why nobody has offered it to you.</p>
+
+    <p>“GC-MS” is just the analytical method — gas chromatography–mass spectrometry, the standard technique for volatile compounds like thujone. You name it in the spec so results are comparable between labs and lots. You are not buying an instrument; you are asking for a test.</p>
+
+    <h3>How to actually get it done</h3>
+
+    <div class="asks">
+      <div class="ask">
+        <span class="k">Step 1</span>
+        <p class="v">Ask your current supplier for a COA showing thujone content by GC-MS on the lot you are using.</p>
+        <p class="why">Free, and the answer is informative either way. Most bulk botanical suppliers test identity, heavy metals, microbiology and pesticides — but not marker compounds on non-standardised herbs. If they cannot produce it, you now know your active has never been measured.</p>
+      </div>
+      <div class="ask">
+        <span class="k">Step 2</span>
+        <p class="v">If they cannot, send a retain sample to a third-party lab that does botanical marker assays for the supplement industry.</p>
+        <p class="why">Eurofins and Alkemist Labs are both well established in this space; your manufacturer may already have a lab relationship. Get two or three quotes for a single-marker GC-MS assay — pricing varies enough that it is worth asking rather than assuming.</p>
+      </div>
+      <div class="ask">
+        <span class="k">Step 3</span>
+        <p class="v">Test three different lots, not one.</p>
+        <p class="why">This is the step people skip and it is the one that answers your real question. A single result tells you where you are today; three tell you how much your supply actually moves. If three lots come back within a narrow band, you have a good supplier and the problem is mostly solved. If they spread widely, you have found your variability and you need Step 4.</p>
+      </div>
+      <div class="ask">
+        <span class="k">Step 4</span>
+        <p class="v">Decide between specifying a range from your existing supplier, or moving to a standardised extract.</p>
+        <p class="why">A range on milled herb is cheaper and keeps your whole-herb positioning. A standardised extract shifts consistency onto the supplier by design but costs more, changes your ingredient story, and moves every ceiling in this document — an extract is far more concentrated than herb, so the milligrams all have to be recalculated.</p>
+      </div>
+      <div class="ask">
+        <span class="k">Step 5</span>
+        <p class="v">Write it into the written spec and onto the purchase order, with COA-per-lot as a condition of acceptance.</p>
+        <p class="why">A spec that lives in an email is not a spec. It belongs in a signed document your manufacturer builds to: botanical ID and method, plant part, form, thujone range, plus heavy metals, microbiology, pesticide residue — and mycotoxin screening on the black walnut.</p>
+      </div>
+      <div class="ask">
+        <span class="k">Step 6</span>
+        <p class="v">Assay the finished capsule once, at the start and after any formulation change.</p>
+        <p class="why">Raw-material testing tells you what went in. A finished-product assay confirms the blending and encapsulation did not change it and that your arithmetic is right. Not needed every lot; very much needed once.</p>
+      </div>
+      <div class="ask">
+        <span class="k">Step 7</span>
+        <p class="v">Keep every COA and every retain sample, filed by lot.</p>
+        <p class="why">If a regulator, a veterinarian or an attorney ever asks, the file is the entire difference between “we test our raw materials” and being able to show it. Retains also let you go back and test a specific lot after the fact, which is exactly what you would want in the one scenario where it matters.</p>
+      </div>
+    </div>
+
+    <div class="finding ok">
+      <div class="finding-head">
+        <span class="chip ok">Who does this</span>
+        <h3>You specify it; your manufacturer executes it</h3>
+      </div>
+      <p>You should not be running this yourself. If you have a contract manufacturer or co-packer, this is a conversation with their QA contact, and it is a routine one — they build to whatever spec they are handed. The reason it is not happening now is almost certainly that nobody has handed them a spec that mentions thujone.</p>
+      <p>Your formulator is the right person to set the target range, since they know what dose produced the results they saw. Your manufacturer is the right person to source against it and hold the paperwork.</p>
+      <p class="note" style="margin-top:0.4rem"><b>Worth considering alongside this:</b> NASC membership brings an audited quality framework that covers exactly this territory — raw material specs, per-lot COAs, adverse event reporting, label standards. It would give you a structure to work inside rather than assembling one from scratch, and the seal is meaningful to the kind of customer who reads ingredient panels.</p>
+    </div>
+
+    <div class="finding caut">
+      <div class="finding-head">
+        <span class="chip caut">Set expectations</span>
+        <h3>What “right” looks like when you are done</h3>
+      </div>
+      <p>You will not reach certainty, and you should not aim for it. What you are aiming for is a defensible position, which has three parts and no more:</p>
+      <ul>
+        <li><strong>You know what is in it</strong> — assayed thujone and eugenol per capsule, on file per lot.</li>
+        <li><strong>You know why those numbers</strong> — tied to published limits where they exist, and to named, written reasoning where they do not.</li>
+        <li><strong>Someone qualified has reviewed it</strong> — a veterinary toxicologist on the numbers, and for the label wording, counsel who works in this area.</li>
+      </ul>
+      <p>Very few small pet supplement brands can show all three. Getting there is a matter of weeks and a few lab invoices, not a rebuild — and it converts your formulator’s years of experience from an assertion into something you can put in front of anyone who asks.</p>
+    </div>
   </section>
 
   <section>
@@ -726,15 +810,64 @@
 
     <p><strong>There is no established feline ADI for eugenol</strong> — the veterinary literature does not provide one. That absence is the finding: you cannot look this up, so you build margin instead. Applying a further 10× to the human ADI on the basis of the two compounding deficits gives 0.25 mg/kg/day. That is a judgement call, flagged as one, but it is the direction any toxicologist would take.</p>
 
+    <h3>The number, by cat weight</h3>
+
+    <p>One conversion note before the table. Clove bud powder runs 10–15% eugenol, and when you are setting a <em>ceiling</em> you assume the top of that range, not the middle — formulate against 12% and take delivery of a 15% lot and you are 25% over on day one. Everything below assumes <strong>15% eugenol</strong>.</p>
+
     <div class="scroller">
       <table>
-        <caption>Clove ceiling by species, at 1 capsule per 20 lb</caption>
+        <caption>Maximum clove powder per day — cats, at 0.25 mg/kg eugenol</caption>
+        <thead>
+          <tr><th>Cat</th><th>Weight</th><th>Eugenol ceiling/day</th><th>Clove powder/day</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Kitten / very small</td><td class="num">5 lb — 2.27 kg</td><td class="num">0.57 mg</td><td class="num">3.8 mg</td></tr>
+          <tr><td>Small adult</td><td class="num">8 lb — 3.63 kg</td><td class="num">0.91 mg</td><td class="num">6.1 mg</td></tr>
+          <tr class="go"><td>Typical adult</td><td class="num">10 lb — 4.54 kg</td><td class="num">1.13 mg</td><td class="num">7.6 mg</td></tr>
+          <tr><td>Large adult</td><td class="num">12 lb — 5.44 kg</td><td class="num">1.36 mg</td><td class="num">9.1 mg</td></tr>
+          <tr><td>Very large</td><td class="num">15 lb — 6.80 kg</td><td class="num">1.70 mg</td><td class="num">11.3 mg</td></tr>
+          <tr><td>Maine Coon class</td><td class="num">20 lb — 9.07 kg</td><td class="num">2.27 mg</td><td class="num">15.1 mg</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="finding crit">
+      <div class="finding-head">
+        <span class="chip crit">The headline number</span>
+        <h3>A typical 10 lb cat: about 7–8 mg of clove powder per day</h3>
+      </div>
+      <p>That is roughly 1.1 mg of eugenol. To put it in a form you can picture: an eighth of a teaspoon of ground clove is on the order of 250 mg, so a cat’s entire daily ceiling is a few percent of a pinch.</p>
+      <p>If your capsule was designed around a dog, this is almost certainly the number that is out of range — and it is out of range by a lot, not a little.</p>
+    </div>
+
+    <h3>How much that judgement is worth questioning</h3>
+
+    <p>The 0.25 mg/kg figure is mine, not a regulator’s, so you should see how much the answer moves if someone disagrees with me. Here is the same 10 lb cat under both assumptions:</p>
+
+    <div class="scroller">
+      <table>
+        <caption>Sensitivity — a 10 lb cat under two safety assumptions</caption>
+        <thead>
+          <tr><th>Assumption</th><th>Eugenol target</th><th>Eugenol/day</th><th>Clove powder/day</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>WHO human ADI applied directly to cats</td><td class="num">2.5 mg/kg/day</td><td class="num">11.3 mg</td><td class="num">76 mg</td></tr>
+          <tr class="go"><td>10× factor for UGT + GSH deficit <em>(recommended)</em></td><td class="num">0.25 mg/kg/day</td><td class="num">1.13 mg</td><td class="num">7.6 mg</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A tenfold spread, turning on a single judgement call. I would hold to the conservative figure — cats are the species where the standard interspecies assumption is known to be wrong in a specific, documented direction, and there is no upside to being right at the edge. But this is precisely the number to put in front of a veterinary toxicologist, because it is the one place in this document where the answer rests on reasoning rather than on a published limit.</p>
+
+    <div class="scroller">
+      <table>
+        <caption>For comparison — the same ceiling per species, at 1 capsule per 20 lb</caption>
         <thead>
           <tr><th>Species</th><th>Eugenol target</th><th>Eugenol / capsule</th><th>Clove powder / capsule</th></tr>
         </thead>
         <tbody>
-          <tr><td>Dog — WHO ADI applied directly</td><td class="num">2.5 mg/kg/day</td><td class="num">22.7 mg</td><td class="num">150–225 mg</td></tr>
-          <tr class="hi"><td>Cat — 10× factor for UGT + GSH deficit</td><td class="num">0.25 mg/kg/day</td><td class="num">2.3 mg</td><td class="num">15–23 mg</td></tr>
+          <tr><td>Dog — WHO ADI applied directly</td><td class="num">2.5 mg/kg/day</td><td class="num">22.7 mg</td><td class="num">≤ 151 mg</td></tr>
+          <tr class="hi"><td>Cat — 10× factor for UGT + GSH deficit</td><td class="num">0.25 mg/kg/day</td><td class="num">2.3 mg</td><td class="num">≤ 15 mg</td></tr>
         </tbody>
       </table>
     </div>
