@@ -1,0 +1,583 @@
+<title>Cats Hide It</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+
+<style>
+  :root {
+    --bg: #EDEDEA;
+    --surface: #FFFFFF;
+    --surface-2: #E4E4E0;
+    --text: #1A1A1C;
+    --text-dim: #6A6A67;
+    --rule: #D2D2CD;
+    --rule-strong: #B0B0AA;
+    --accent: #9A5D0A;
+    --accent-mark: #9A5D0A;
+    --accent-soft: #F4E8D6;
+    --flat: #8C8C87;
+
+    --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --body: "Source Serif 4", Georgia, serif;
+
+    --measure: 42rem;
+    --wide: 58rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #131315;
+      --surface: #1B1B1D;
+      --surface-2: #232326;
+      --text: #EAEAE6;
+      --text-dim: #97978F;
+      --rule: #313135;
+      --rule-strong: #4A4A4F;
+      --accent: #E0A24A;
+      --accent-mark: #C6832B;
+      --accent-soft: #2A2118;
+      --flat: #62625E;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #131315;
+    --surface: #1B1B1D;
+    --surface-2: #232326;
+    --text: #EAEAE6;
+    --text-dim: #97978F;
+    --rule: #313135;
+    --rule-strong: #4A4A4F;
+    --accent: #E0A24A;
+    --accent-mark: #C6832B;
+    --accent-soft: #2A2118;
+    --flat: #62625E;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    margin: 0;
+    padding: 0 1.5rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .col { max-width: var(--measure); margin-inline: auto; }
+  .col--wide { max-width: var(--wide); margin-inline: auto; }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    max-width: var(--wide);
+    margin: 0 auto;
+    padding: 5rem 0 3rem;
+  }
+
+  .kicker {
+    font-family: var(--display);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 2.5rem;
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(3rem, 11vw, 6.5rem);
+    font-weight: 600;
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+    margin: 0 0 1.5rem;
+  }
+
+  .standfirst {
+    font-size: clamp(1.15rem, 2.3vw, 1.4rem);
+    line-height: 1.5;
+    color: var(--text-dim);
+    max-width: 33rem;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .rule-heavy {
+    max-width: var(--wide);
+    margin: 0 auto;
+    border: 0;
+    border-top: 1px solid var(--rule-strong);
+  }
+
+  /* ---------- sections ---------- */
+
+  section { padding-top: 3.75rem; }
+
+  .eyebrow {
+    font-family: var(--display);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 0 0 1.25rem;
+  }
+
+  h2 {
+    font-family: var(--display);
+    font-size: clamp(1.6rem, 3.4vw, 2.25rem);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+    margin: 0 0 1.1rem;
+  }
+
+  h3 {
+    font-family: var(--display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.006em;
+    line-height: 1.35;
+    margin: 2.25rem 0 0.6rem;
+  }
+
+  p { margin: 0 0 1.2rem; text-wrap: pretty; }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  strong { font-weight: 600; }
+
+  ul { margin: 0 0 1.2rem; padding-left: 1.15rem; }
+  li { margin-bottom: 0.65rem; }
+  li::marker { color: var(--accent); }
+
+  .pull {
+    font-family: var(--display);
+    font-size: clamp(1.35rem, 3vw, 1.85rem);
+    font-weight: 500;
+    line-height: 1.28;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    border-top: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+    padding: 1.75rem 0;
+    margin: 2.5rem 0;
+    text-wrap: balance;
+  }
+
+  /* ---------- figure ---------- */
+
+  figure {
+    margin: 2.75rem 0;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 1.75rem 1.6rem 1.5rem;
+  }
+
+  figcaption {
+    font-family: var(--display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.008em;
+    margin-bottom: 0.3rem;
+  }
+
+  .fig-sub {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-dim);
+    margin: 0 0 1.75rem;
+  }
+
+  .bars { display: grid; gap: 1.35rem; }
+
+  .bar-row { display: grid; gap: 0.4rem; cursor: default; }
+
+  .bar-label {
+    font-family: var(--display);
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--text);
+  }
+
+  .bar-label span { color: var(--text-dim); font-weight: 400; }
+
+  .bar-track { display: flex; align-items: center; gap: 0.7rem; }
+
+  .bar-fill {
+    height: 0.75rem;
+    background: var(--accent-mark);
+    border-radius: 0 4px 4px 0;
+    min-width: 3px;
+    transition: opacity 140ms ease;
+  }
+
+  .bar-row--flat .bar-fill { background: var(--flat); }
+
+  .bar-val {
+    font-family: var(--display);
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .bar-note {
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--text-dim);
+    max-width: 32rem;
+  }
+
+  .bar-row:hover .bar-fill { opacity: 0.72; }
+
+  .axis {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--rule);
+    margin-top: 1.5rem;
+    padding-top: 0.5rem;
+    font-family: var(--display);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- comparison table ---------- */
+
+  .tablewrap { overflow-x: auto; margin: 2rem 0; }
+
+  table { border-collapse: collapse; width: 100%; min-width: 33rem; font-size: 0.9rem; }
+
+  thead th {
+    font-family: var(--display);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-align: left;
+    padding: 0 0.9rem 0.7rem 0;
+    border-bottom: 1px solid var(--rule-strong);
+    vertical-align: bottom;
+  }
+
+  tbody td {
+    padding: 0.9rem 0.9rem 0.9rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  tbody tr:last-child td { border-bottom: 1px solid var(--rule-strong); }
+
+  td:first-child, th:first-child { width: 26%; }
+
+  td b { font-family: var(--display); font-weight: 600; font-size: 0.85rem; }
+
+  tr.mine td { background: var(--accent-soft); }
+  tr.mine td:first-child { box-shadow: inset 3px 0 0 var(--accent-mark); padding-left: 0.85rem; }
+
+  /* ---------- line architecture ---------- */
+
+  .line { display: grid; gap: 0; margin: 2rem 0; }
+
+  .sku {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: 0 1.25rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--rule);
+    align-items: baseline;
+  }
+
+  .sku:last-child { border-bottom: 1px solid var(--rule); }
+
+  .sku__slot {
+    font-family: var(--display);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .sku__name { font-family: var(--display); font-weight: 600; font-size: 1rem; margin: 0 0 0.25rem; }
+  .sku p { margin: 0; font-size: 0.9rem; line-height: 1.55; color: var(--text-dim); }
+
+  /* ---------- notes ---------- */
+
+  .note {
+    background: var(--surface);
+    border-left: 3px solid var(--accent-mark);
+    padding: 1.25rem 1.4rem;
+    margin: 2.25rem 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .note__label {
+    display: block;
+    font-family: var(--display);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .note p:last-child { margin-bottom: 0; }
+
+  /* ---------- territory swatches ---------- */
+
+  .terr { display: grid; grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 2rem 0; }
+  .terr div { background: var(--surface); padding: 1.1rem 1.1rem 1.25rem; }
+  .terr b { display: block; font-family: var(--display); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .terr--no b { color: var(--text-dim); }
+  .terr--yes b { color: var(--accent); }
+  .terr span { font-size: 0.85rem; line-height: 1.5; color: var(--text-dim); }
+  .terr--yes span { color: var(--text); }
+
+  /* ---------- sources ---------- */
+
+  .sources { margin-top: 4rem; padding-top: 1.75rem; border-top: 1px solid var(--rule-strong); font-size: 0.85rem; }
+  .sources ol { padding-left: 1.3rem; }
+  .sources li { margin-bottom: 0.5rem; color: var(--text-dim); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar-fill { transition: none; }
+  }
+
+  @media (max-width: 34rem) {
+    .sku { grid-template-columns: 1fr; gap: 0.35rem; }
+  }
+</style>
+
+<header class="masthead">
+  <p class="kicker">Green Paw Wellness · Cat-first brand concept</p>
+  <h1>Cats Hide It</h1>
+  <p class="standfirst">The one brand truth a dog company structurally cannot use — and the line that gets built on top of it.</p>
+</header>
+<hr class="rule-heavy">
+
+<main>
+
+  <section class="col">
+    <p class="eyebrow">The premise</p>
+    <h2>A prey animal doesn’t show weakness</h2>
+    <p>Cats mask illness and pain as a survival instinct. In the wild, visible weakness marks you as the one worth chasing, and domestic cats never lost the wiring. Every veterinarian says the same thing: by the time an owner notices something is wrong, it has usually been developing for weeks or months.</p>
+    <p>That is a fact about cats, not a fact about supplements — which is exactly why it can carry a brand. It’s emotionally true to anyone who has ever owned a cat, it is not available to a dog company, and no dogs-and-cats brand will ever lead with it, because half their customers would find it irrelevant.</p>
+
+    <p class="pull">Your cat is not fine. Your cat is a professional at looking fine.</p>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">The proof</p>
+    <h2>The gap is enormous and nobody talks about it</h2>
+    <p>Feline degenerative joint disease is the cleanest demonstration of the premise, because the prevalence is settled and the detection rate is catastrophic.</p>
+
+    <figure>
+      <figcaption>Feline degenerative joint disease: present vs. detected</figcaption>
+      <p class="fig-sub">Share of cats affected, against the share actually identified by each method. Prevalence and detection figures come from separate studies and are shown together to illustrate the gap, not as one dataset.</p>
+
+      <div class="bars">
+        <div class="bar-row">
+          <div class="bar-label">Have radiographic evidence of DJD <span>— cross-sectional imaging study</span></div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 92%"></div>
+            <span class="bar-val">92%</span>
+          </div>
+          <p class="bar-note">Over 90% across studies; rises further with age.</p>
+        </div>
+
+        <div class="bar-row bar-row--flat">
+          <div class="bar-label">Identified by owner conversation and physical exam <span>— the normal path</span></div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 1%"></div>
+            <span class="bar-val">1%</span>
+          </div>
+          <p class="bar-note">Palpation that works on a dog largely fails on a cat.</p>
+        </div>
+
+        <div class="bar-row">
+          <div class="bar-label">Identified using a systematic screening checklist <span>— same clinic, same cats</span></div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width: 39%"></div>
+            <span class="bar-val">39%</span>
+          </div>
+          <p class="bar-note">The condition didn’t change. Only whether anyone looked.</p>
+        </div>
+      </div>
+
+      <div class="axis"><span>0%</span><span>100% of cats</span></div>
+    </figure>
+
+    <p>And the cat barely gets the chance to be looked at. In 2024, 74.2% of dog owners made at least one veterinary visit; only 57.3% of cat owners did. Around 40% of cats don’t see a vet in a given year against 15% of dogs, and the cats who do go average 26% fewer visits. Owners read quietness as low maintenance.</p>
+
+    <div class="note">
+      <span class="note__label">Why this is the strongest daily-supplement argument in the category</span>
+      <p>The multivitamin category’s core weakness is that a healthy pet on complete food doesn’t need one. For cats that objection inverts: the animal conceals problems <em>and</em> is seen by a professional half as often, so the daily bowl is where care actually happens. This is the only honest version of “start before symptoms” anyone in pet wellness can make — and it only works for cats.</p>
+    </div>
+
+    <div class="note">
+      <span class="note__label">Claim guardrail</span>
+      <p>Cite prevalence in education, never in a product claim. A supplement supports joint health; it does not treat, prevent, or manage arthritis — that’s a drug claim and it’s the fastest way to get a warning letter. The statistic belongs in your content, the structure/function language belongs on the label, and the two must never be joined in a single sentence.</p>
+    </div>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">The product</p>
+    <h2>Not the dog formula, smaller</h2>
+    <p>A demographic wedge only holds if the product genuinely changes. For cats, three things do.</p>
+
+    <h3>Nutrients they physically cannot make</h3>
+    <p>Cats require dietary taurine, preformed vitamin A (no carotenoid conversion), arachidonic acid, and preformed niacin (no tryptophan conversion), plus more arginine and B6. A dog manufactures all of it internally. This is the difference that makes “cats are not small dogs” a formulation fact rather than a slogan.</p>
+
+    <h3>Palatability is a formulation problem, not a flavor</h3>
+    <p>This is the part most brands get wrong. A cat has roughly <strong>470 taste buds against a dog’s 1,700 and a human’s ~10,000</strong>, and it cannot taste sweetness at all — the Tas1r2 sweet-receptor gene is a pseudogene in cats. They’re driven by umami and free amino acids, and they’re neophobic by design, since refusing unfamiliar food is a decent anti-poisoning strategy.</p>
+    <p>So every palatability trick the dog category runs on — sweeteners, molasses binders, bacon notes, the soft-chew format itself — is <strong>literally wasted on a cat</strong>. What works is protein hydrolysates and yeast extracts. A brand that says this out loud sounds like it knows something, because it does.</p>
+
+    <h3>Dose size is where the packet finally earns its cost</h3>
+    <p>An 8–12 lb animal takes a fraction of a dog’s dose. At that size a scoop stops being approximate and starts being wrong, and the margin for error on fat-soluble vitamins narrows. This is the one place single-serve packaging is doing real work rather than adding cost — the opposite of the dental-powder case.</p>
+
+    <h3>And the conditions are different</h3>
+    <p>Urinary and FLUTD, hairballs, kidney health, dental, weight, thyroid, and hidden mobility loss. Not hips and joints as a dog brand means it. A cat line built on dog categories announces itself immediately.</p>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">The distinction</p>
+    <h2>Squeezables is a product. This is a company.</h2>
+    <p>Worth being precise, because this is the thing that separates the wedge from a line extension. Pet Honesty added an excellent cat product — eight lickable purées, eighteen months of palatability work. But their homepage leads with dogs, cat is a tab, and the cat range is largely their dog conditions ported across with hairball and urinary added. Their stated claim is about <em>format</em>: wellness in a format cats already love.</p>
+    <p>Nobody gets to be the cat brand while their revenue, their homepage, and their category structure are canine.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Brand</th>
+            <th scope="col">What it actually is</th>
+            <th scope="col">What it can’t say</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Pet Honesty</b></td>
+            <td>A dog brand with a strong cat line. Squeezables competes on format.</td>
+            <td>That cats are the point. Half its customers own dogs.</td>
+          </tr>
+          <tr>
+            <td><b>Fera Pets</b></td>
+            <td>Vet-founded, dogs and cats, acquired by General Mills in 2023. Credible, dual-species.</td>
+            <td>That the dog formula was ever the compromise.</td>
+          </tr>
+          <tr>
+            <td><b>GPW today</b></td>
+            <td>Eight “for Dogs and Cats” powders. One blend, two species.</td>
+            <td>Any of it. This is the position being differentiated against.</td>
+          </tr>
+          <tr class="mine">
+            <td><b>The concept</b></td>
+            <td>A cat company. Every formula, every claim, every photograph built for one animal.</td>
+            <td>Nothing — which is the entire advantage.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">The identity</p>
+    <h2>Where the visual white space actually is</h2>
+    <p>Cat branding today lives in three places, and all three are taken or worthless.</p>
+
+    <div class="terr">
+      <div class="terr--no"><b>Kitsch</b><span>Paw prints, pastels, pun names, the knowing cat-lady wink. Treats the owner as a joke.</span></div>
+      <div class="terr--no"><b>Clinical</b><span>White, blue, veterinary. Credible and completely cold.</span></div>
+      <div class="terr--no"><b>Borrowed dog</b><span>Earthy, outdoorsy, adventure, trail greens. Coded for an animal that goes outside.</span></div>
+      <div class="terr--yes"><b>Unclaimed</b><span>Adult, quiet, domestic, observational. Indoors, at night, in routine and small movements.</span></div>
+    </div>
+
+    <p>The last one comes straight out of the premise. If cats hide it, then the entire job of a cat owner is <strong>noticing</strong> — and no other pet category can say that. A brand built on attention rather than enthusiasm: restrained type, low light, interiors, close observation, an adult tone that assumes the reader is paying attention because they already are. That’s a design direction derived from the animal, which is why it won’t look like everyone else’s.</p>
+    <p>It is also the exact structural move Kelly White made with rhinestones and leopard print — take the customer the category treats as secondary and build the whole aesthetic for them. The execution is nothing alike. The mechanic is identical.</p>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">The line</p>
+    <h2>What you’d actually sell</h2>
+
+    <div class="line">
+      <div class="sku">
+        <span class="sku__slot">Hero</span>
+        <div>
+          <p class="sku__name">The Daily</p>
+          <p>Built on the four nutrients a cat can’t synthesize. This SKU exists to state the premise — it is the product that proves you are a cat company, and it anchors the subscription.</p>
+        </div>
+      </div>
+      <div class="sku">
+        <span class="sku__slot">Engine</span>
+        <div>
+          <p class="sku__name">Mobility</p>
+          <p>Where the 92%-present, 1%-detected statistic points. The education acquires; this converts. Second SKU, but likely your best-performing paid creative.</p>
+        </div>
+      </div>
+      <div class="sku">
+        <span class="sku__slot">Native</span>
+        <div>
+          <p class="sku__name">Urinary · Hairball</p>
+          <p>The two conditions with no dog equivalent and real search demand. They confirm the brand is feline by construction, not by relabel.</p>
+        </div>
+      </div>
+      <div class="sku">
+        <span class="sku__slot">Later</span>
+        <div>
+          <p class="sku__name">Dental</p>
+          <p>85% of cats aged three-plus have dental disease and the crowded powder field is almost entirely dog-first. Park it until a VOHC trial is fundable — then it’s a moat.</p>
+        </div>
+      </div>
+    </div>
+
+    <p>Note what isn’t here: calming, skin and coat, allergy, parasite, greens. Those are dog categories with cat labels, which is precisely the catalog this brand exists to argue against.</p>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">The cost</p>
+    <h2>What you give up</h2>
+    <p>Eight SKUs of current revenue can’t share a homepage with a cat-first brand — the whole proposition dies the moment a visitor sees a dog. Two workable routes: sunset the dog line slowly while the cat brand takes investment, or run it as a separate value storefront under its own name and let it fund the transition. What doesn’t work is one site trying to hold both stories.</p>
+    <p>The name survives, at least. A paw is a paw, and Green Paw reads as easily feline as canine — so this is a repositioning rather than a renaming, which is meaningfully cheaper. Whether you <em>want</em> a species-neutral name for a species-specific brand is a real question, and it’s yours.</p>
+
+    <div class="note">
+      <span class="note__label">Before committing</span>
+      <p>Pull your cat revenue share. The market baseline is ~31%. Above it, your own customers have already validated the wedge and the rebrand starts with momentum. Well below it, you’re starting from zero — still viable, but a different and slower plan than this document assumes.</p>
+    </div>
+  </section>
+
+  <section class="col sources">
+    <p class="eyebrow">Sources</p>
+    <ol>
+      <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7141235/">Retrospective radiographic study of degenerative joint disease in cats</a> — Frontiers in Veterinary Science</li>
+      <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7736399/">Development of a checklist for detection of DJD-associated pain in cats</a> — the 1% vs 39% detection figures</li>
+      <li><a href="https://cvm.ncsu.edu/comparative-pain-research-and-education-center/arthritis-pain-in-cats/">Osteoarthritis in cats</a> — NC State Comparative Pain Research Center</li>
+      <li><a href="https://vetmed.tamu.edu/news/pet-talk/when-is-your-cat-hiding-illness-or-injury/">When is your cat hiding illness or injury?</a> — Texas A&amp;M School of Veterinary Medicine</li>
+      <li><a href="https://www.huffpost.com/entry/cats-veterinarian-undermedicalization_l_63c1ea21e4b0fe267cba4d51">Cats go to the vet less than half as often as dogs</a> — on feline undermedicalization</li>
+      <li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1183522/">Pseudogenization of a sweet-receptor gene accounts for cats’ indifference toward sugar</a></li>
+      <li><a href="https://www.tandfonline.com/doi/full/10.1080/09712119.2020.1786391">Taste preferences and diet palatability in cats</a></li>
+      <li><a href="https://www.petfoodindustry.com/nutrition/pet-food-palatability/article/15831506/the-biology-behind-why-dogs-and-cats-palatability-preferences-differ">The biology behind why dog and cat palatability preferences differ</a> — taste bud counts</li>
+      <li><a href="https://sites.tufts.edu/petfoodology/2018/12/18/cats-are-not-small-dogs-unique-nutritional-needs-of-cats/">Cats are not small dogs</a> — Tufts Petfoodology</li>
+      <li><a href="https://www.businesswire.com/news/home/20260707075059/en/Pet-Honesty-Fastest-Growing-Cat-Supplement-Brand-in-the-U.S.-Launches-Cat-Squeezables-Bringing-Science-Backed-Wellness-to-a-Format-Cats-Already-Love">Pet Honesty launches Cat Squeezables</a> — Business Wire, July 2026</li>
+      <li><a href="https://www.businesswire.com/news/home/20231109456167/en/General-Mills-Acquires-Fera-Pets-Inc.-Introduces-Growth-Fund">General Mills acquires Fera Pets</a> — Business Wire, November 2023</li>
+    </ol>
+  </section>
+
+</main>
