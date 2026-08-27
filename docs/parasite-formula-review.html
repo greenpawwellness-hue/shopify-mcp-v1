@@ -889,13 +889,70 @@
       </div>
     </div>
 
-    <div class="finding caut">
+    <div class="finding crit">
       <div class="finding-head">
-        <span class="chip caut">Practical</span>
-        <h3>Most cats need a fraction of a capsule, and fractions don’t work</h3>
+        <span class="chip crit">Rounding error</span>
+        <h3>“1 capsule per 20 lb” quietly becomes “1 capsule” for every cat</h3>
       </div>
-      <p>A typical cat is 8–11 lb, so the label calls for 0.4–0.55 of a capsule — and now, under the new protocol, <em>half of that</em> for the first three days. That is an owner eyeballing a quarter of a capsule’s powder, which realistically lands anywhere within ±50%. The species with the narrowest margin is getting the least precise dose.</p>
-      <p>A lower-strength cat capsule dosed at one whole unit solves the accuracy problem, the clove problem and the start-low problem together.</p>
+      <p>A typical cat is 8–11 lb, so the label calls for roughly half a capsule. But a capsule is not a divisible unit in an owner’s hands. Faced with half, most people give the whole thing — it is easier, nothing gets wasted, and the label’s smallest named unit is one capsule.</p>
+      <p>The error is not random. It runs in one direction, always upward, in the species with the least margin. And it gets worse as the animal gets smaller, because the gap between the animal’s weight and the 20 lb reference widens.</p>
+
+      <div class="scroller">
+        <table>
+          <caption>What a whole capsule means by cat size</caption>
+          <thead>
+            <tr><th>Cat</th><th>Intended</th><th>Given in practice</th><th>Actual exposure</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>20 lb</td><td class="num">1.0 cap</td><td class="num">1.0 cap</td><td class="num">As intended</td></tr>
+            <tr><td>10 lb</td><td class="num">0.5 cap</td><td class="num">1.0 cap</td><td class="num">2.0×</td></tr>
+            <tr class="hi"><td>8 lb</td><td class="num">0.4 cap</td><td class="num">1.0 cap</td><td class="num">2.5×</td></tr>
+            <tr class="hi"><td>5 lb kitten</td><td class="num">0.25 cap</td><td class="num">1.0 cap</td><td class="num">4.0×</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The three-day half-dose start makes this sharper still: it asks for a <em>quarter</em> capsule, which almost guarantees rounding to a whole one.</p>
+    </div>
+
+    <h3>Whether that actually matters depends on one number</h3>
+
+    <p>A 2× overshoot is not automatically dangerous — it depends entirely on how much clove is in the capsule, which is the figure still outstanding. Below is what a whole capsule means for a 10 lb cat across four plausible clove loads. This is the decision table: find your number, read across.</p>
+
+    <div class="scroller">
+      <table>
+        <caption>10 lb cat, one whole capsule — by clove content</caption>
+        <thead>
+          <tr><th>Clove/capsule</th><th>Eugenol</th><th>Cat receives</th><th>vs. WHO human ADI</th><th>Read</th></tr>
+        </thead>
+        <tbody>
+          <tr class="go"><td class="num">20 mg</td><td class="num">3.0 mg</td><td class="num">0.66 mg/kg</td><td class="num">4× under</td><td>Comfortable. Labelling fix only.</td></tr>
+          <tr class="go"><td class="num">50 mg</td><td class="num">7.5 mg</td><td class="num">1.65 mg/kg</td><td class="num">Under</td><td>Acceptable, but no cat margin left.</td></tr>
+          <tr class="hi"><td class="num">100 mg</td><td class="num">15.0 mg</td><td class="num">3.3 mg/kg</td><td class="num">1.3× over</td><td>Act. Over the <em>human</em> limit, in a cat.</td></tr>
+          <tr class="hi"><td class="num">150 mg</td><td class="num">22.5 mg</td><td class="num">4.96 mg/kg</td><td class="num">2× over</td><td>Act now. Dog-appropriate load, cat body.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Two of those rows are a labelling correction. Two are a formulation change. <strong>You cannot tell which you are in until someone reads you the clove milligrams</strong> — and that is one email, not a project.</p>
+
+    <p class="note"><b>A reason for cautious optimism while you wait.</b> Clove is powerful stuff at the sensory level, and cats are famously unwilling to eat things that smell of it. Palatability tends to hold clove down in pet formulas whether or not anyone did the toxicology, simply because a bitter capsule gets refused and returned. If your cat customers have been dosing without complaint, that is weak evidence your clove load sits at the lower end. Weak — not conclusive, and no substitute for the number.</p>
+
+    <div class="finding ok">
+      <div class="finding-head">
+        <span class="chip ok">Do this week</span>
+        <h3>The interim fix costs nothing and does not wait on lab work</h3>
+      </div>
+      <p>Whatever the milligrams turn out to be, the rounding direction is worth correcting now, because it is free and it is the thing you control today.</p>
+      <ul>
+        <li><strong>Add one sentence to the product page and label:</strong> “Never give a whole capsule to a cat under 20 lb. If you are unsure, give less rather than more.” The instruction to round <em>down</em> is the entire fix.</li>
+        <li><strong>Make the half-dose physical rather than notional:</strong> tell owners to open the capsule, mix half the powder into wet food, and keep the rest closed for the next day. A cat that eats half a portion of food has taken less than half the dose, which is the safe direction.</li>
+        <li><strong>Email your existing cat customers.</strong> A short, calm note refining the cat directions reads as a brand that pays attention. It is also the record that you acted the moment you knew.</li>
+      </ul>
+      <div class="fix">
+        <b>Then, at the next production run</b>
+        A lower-strength cat capsule dosed at one whole unit per cat. It resolves the rounding error, the clove ceiling and the go-slow start in a single change — and it turns the thing that is worrying you into the most defensible part of the range.
+      </div>
     </div>
   </section>
 
