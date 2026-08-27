@@ -1,0 +1,669 @@
+<title>The Topper Tax</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
+
+<style>
+  :root {
+    --bg: #F6F7F2;
+    --surface: #FFFFFF;
+    --surface-2: #EDEFE7;
+    --text: #171C17;
+    --text-dim: #6E756C;
+    --rule: #D6DACE;
+    --rule-strong: #B4BBAE;
+    --accent: #3E6B4C;
+    --accent-ink: #2C4E37;
+    --accent-soft: #E3EBE1;
+    --warn: #A8702A;
+    --warn-soft: #F5EAD9;
+    --alert: #93392C;
+    --alert-soft: #F6E4E0;
+
+    --display: "Newsreader", Georgia, "Times New Roman", serif;
+    --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+    --measure: 43rem;
+    --wide: 60rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121510;
+      --surface: #1A1E18;
+      --surface-2: #232821;
+      --text: #E8EBE3;
+      --text-dim: #979D94;
+      --rule: #333A31;
+      --rule-strong: #4A5347;
+      --accent: #85BC92;
+      --accent-ink: #A6D2B0;
+      --accent-soft: #1D2A20;
+      --warn: #DCA75F;
+      --warn-soft: #2A2317;
+      --alert: #D9806F;
+      --alert-soft: #2E1D19;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #121510;
+    --surface: #1A1E18;
+    --surface-2: #232821;
+    --text: #E8EBE3;
+    --text-dim: #979D94;
+    --rule: #333A31;
+    --rule-strong: #4A5347;
+    --accent: #85BC92;
+    --accent-ink: #A6D2B0;
+    --accent-soft: #1D2A20;
+    --warn: #DCA75F;
+    --warn-soft: #2A2317;
+    --alert: #D9806F;
+    --alert-soft: #2E1D19;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    margin: 0;
+    padding: 0 1.5rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .col {
+    max-width: var(--measure);
+    margin-inline: auto;
+  }
+
+  .col--wide {
+    max-width: var(--wide);
+    margin-inline: auto;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    max-width: var(--wide);
+    margin: 0 auto;
+    padding: 4.5rem 0 2.5rem;
+    border-bottom: 2px solid var(--text);
+  }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.1rem;
+    margin: 0 0 1.75rem;
+  }
+
+  .kicker span:not(:first-child)::before {
+    content: "/";
+    color: var(--rule-strong);
+    margin-right: 1.1rem;
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(2.75rem, 7.5vw, 4.75rem);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    margin: 0 0 1.25rem;
+  }
+
+  .standfirst {
+    font-family: var(--display);
+    font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+    line-height: 1.45;
+    color: var(--text-dim);
+    max-width: 34rem;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ---------- sections ---------- */
+
+  section { padding-top: 3.5rem; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin: 0 0 1.1rem;
+  }
+
+  .eyebrow::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  h2 {
+    font-family: var(--display);
+    font-size: clamp(1.75rem, 3.6vw, 2.375rem);
+    font-weight: 500;
+    line-height: 1.14;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    margin: 0 0 1rem;
+  }
+
+  h3 {
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 2rem 0 0.5rem;
+  }
+
+  p { margin: 0 0 1.15rem; text-wrap: pretty; }
+
+  a {
+    color: var(--accent-ink);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  a:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  strong { font-weight: 600; }
+
+  em.lede {
+    font-style: normal;
+    background: var(--accent-soft);
+    padding: 0.1em 0.3em;
+    border-radius: 2px;
+  }
+
+  ul, ol { margin: 0 0 1.15rem; padding-left: 1.25rem; }
+  li { margin-bottom: 0.6rem; }
+  li::marker { color: var(--text-dim); }
+
+  /* ---------- evidence strip ---------- */
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin: 2rem 0 2.25rem;
+  }
+
+  .stat {
+    background: var(--surface);
+    padding: 1.25rem 1.15rem 1.35rem;
+  }
+
+  .stat b {
+    display: block;
+    font-family: var(--display);
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .stat span {
+    display: block;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: var(--text-dim);
+  }
+
+  /* ---------- label panel (guaranteed-analysis device) ---------- */
+
+  .panel {
+    background: var(--surface);
+    border: 2px solid var(--text);
+    margin: 2.25rem 0;
+  }
+
+  .panel__head {
+    border-bottom: 2px solid var(--text);
+    padding: 0.85rem 1.35rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .panel__body { padding: 0.5rem 1.35rem 1.35rem; }
+
+  .spec {
+    display: grid;
+    grid-template-columns: minmax(7.5rem, auto) 1fr;
+    gap: 0 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .spec dt {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0.85rem 0 0.85rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .spec dd {
+    margin: 0;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--rule);
+    line-height: 1.5;
+  }
+
+  .spec > :nth-last-child(-n+2) { border-bottom: none; }
+
+  /* ---------- ranked angles ---------- */
+
+  .angle {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 0 1.35rem;
+    padding: 1.6rem 0;
+    border-top: 1px solid var(--rule);
+    align-items: start;
+  }
+
+  .angle__rank {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--surface);
+    background: var(--accent);
+    text-align: center;
+    padding: 0.35rem 0;
+    margin-top: 0.28rem;
+  }
+
+  .angle--weak .angle__rank {
+    background: transparent;
+    color: var(--text-dim);
+    border: 1px solid var(--rule-strong);
+  }
+
+  .angle__title {
+    font-family: var(--display);
+    font-size: 1.375rem;
+    font-weight: 500;
+    line-height: 1.25;
+    margin: 0 0 0.15rem;
+  }
+
+  .angle__verdict {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 0 0 0.6rem;
+  }
+
+  .angle p:last-child { margin-bottom: 0; }
+
+  /* ---------- price ladder ---------- */
+
+  .ladder { margin: 2rem 0 2.25rem; display: grid; gap: 1.1rem; }
+
+  .rung {
+    display: grid;
+    grid-template-columns: minmax(8.5rem, 11rem) 1fr;
+    gap: 0.35rem 1rem;
+    align-items: center;
+  }
+
+  .rung__name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .rung__name small {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .rung__track { display: flex; align-items: center; gap: 0.7rem; }
+
+  .rung__bar {
+    height: 1.5rem;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+  }
+
+  .rung--you .rung__bar {
+    background: var(--alert-soft);
+    border-left-color: var(--alert);
+  }
+
+  .rung__val {
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  /* ---------- callouts ---------- */
+
+  .note {
+    border-left: 3px solid var(--warn);
+    background: var(--warn-soft);
+    padding: 1.2rem 1.35rem;
+    margin: 2rem 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .note--risk {
+    border-left-color: var(--alert);
+    background: var(--alert-soft);
+  }
+
+  .note__label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .note p:last-child { margin-bottom: 0; }
+
+  /* ---------- ordered plan ---------- */
+
+  .plan { list-style: none; padding: 0; margin: 2rem 0 0; counter-reset: step; }
+
+  .plan li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 2.25rem 1fr;
+    gap: 0 1.1rem;
+    padding: 1.15rem 0;
+    border-top: 1px solid var(--rule);
+    margin: 0;
+  }
+
+  .plan li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--accent);
+    padding-top: 0.15rem;
+  }
+
+  .plan b { display: block; font-weight: 600; margin-bottom: 0.2rem; }
+  .plan span { color: var(--text-dim); font-size: 0.9375rem; line-height: 1.55; }
+
+  /* ---------- sources ---------- */
+
+  .sources {
+    margin-top: 4rem;
+    padding-top: 1.75rem;
+    border-top: 2px solid var(--text);
+    font-size: 0.875rem;
+  }
+
+  .sources ol { padding-left: 1.35rem; }
+  .sources li { margin-bottom: 0.45rem; color: var(--text-dim); }
+  .sources a { color: var(--accent-ink); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    a { transition: color 120ms ease; }
+  }
+
+  @media (max-width: 34rem) {
+    .spec { grid-template-columns: 1fr; }
+    .spec dt { border-bottom: none; padding-bottom: 0; }
+    .spec dd { padding-top: 0.2rem; }
+    .rung { grid-template-columns: 1fr; }
+  }
+</style>
+
+<header class="masthead">
+  <p class="kicker">
+    <span>Green Paw Wellness</span>
+    <span>Category angle brief</span>
+    <span>August 2026</span>
+  </p>
+  <h1>The Topper Tax</h1>
+  <p class="standfirst">The honest answer to “does my dog need a multivitamin?” is no. Here is the one fast-growing group for whom it flips to yes — and why powder is the only format that can serve them.</p>
+</header>
+
+<main>
+
+  <section class="col">
+    <p class="eyebrow">The question behind the question</p>
+    <h2>You already sell this product</h2>
+    <p>Before anything else: GPW’s catalog is already eight dogs-and-cats powders between $10.99 and $14.99, and one of them is <strong>Powerful Greens for Dogs and Cats</strong> at $12.99, sold as a superfood multivitamin. Adding “multivitamin powder” to that shelf isn’t an angle. It’s SKU nine.</p>
+    <p>So I answered the question underneath yours: <em class="lede">what job can a powder do that your current line can’t, that the category is structurally bad at, and that gets you out of the $12.99 trap?</em></p>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">The mechanic you’re actually pointing at</p>
+    <h2>Zyn didn’t make better nicotine</h2>
+    <p>Snus already existed and had for a century. Zyn removed the three things that disqualified the category for most people — tobacco, spit, visibility — and in removing them opened it to people who would never have touched the old product. The mechanic isn’t “new format.” It’s <strong>find the objection that keeps people out, and engineer it away.</strong></p>
+    <p>Pet Honesty ran the same play. Their Cat Squeezables line launched in July 2026: eight lickable purées, eighteen months of palatability testing, built explicitly around the biggest barrier in cat wellness — getting a picky cat to take anything at all. They didn’t formulate a better multivitamin. They removed the refusal.</p>
+    <p>Which means the question for GPW is not what flavor or what format. It’s: <strong>what objection currently disqualifies your category, and can you engineer it away?</strong></p>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">The objection</p>
+    <h2>Your category argues against itself</h2>
+    <p>Ask a veterinarian whether a dog on complete-and-balanced AAFCO food needs a multivitamin and the answer is no — and that stacking fat-soluble vitamins on top of an already-complete diet can create imbalances rather than benefits. That is the mainstream clinical position, it’s freely available to any customer who searches, and it is the reason multivitamin buyers churn.</p>
+    <p>Every brand in the category is selling against its own best evidence and papering over it with flavor, format, and “superfood” language. That is not a problem you can flavor your way out of. Pet Honesty’s squeezable solved <em>administration</em>. Nobody has solved <em>justification</em>.</p>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">The gap</p>
+    <h2>One group where the answer flips</h2>
+    <p>There is a fast-growing population of pets for whom a multivitamin has a genuine, mechanical job — and it’s created by the single biggest behavior shift in pet food right now.</p>
+
+    <div class="stats">
+      <div class="stat"><b>25%</b><span>of US dog owners used toppers in 2023, up from 13% in 2019</span></div>
+      <div class="stat"><b>10%</b><span>the calorie ceiling vets set for anything outside the balanced diet</span></div>
+      <div class="stat"><b>94%</b><span>of 1,726 real home-prepared meals fell short of complete nutrition</span></div>
+      <div class="stat"><b>$7.05B</b><span>dog food topper market in 2026, growing 7.5% a year</span></div>
+    </div>
+
+    <p>Toppers count as treats. Veterinary nutritionists endorse the 10% rule as a guardrail: once food from outside the complete diet passes roughly a tenth of daily calories, it dilutes the balanced portion and the ratios the formulator worked out stop holding. Most owners adding a scoop of chicken or a freeze-dried topper four nights a week have never heard this, and are comfortably past 10%.</p>
+    <p>Further along the same behavior, the deficit is documented. A Dog Aging Project analysis of 1,726 home-prepared meals found only 6% potentially complete and 44% outright deficient. UC Davis found 95% of 200 published homemade recipes short on at least one essential nutrient, 83% short on several — commonly choline, vitamin D, zinc, and vitamin E.</p>
+    <p><strong>The fastest-growing feeding behavior in the category is the behavior that manufactures a real nutritional deficit.</strong> And in DTC, nobody owns it. Balance IT is vet-channel, recipe-strict, and clinical in presentation. JustFoodForDogs’ DIY blend and Dr. Harvey’s base mixes serve committed full-time home cooks. The mass-market person who tops kibble a few nights a week — the 25% — has no product built for them.</p>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">The recommendation</p>
+    <h2>Dose to the bowl, not to the dog</h2>
+    <p>Every powder on the market doses on one variable: your pet’s weight. This one doses on two — <strong>weight × how much unbalanced food you added.</strong> A small scoop for a spoonful most nights. A full scoop when half the bowl is fresh. The dose tracks the dilution.</p>
+
+    <div class="panel">
+      <p class="panel__head">Product concept — working spec</p>
+      <div class="panel__body">
+        <dl class="spec">
+          <dt>Working name</dt>
+          <dd>Topper Balance</dd>
+
+          <dt>The one line</dt>
+          <dd>Replaces what your toppers displace.</dd>
+
+          <dt>Job to be done</dt>
+          <dd>Restore the vitamin and mineral load diluted out of the bowl when fresh food, treats, or toppers push past 10% of daily calories.</dd>
+
+          <dt>Dosing</dt>
+          <dd>Two-axis scoop or weight-banded stick: pet weight × topper volume. Chart on pack, calculator on site.</dd>
+
+          <dt>Load profile</dt>
+          <dd>Weighted to the documented gaps — choline, vitamin D, zinc, vitamin E — not a generic broad-spectrum sprinkle.</dd>
+
+          <dt>Hero education</dt>
+          <dd>“Your dog’s topper is a treat.” True, surprising to most owners, and it sells the product by explaining it.</dd>
+
+          <dt>Price</dt>
+          <dd>$34–$44 with subscription. A new tier above the existing catalog, not a repricing of it.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <h3>Why this is an angle and not a feature</h3>
+    <ul>
+      <li><strong>It survives the vet objection.</strong> You are not adding vitamins to an already-complete diet. You’re replacing what the topper pushed out. That’s a mechanism, and mechanisms hold up when a customer searches for a second opinion.</li>
+      <li><strong>Powder is the only format that can do the job.</strong> The dose has to vary meal to meal, and it has to carry real mineral load — calcium, zinc — at levels a soft chew physically cannot hold at a palatable size. Soft chews are roughly 48% of the market and are structurally locked out of this. That is a moat the incumbents’ format can’t cross.</li>
+      <li><strong>You attach to growth instead of fighting for share.</strong> Toppers are a $7.05B market compounding at 7.5%, with freeze-dried at 82.5% of it and growing 12%. Powder itself is the fastest-growing supplement format at 11.2%. You stop competing with Zesty Paws for the word “multivitamin.”</li>
+      <li><strong>Consumption logic makes the subscription honest.</strong> Usage scales with a habit that is itself increasing, so refill timing is real rather than enforced. Worth noting Ruff Greens gets ~$70–80 per 210g on subscription and their BBB file is dominated by forced-phone-call cancellation complaints. Take the price ceiling as proof; don’t take the retention tactics.</li>
+    </ul>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">Alternatives considered</p>
+    <h2>The other three, ranked honestly</h2>
+
+    <div class="angle angle--weak">
+      <span class="angle__rank">02</span>
+      <div>
+        <p class="angle__title">Cats are not small dogs</p>
+        <p class="angle__verdict">Strong — but it indicts your existing catalog</p>
+        <p>Every SKU you sell is “for Dogs and Cats.” That’s a manufacturing convenience, and it is the fastest thing an informed buyer or a vet uses to dismiss a brand, because it isn’t nutritionally defensible. Cats require dietary taurine, preformed vitamin A (they can’t convert plant carotenoids), arachidonic acid, and preformed niacin (they can’t convert tryptophan), plus more arginine and B6. Dogs synthesize all of it. A blend that suits both is a dog formula with a cat on the label.</p>
+        <p>The angle is to split the line and say why out loud. The market supports it: cats are ~$46B of the $156B US pet market against $104B for dogs, but cat products are projected to outgrow dog products across most categories, feline supplement lines at 9.5% CAGR, with cat ownership holding steady while dog ownership declines. Packaged Facts called the US cat supplement market underserved at the 2026 NASC conference. Pet Honesty is acting on exactly this read.</p>
+        <p>The cost is real: this product’s story is “what we currently sell is a compromise.” That’s survivable and frankly a better brand narrative than most repositionings get — but you’d have to commit to migrating the line, not run both stories at once.</p>
+      </div>
+    </div>
+
+    <div class="angle angle--weak">
+      <span class="angle__rank">03</span>
+      <div>
+        <p class="angle__title">Pre-dosed sticks by weight band</p>
+        <p class="angle__verdict">A mechanic, not a position</p>
+        <p>Powder’s real friction isn’t taste, it’s the scoop: imprecise, messy, and correct dose varies by animal. Stick packs fix dosing, fix potency at expiry, and make a powder feel considered rather than bulk. But they add meaningful COGS, and at $12.99 you cannot fund them. Use this as the delivery mechanic for angle 01 or 02 once price has moved — not as the reason someone buys.</p>
+      </div>
+    </div>
+
+    <div class="angle angle--weak">
+      <span class="angle__rank">04</span>
+      <div>
+        <p class="angle__title">Per-lot COAs and heavy-metal transparency</p>
+        <p class="angle__verdict">Build it; don’t lead with it</p>
+        <p>The concern is legitimate — synthetic mineral premixes are a genuine heavy-metal vector, with selenium a known offender — and published per-batch testing is worth doing. But transparency converts someone already considering you. It doesn’t make anyone consider you in the first place. It’s a trust layer under an angle, not an angle.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">The constraint</p>
+    <h2>None of this is real at $12.99</h2>
+    <p>This is the part I’d push back on hardest. $10.99–$14.99 is a private-label price point, and it is the actual thing limiting GPW — more than positioning, more than format.</p>
+
+    <div class="ladder">
+      <div class="rung rung--you">
+        <div class="rung__name">Green Paw Wellness<small>Current catalog</small></div>
+        <div class="rung__track"><div class="rung__bar" style="width: 17%"></div><span class="rung__val">$10.99–$14.99</span></div>
+      </div>
+      <div class="rung">
+        <div class="rung__name">Native Pet<small>Daily multivitamin powder</small></div>
+        <div class="rung__track"><div class="rung__bar" style="width: 40%"></div><span class="rung__val">~$31+</span></div>
+      </div>
+      <div class="rung">
+        <div class="rung__name">Ruff Greens<small>210g, subscription</small></div>
+        <div class="rung__track"><div class="rung__bar" style="width: 100%"></div><span class="rung__val">~$70–80</span></div>
+      </div>
+    </div>
+
+    <p>A veterinary-nutritionist-reviewed formula, NASC membership, per-lot COAs, and stick-pack conversion cannot be funded from a $12.99 SKU. My read: launch this as a separate, higher tier at $34–$44 with subscription and leave the existing catalog where it sits as the entry range. Don’t reprice what’s already selling — build above it.</p>
+
+    <div class="note note--risk">
+      <span class="note__label">Claim risk — settle this before you write copy</span>
+      <p>You cannot say the product “makes homemade food complete and balanced.” That is a food claim, and it moves you out of supplements and into feed regulation: AAFCO complete-and-balanced substantiation plus state-by-state feed registration, with per-state fees and multiple label versions. Balance IT can operate there because it’s built recipe-specific with veterinary nutritionists.</p>
+      <p>Position on offsetting dilution, never on completing a diet. “Replaces what toppers displace” is a different claim from “makes it complete” — and the difference is worth one call with a pet-food regulatory consultant before a single line of copy is written.</p>
+    </div>
+
+    <div class="note">
+      <span class="note__label">Credibility — start it in parallel</span>
+      <p>Get a veterinary nutritionist to sign the formula and the dosing chart, and start NASC Quality Seal membership now rather than after formulation. It’s a multi-month process, and it’s the seal retailers and state regulators actually recognize — the cheapest real credibility available in this category.</p>
+    </div>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">Next 30 days</p>
+    <h2>Validate the cheap things first</h2>
+
+    <ol class="plan">
+      <li><b>Clear the claim.</b><span>One call with a pet-food regulatory consultant on “offsets dilution” wording. This is the only item here that can kill the product after you’ve already paid for it, so it goes first.</span></li>
+      <li><b>Test the hook, not the formula.</b><span>Run “your dog’s topper is a treat” and the 10% rule as cold creative, with your existing Powerful Greens as the offer. If the education doesn’t stop the scroll, the product won’t either — and you’ll know for a few hundred dollars instead of a manufacturing minimum.</span></li>
+      <li><b>Check your own data.</b><span>Pull Shopify: do Powerful Greens buyers skew toward anything that signals fresh feeding? Any signal here is worth more than the market reports, because it’s your customers.</span></li>
+      <li><b>Qualify the formulator.</b><span>Ask contract manufacturers specifically about variable-dose mineral loading and whether they’ll support veterinary nutritionist review. White-label shops say yes to everything — ask for the nutritionist’s name.</span></li>
+      <li><b>Start NASC.</b><span>In parallel with everything above, not after. Formulate last.</span></li>
+    </ol>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">Caveats</p>
+    <h2>What I couldn’t verify</h2>
+    <p>Two gaps worth knowing about before you act on this. <strong>Ahrefs and Semrush both refused</strong> — neither plan includes API/MCP access — so there is no search-volume validation here for topper-related demand versus “dog multivitamin.” That’s the single most valuable next data pull, and it’s the one that would confirm or kill the angle before you spend anything.</p>
+    <p><strong>greenpawwellness.com is blocked by this environment’s network proxy</strong>, so your catalog, pricing, and copy above were reconstructed from search results rather than read off the site. Prices and product names are consistent across several sources but worth a glance to confirm I have them right.</p>
+  </section>
+
+  <section class="col sources">
+    <p class="eyebrow">Sources</p>
+    <ol>
+      <li><a href="https://www.businesswire.com/news/home/20260707075059/en/Pet-Honesty-Fastest-Growing-Cat-Supplement-Brand-in-the-U.S.-Launches-Cat-Squeezables-Bringing-Science-Backed-Wellness-to-a-Format-Cats-Already-Love">Pet Honesty launches Cat Squeezables</a> — Business Wire, July 2026</li>
+      <li><a href="https://www.mordorintelligence.com/industry-reports/pet-dietary-supplements-market">Pet Dietary Supplements Market 2026–2031</a> — Mordor Intelligence (format share, powder CAGR)</li>
+      <li><a href="https://www.mordorintelligence.com/industry-reports/dog-food-topper-market">Dog Food Topper Market</a> — Mordor Intelligence (topper adoption 13%→25%, market size)</li>
+      <li><a href="https://www.thefarmersdog.com/digest/what-is-the-10-percent-rule-for-dog-treats-and-why-is-it-important/">The 10% rule for dog treats</a> — The Farmer’s Dog Digest</li>
+      <li><a href="https://www.petfoodindustry.com/nutrition/research-notes/news/15772556/study-finds-94-of-homemade-dog-diets-lack-complete-nutrition">94% of homemade dog diets lack complete nutrition</a> — Petfood Industry, on the Dog Aging Project analysis</li>
+      <li><a href="https://www.ucdavis.edu/news/homemade-dog-food-recipes-can-be-risky-business-study-finds">Homemade dog food recipes can be risky business</a> — UC Davis</li>
+      <li><a href="https://sites.tufts.edu/petfoodology/2018/12/18/cats-are-not-small-dogs-unique-nutritional-needs-of-cats/">Cats are not small dogs</a> — Tufts Petfoodology</li>
+      <li><a href="https://www.merckvetmanual.com/management-and-nutrition/nutrition-small-animals/nutritional-requirements-of-small-animals">Nutritional requirements of small animals</a> — Merck Veterinary Manual</li>
+      <li><a href="https://www.petfoodindustry.com/pet-supplements-pro/pet-supplements-and-treats-digest/article/15826175/cat-supplement-market-poised-for-growth-as-ownership-trends-shift">Cat supplement market poised for growth</a> — Petfood Industry, on Packaged Facts at NASC 2026</li>
+      <li><a href="https://www.petfoodindustry.com/pet-supplements-pro/nasc-regulatory-update/article/15823044/the-pet-supplement-regulation-landscape-in-2026">The pet supplement regulation landscape in 2026</a> — Petfood Industry / NASC</li>
+      <li><a href="https://www.fda.gov/animal-veterinary/animal-foods-feeds/animal-food-labeling-and-pet-food-claims">Animal food labeling and pet food claims</a> — FDA</li>
+      <li><a href="https://www.petmd.com/dog/general-health/dog-vitamins">Dog vitamins: do dogs need them?</a> — PetMD</li>
+      <li><a href="https://shop.balance.it/products/balance-it-canine">Balance IT Canine</a> — competitive reference</li>
+      <li><a href="https://www.bbb.org/us/tx/floyd/profile/pet-food/ruff-greens-inc-0875-91061016/complaints">Ruff Greens BBB complaints</a> — subscription-practice reference</li>
+      <li><a href="https://solutionspetproducts.com/contamination-of-synthetic-minerals-with-heavy-metals-in-pet-and-agricultural-feed/">Heavy metal contamination in synthetic mineral premixes</a></li>
+    </ol>
+  </section>
+
+</main>
