@@ -1,0 +1,647 @@
+<title>Wormwood Monograph &amp; Claim Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --ground:      #EFF2EC;
+    --surface:     #F8FAF6;
+    --surface-2:   #E5EADF;
+    --ink:         #16211C;
+    --ink-soft:    #4A5A50;
+    --ink-faint:   #74857A;
+    --rule:        #D3DBCE;
+    --rule-strong: #B7C3B0;
+    --accent:      #5E7F3A;
+    --accent-soft: #E2EBD4;
+    --critical:    #A03826;
+    --critical-bg: #F6E2DD;
+    --caution:     #98670F;
+    --caution-bg:  #F6EAD1;
+    --ok:          #2F6B4C;
+    --ok-bg:       #DCEBE1;
+
+    --f-display: "Spectral", "Iowan Old Style", Georgia, serif;
+    --f-body:    "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --f-mono:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --measure: 68ch;
+    --pad: clamp(1.15rem, 4vw, 3rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0F1512;
+      --surface:     #161E1A;
+      --surface-2:   #1E2823;
+      --ink:         #E4EBE1;
+      --ink-soft:    #A3B4A6;
+      --ink-faint:   #7E8F82;
+      --rule:        #2A3830;
+      --rule-strong: #3B4C42;
+      --accent:      #A2C46C;
+      --accent-soft: #26311D;
+      --critical:    #E58C77;
+      --critical-bg: #33201B;
+      --caution:     #DCAE58;
+      --caution-bg:  #322715;
+      --ok:          #74BE97;
+      --ok-bg:       #162D22;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0F1512;
+    --surface:     #161E1A;
+    --surface-2:   #1E2823;
+    --ink:         #E4EBE1;
+    --ink-soft:    #A3B4A6;
+    --ink-faint:   #7E8F82;
+    --rule:        #2A3830;
+    --rule-strong: #3B4C42;
+    --accent:      #A2C46C;
+    --accent-soft: #26311D;
+    --critical:    #E58C77;
+    --critical-bg: #33201B;
+    --caution:     #DCAE58;
+    --caution-bg:  #322715;
+    --ok:          #74BE97;
+    --ok-bg:       #162D22;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0 var(--pad) 5rem;
+  }
+
+  .wrap {
+    max-width: 54rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3.25rem;
+  }
+
+  p, li { max-width: var(--measure); }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    padding-top: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  h1 {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(2.1rem, 6vw, 3.1rem);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    margin: 0;
+    max-width: 20ch;
+  }
+
+  .standfirst {
+    font-family: var(--f-display);
+    font-size: clamp(1.05rem, 2.4vw, 1.24rem);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 56ch;
+  }
+
+  .meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.6rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--f-mono);
+    font-size: 0.73rem;
+    color: var(--ink-faint);
+  }
+  .meta-strip b { color: var(--ink-soft); font-weight: 500; }
+
+  /* ---------- verdict ---------- */
+
+  .verdict {
+    background: var(--surface);
+    border: 1px solid var(--rule-strong);
+    border-left: 4px solid var(--accent);
+    padding: clamp(1.35rem, 3.5vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .verdict h2 {
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+    font-weight: 600;
+  }
+  .verdict p { margin: 0; }
+  .verdict p.lead {
+    font-family: var(--f-display);
+    font-size: clamp(1.15rem, 2.8vw, 1.42rem);
+    line-height: 1.42;
+    color: var(--ink);
+  }
+
+  /* ---------- sections ---------- */
+
+  section { display: flex; flex-direction: column; gap: 1.15rem; }
+
+  .sec-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  h2.sec-title {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 3.8vw, 2rem);
+    line-height: 1.16;
+    letter-spacing: -0.012em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  h3 {
+    font-family: var(--f-body);
+    font-weight: 600;
+    font-size: 1.02rem;
+    letter-spacing: 0.005em;
+    margin: 1.1rem 0 -0.35rem;
+    color: var(--ink);
+  }
+
+  p { margin: 0; }
+
+  ul, ol { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  li::marker { color: var(--ink-faint); }
+
+  strong { font-weight: 600; }
+  em.term { font-style: italic; font-family: var(--f-display); }
+
+  /* ---------- severity chips ---------- */
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-family: var(--f-mono);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.28em 0.6em;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .chip.crit    { background: var(--critical-bg); color: var(--critical); }
+  .chip.caut    { background: var(--caution-bg);  color: var(--caution); }
+  .chip.ok      { background: var(--ok-bg);       color: var(--ok); }
+  .chip.neutral { background: var(--surface-2);   color: var(--ink-soft); }
+
+  /* ---------- findings ---------- */
+
+  .finding {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--rule-strong);
+    padding: 1.15rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .finding.crit { border-left-color: var(--critical); }
+  .finding.caut { border-left-color: var(--caution); }
+  .finding.ok   { border-left-color: var(--ok); }
+
+  .finding-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem 0.85rem;
+  }
+  .finding-head h3 {
+    margin: 0;
+    font-size: 1.06rem;
+    font-weight: 600;
+    max-width: 46ch;
+  }
+
+  .quoted {
+    font-family: var(--f-display);
+    font-style: italic;
+    font-size: 1.02rem;
+    line-height: 1.5;
+    color: var(--ink);
+    border-left: 2px solid var(--rule-strong);
+    padding-left: 0.9rem;
+    max-width: var(--measure);
+  }
+
+  .fix {
+    font-family: var(--f-mono);
+    font-size: 0.85rem;
+    line-height: 1.55;
+    background: var(--accent-soft);
+    color: var(--ink);
+    padding: 0.75rem 0.9rem;
+    border-radius: 2px;
+    max-width: var(--measure);
+  }
+  .fix b {
+    display: block;
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+  }
+
+  /* ---------- tables ---------- */
+
+  .scroller { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 34rem;
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+  }
+  caption {
+    text-align: left;
+    font-family: var(--f-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-bottom: 0.6rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.62rem 0.85rem 0.62rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  thead th {
+    font-family: var(--f-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  td.num { font-family: var(--f-mono); font-size: 0.86rem; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* ---------- callout ---------- */
+
+  .note {
+    background: var(--surface-2);
+    padding: 1rem 1.2rem;
+    border-radius: 2px;
+    font-size: 0.94rem;
+    color: var(--ink-soft);
+    max-width: var(--measure);
+  }
+  .note b { color: var(--ink); }
+
+  /* ---------- checklist ---------- */
+
+  .asks { display: flex; flex-direction: column; gap: 0.85rem; }
+  .ask {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 0.85rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .ask:last-child { border-bottom: none; padding-bottom: 0; }
+  .ask .k {
+    font-family: var(--f-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-top: 0.28em;
+    font-weight: 600;
+  }
+  .ask .v { margin: 0; }
+  .ask .why {
+    grid-column: 2;
+    font-size: 0.88rem;
+    color: var(--ink-faint);
+    margin: 0;
+  }
+
+  /* ---------- sources ---------- */
+
+  .sources { font-size: 0.87rem; }
+  .sources ol { gap: 0.4rem; }
+  .sources li { color: var(--ink-soft); max-width: 74ch; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    line-height: 1.7;
+    color: var(--ink-faint);
+    max-width: 72ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">Green Paw Wellness · Internal review</div>
+    <h1>Wormwood Monograph &amp; Claim Audit</h1>
+    <p class="standfirst">What the evidence actually says about <em class="term">Artemisia absinthium</em> in dogs and cats — and where the real regulatory exposure in the Parasite Cleanse sits, which is not where Google told you to look.</p>
+    <div class="meta-strip">
+      <span><b>Product</b> Parasite Cleanse (capsule)</span>
+      <span><b>Jurisdiction</b> US federal</span>
+      <span><b>Status</b> Draft — pending label data</span>
+      <span><b>Reviewed</b> 27 Aug 2026</span>
+    </div>
+  </header>
+
+  <div class="verdict">
+    <h2>The short answer</h2>
+    <p class="lead">Your formulator is on defensible ground about wormwood. Your <em>copy</em> is not — and the problem is the word “dewormer,” not the herb.</p>
+    <p>Google flattens a dose-and-duration question into a yes/no, and lands on “no.” The regulators who have actually assessed wormwood did not: the European Medicines Agency permits internal human use at up to <strong>3&nbsp;mg thujone per day for a maximum of two weeks</strong>. Your two-week cycling protocol lines up with that almost exactly, which is a good sign your formulator knew the literature.</p>
+    <p>But US law treats pet products very differently from human supplements. There is no DSHEA for animals — a claim that a product affects the structure or function of an animal’s body makes it a <strong>drug</strong>. “Dewormer,” “kills parasites,” and “paralyzes intestinal worms” are drug claims. That, not thujone, is what draws a warning letter.</p>
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">Part I — What is actually true about wormwood</h2>
+    </div>
+
+    <h3>Why the “toxic” listing keeps coming up</h3>
+    <p>The ASPCA lists <em class="term">Artemisia</em> as toxic to dogs, cats and horses. That list answers one question: <em>should a pet be allowed to graze on this plant?</em> It is a poison-control triage tool for uncontrolled ingestion of unknown quantities. It is not a dosing assessment, and the same list carries garlic, aloe and chamomile. Citing it against a weighed, capsuled, cycled preparation is a category error — but it is the first thing a search engine surfaces, which is why you keep running into it.</p>
+
+    <h3>What the regulators who did assess it concluded</h3>
+    <p>The EMA’s herbal committee reviewed <em class="term">A. absinthium</em> herb and set an acceptable intake of 3.0&nbsp;mg thujone/day for a human, capped at two weeks of continuous use. Notably, they set that limit while explicitly judging the underlying toxicology data thin — meaning 3&nbsp;mg/day is a <em>conservative</em> figure with safety margin built in, not a knife-edge threshold. A regulator permitting a substance for internal human use is a materially different fact from “Google says absolutely not.”</p>
+
+    <div class="scroller">
+      <table>
+        <caption>Thujone toxicology — the numbers behind the limits</caption>
+        <thead>
+          <tr><th>Endpoint</th><th>Value</th><th>Source / model</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Accepted human intake</td><td class="num">3.0 mg/day, ≤2 wk</td><td>EMA HMPC, <em class="term">A. absinthium</em> monograph</td></tr>
+          <tr><td>NOEL — mortality &amp; tonic seizures</td><td class="num">12.5 mg/kg/day</td><td>Rat, chronic</td></tr>
+          <tr><td>BMDL<sub>10</sub> — clonic seizures</td><td class="num">11 mg/kg bw/day</td><td>Male rat</td></tr>
+          <tr><td>Lowest dose producing seizures</td><td class="num">100 mg/kg</td><td>Rat, 16-day gavage (3 of 5 females)</td></tr>
+          <tr><td>Mortality, all animals</td><td class="num">50 mg/kg</td><td>Rat, α,β-thujone, longer-term</td></tr>
+          <tr><td>Oral LD<sub>50</sub></td><td class="num">192 mg/kg</td><td>Rat, single dose</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="note"><b>Why this matters to you:</b> dried wormwood <em>herb</em> is roughly 0.05–0.4% thujone by weight; the essential <em>oil</em> is up to 40% thujone. Those differ by two orders of magnitude. Nearly every scary result you will find online involves the oil or absinthe distillate. If your capsule uses milled herb, you are not in the same conversation — but I cannot prove that for you without the numbers in Part V.</p>
+
+    <h3>Does it actually work?</h3>
+    <p>There is real <em>in vivo</em> evidence, not just folklore. In sheep, crude ethanolic <em class="term">A. absinthium</em> extract produced a 90.5% faecal egg count reduction at 2.0&nbsp;g/kg and 82.9% at 1.0&nbsp;g/kg by day 15 — performance comparable to albendazole in that study. Separate work shows activity against <em class="term">Hymenolepis nana</em> benchmarked against praziquantel.</p>
+    <p>Be honest about the other half: several studies found strong <em>in vitro</em> activity that did not carry over <em>in vivo</em> at the doses tested. The literature supports “traditionally used, with supportive animal data.” It does not support “proven to eliminate parasites,” and no amount of field experience converts one into the other in a regulator’s eyes.</p>
+
+    <div class="finding ok">
+      <div class="finding-head">
+        <span class="chip ok">Defensible</span>
+        <h3>Wormwood in a weighed, cycled oral formula for dogs</h3>
+      </div>
+      <p>Supported by a regulatory monograph for human internal use, a wide margin between herb-level thujone exposure and rodent seizure thresholds, and positive <em>in vivo</em> anthelmintic data in ruminants. Your two-week protocol matches the EMA duration cap. Keep the protocol; it is doing real work for you.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">Part II — Your actual safety issue is clove, and it is about cats</h2>
+    </div>
+
+    <p>This is the finding I most want you to sit with, because it inverts the thing you came in worried about. Wormwood is the ingredient you have been defending. Clove is the one that deserves scrutiny — specifically in cats.</p>
+
+    <div class="finding crit">
+      <div class="finding-head">
+        <span class="chip crit">Investigate now</span>
+        <h3>Cats cannot clear eugenol the way dogs can</h3>
+      </div>
+      <p>Cats are deficient in UDP-glucuronosyltransferase, the enzyme most mammals use to conjugate and excrete phenolic compounds. Eugenol is a phenol. Without that pathway it accumulates, and the documented consequences are hepatotoxicity, methaemoglobinaemia and red-cell oxidative injury.</p>
+      <p>Clove bud is roughly 15–20% volatile oil, and that oil is 70–90% eugenol — so milled clove bud is on the order of 10–15% eugenol by weight. This is not an essential-oil-only problem, and it is a dose question you can only answer with your actual per-capsule milligrams.</p>
+      <div class="fix">
+        <b>Action</b>
+        Calculate eugenol mg/kg at your top-of-range cat dose (1 capsule per 20 lb → a 20 lb cat gets a full adult capsule). Take that number to your formulator and to a veterinary toxicologist before you sell another cat unit. If the margin is thin, the fix is a cat-specific SKU or dose, not a disclaimer.
+      </div>
+    </div>
+
+    <div class="finding caut">
+      <div class="finding-head">
+        <span class="chip caut">Verify</span>
+        <h3>Black walnut is the weakest link in the stack</h3>
+      </div>
+      <p>It carries the least supporting evidence of your four actives, and the canine safety literature on it concerns mouldy hulls and tremorgenic mycotoxins. That is a raw-material and supplier-testing question rather than an inherent-toxicity one — but it means your black walnut COA needs to show mycotoxin screening, and your copy should make the smallest claim of any ingredient, not the boldest.</p>
+    </div>
+
+    <p class="note"><b>Framing for your own peace of mind:</b> none of this says your formula is unsafe. It says the risk sits somewhere other than where the internet pointed you, and that a defensible product needs the arithmetic written down. Your formulator’s years of field experience is genuinely meaningful evidence — it is just not <em>documented</em> evidence until someone writes down doses, weights, durations and outcomes.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">Part III — Where the legal trouble actually is</h2>
+    </div>
+
+    <h3>There is no DSHEA for animals</h3>
+    <p>This is the single most misunderstood fact in the pet supplement industry, and it is the one that will bite you. For human supplements, DSHEA lets you make structure/function claims — “supports digestive health” — without pre-approval. <strong>That exemption does not exist for animal products.</strong> FDA’s Center for Veterinary Medicine applies the FD&amp;C Act drug definition directly: anything intended to diagnose, cure, mitigate, treat or prevent disease, <em>or to affect the structure or function of the body</em>, is a drug. An unapproved one, absent an approved NADA, conditional approval or index listing.</p>
+    <p>The informal shelter people used to rely on — Compliance Policy Guide 690.100 on nutritional supplements for companion animals — was <strong>withdrawn on 20 February 2020</strong>. The enforcement discretion it described is gone, and warning letters to pet supplement companies have been climbing since (four in April 2025, four more in November 2024).</p>
+
+    <h3>Claim audit</h3>
+    <p>These lines are drawn from how your product and blog pages are currently indexed by search engines. I could not open greenpawwellness.com from this environment, so <strong>treat every line below as needing verification against your live page</strong> before you act on it.</p>
+
+    <div class="finding crit">
+      <div class="finding-head">
+        <span class="chip crit">Highest exposure</span>
+        <h3>The word “Dewormer” in your page title</h3>
+      </div>
+      <p class="quoted">Dewormer for Dogs | Natural Parasite Cleanse Supplement</p>
+      <p>A dewormer is a drug. The term names an intended therapeutic use against a parasitic infestation, and it sits in your title tag, your H1 and probably your meta description — the three places a reviewer looks first. Everything else on this page is a smaller problem than this.</p>
+      <div class="fix">
+        <b>Direction</b>
+        Move the product’s identity off the disease and onto the composition: a herbal blend, a seasonal routine, a gut-support formula. You will lose the “dewormer” search volume. That is the trade, and it is worth taking deliberately rather than discovering it in a warning letter.
+      </div>
+    </div>
+
+    <div class="finding crit">
+      <div class="finding-head">
+        <span class="chip crit">Near-verbatim match</span>
+        <h3>“Paralyzes intestinal worms so they release their grip on the gut wall”</h3>
+      </div>
+      <p>FDA has already cited nearly this exact construction. In a warning letter over praziquantel tapeworm capsules, the flagged language was that the product “paralyzes the tapeworms forcing them to release themselves from the digestive tract.” Your sentence is a paraphrase of a claim that is already on the record as a drug claim.</p>
+      <div class="fix">
+        <b>Direction</b>
+        Cut the mechanism-of-action sentence entirely. Describing <em>how</em> an ingredient acts on a parasite is the clearest possible statement of therapeutic intent — mechanism copy is where enforcement reads intent most easily.
+      </div>
+    </div>
+
+    <div class="finding crit">
+      <div class="finding-head">
+        <span class="chip crit">Efficacy claim</span>
+        <h3>The lifecycle-coverage framing</h3>
+      </div>
+      <p class="quoted">Clove on eggs, wormwood on adults, black walnut on motility and protozoa — together they cover the parasite’s full timeline.</p>
+      <p>Two separate problems. It is a therapeutic efficacy claim (drug). And it is a specific, testable assertion that the FTC would require <em>competent and reliable scientific evidence</em> to back — its 2023 Health Products Compliance Guidance points to controlled trials for claims of this specificity. Sheep FECR data and your formulator’s field observations will not meet that bar for a stage-by-stage coverage claim in dogs and cats.</p>
+      <div class="fix">
+        <b>Direction</b>
+        This is your best content, so do not delete it — reframe it as traditional-use education rather than product performance. Write about what herbalists have historically used each plant for, keep it on the blog, and stop it from reading as a specification of what your capsule does.
+      </div>
+    </div>
+
+    <div class="finding caut">
+      <div class="finding-head">
+        <span class="chip caut">Rephrase</span>
+        <h3>“Removal of unwanted organisms”</h3>
+      </div>
+      <p>The euphemism does not help. “Unwanted organisms” in a product named Parasite Cleanse reads as “parasites” to any reviewer, and coy phrasing tends to read as consciousness of the problem rather than as a defence.</p>
+    </div>
+
+    <div class="finding caut">
+      <div class="finding-head">
+        <span class="chip caut">Two more things to check</span>
+        <h3>Testimonials and the veterinary disclaimer</h3>
+      </div>
+      <p>Under FTC rules a testimonial conveys the same claim as if you made it yourself — a review saying “passed worms in three days” is an efficacy claim you now have to substantiate. Audit what your review widget is displaying and be prepared to curate it.</p>
+      <p>Separately, “consult your veterinarian before use” is good practice and worth keeping, but it does not convert a drug claim into a legal one. No disclaimer does. Its value is safety, not shelter.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">Part IV — One factual error to fix regardless</h2>
+    </div>
+
+    <div class="finding caut">
+      <div class="finding-head">
+        <span class="chip caut">Correct this</span>
+        <h3>Cucurbitacin is not an amino acid</h3>
+      </div>
+      <p class="quoted">Pumpkin seed contains cucurbitacin, an amino acid that paralyzes intestinal worms…</p>
+      <p>Two compounds are being conflated. <strong>Cucurbitacin B</strong> is a triterpenoid. <strong>Cucurbitin</strong> — the one you almost certainly mean — is the non-proteic amino acid (3-amino-pyrrolidine-3-carboxylic acid) found in the seed and studied as the anthelmintic principle. The names differ by three letters and the chemistry is unrelated.</p>
+      <p>Worth fixing quickly and quietly. A visible chemistry error in your ingredient education is exactly the detail a skeptical vet, a competitor, or a regulator uses to argue the whole formulation rationale is unserious — and it undercuts the very credibility you are trying to build against the Google narrative.</p>
+      <div class="fix">
+        <b>Note</b>
+        Fix the chemistry, but drop “paralyzes intestinal worms” in the same edit rather than correcting the compound name inside a sentence that is itself a drug claim.
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">Part V — What I need to finish this</h2>
+    </div>
+    <p>Everything above is solid on the science and the regulatory framework. The claim audit is built on search-indexed copy, and the toxicology cannot be closed out without your label data. Six things:</p>
+
+    <div class="asks">
+      <div class="ask">
+        <span class="k">01</span>
+        <p class="v">Milligrams per capsule of each active — wormwood, black walnut, clove, pumpkin seed.</p>
+        <p class="why">Without this, no exposure margin can be calculated for either thujone or eugenol.</p>
+      </div>
+      <div class="ask">
+        <span class="k">02</span>
+        <p class="v">For each: milled herb or extract? If extract, the ratio and solvent.</p>
+        <p class="why">A 10:1 extract changes the thujone and eugenol arithmetic by an order of magnitude.</p>
+      </div>
+      <div class="ask">
+        <span class="k">03</span>
+        <p class="v">A certificate of analysis showing thujone content, plus mycotoxin screening on the black walnut.</p>
+        <p class="why">This is the document that converts “my formulator tested it” into evidence someone else can check.</p>
+      </div>
+      <div class="ask">
+        <span class="k">04</span>
+        <p class="v">The full live copy — product page, both blog posts, label, and any ad or email copy.</p>
+        <p class="why">Your site is blocked from this environment. Paste it and I will audit line by line rather than from search snippets.</p>
+      </div>
+      <div class="ask">
+        <span class="k">05</span>
+        <p class="v">Whatever your formulator recorded from the years of dog and cat testing.</p>
+        <p class="why">Weights, doses, durations, adverse events, outcomes. This is your strongest asset and it is worth nothing undocumented.</p>
+      </div>
+      <div class="ask">
+        <span class="k">06</span>
+        <p class="v">Where you ship, and whether you are an NASC member.</p>
+        <p class="why">EU, UK, Canada and Australia each apply different rules. NASC membership brings a labelling framework worth adopting either way.</p>
+      </div>
+    </div>
+
+    <p class="note"><b>One thing outside my lane.</b> I can map the terrain and I am confident in the analysis above, but I am not your lawyer. A product whose name states a disease condition is a specific enough exposure that it is worth an hour with an attorney who does FDA/CVM work — before you rewrite, so the rewrite only happens once.</p>
+  </section>
+
+  <section class="sources">
+    <div class="sec-head">
+      <h2 class="sec-title">Sources</h2>
+    </div>
+    <ol>
+      <li>FDA — <a href="https://www.fda.gov/animal-veterinary/compliance-enforcement/unapproved-animal-drugs">Unapproved Animal Drugs</a>, and <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/cpg-sec-690100-nutritional-supplements-companion-animals-withdrawn-2202020">CPG Sec. 690.100, Nutritional Supplements for Companion Animals (withdrawn 20 Feb 2020)</a>.</li>
+      <li>Burdock Group — <a href="https://www.burdockgroup.com/dietary-supplements-for-pets-are-they-drugs">Dietary Supplements for Pets: Are They Drugs?</a> on why DSHEA structure/function claims do not carry over to animal products.</li>
+      <li>NASC — <a href="https://www.nasc.cc/members-health/fda-warning-letters-sent-to-pet-product-companies/">FDA Warning Letters Sent to Pet Product Companies</a>, including the praziquantel “paralyzes the tapeworms” citation.</li>
+      <li>FTC — <a href="https://www.ftc.gov/business-guidance/resources/health-products-compliance-guidance">Health Products Compliance Guidance</a> (2023), on the competent-and-reliable-scientific-evidence standard.</li>
+      <li>EMA HMPC — <a href="https://www.ema.europa.eu/en/documents/herbal-report/addendum-assessment-report-artemisia-absinthium-l-herba_en.pdf">Addendum to the assessment report on <em class="term">Artemisia absinthium</em> L., herba</a>, and the <a href="https://www.ema.europa.eu/en/documents/public-statement/draft-public-statement-use-herbal-medicinal-products-containing-thujone_en.pdf">public statement on thujone-containing herbal medicinal products</a>.</li>
+      <li>NTP — <a href="https://ntp.niehs.nih.gov/publications/reports/tr/tr570">Technical Report TR-570, α,β-Thujone</a>, for NOEL, BMDL and seizure data.</li>
+      <li>Lachenmeier &amp; Uebelacker — <a href="https://www.sciencedirect.com/science/article/abs/pii/S0273230012002218">Thujone and thujone-containing herbal medicinal and botanical products: toxicological assessment</a>.</li>
+      <li>Tariq et al. — <a href="https://pubmed.ncbi.nlm.nih.gov/19070963/">Anthelmintic activity of extracts of <em class="term">Artemisia absinthium</em> against ovine nematodes</a>, and <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7070545/">Wormwood and mallow against <em class="term">Haemonchus contortus</em> in sheep</a>.</li>
+      <li>Cambridge — <a href="https://www.cambridge.org/core/journals/journal-of-helminthology/article/therapeutic-efficacy-of-artemisia-absinthium-against-hymenolepis-nana-in-vitro-and-in-vivo-studies-in-comparison-with-the-anthelmintic-praziquantel/D5D84BB8E7A01A7CE1D952A7F1C2B398">Therapeutic efficacy of <em class="term">A. absinthium</em> against <em class="term">Hymenolepis nana</em> vs praziquantel</a>.</li>
+      <li>Grzybek et al. — <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5037735/">Anthelmintic activity and composition of pumpkin seed extracts</a>, on cucurbitin and cucurbitacin B.</li>
+      <li>NIH/PMC — <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9599722/">Pulegone and eugenol oral supplementation in laboratory animals: acute and chronic studies</a>.</li>
+    </ol>
+  </section>
+
+  <footer>
+    Prepared for Green Paw Wellness · 27 August 2026 · Draft pending label data.<br>
+    This is a research and compliance-orientation document, not legal or veterinary advice. Claim lines quoted in Part III were reconstructed from search-engine indexing of greenpawwellness.com, which was unreachable from this environment, and must be verified against the live pages before any edit is made.
+  </footer>
+
+</div>
