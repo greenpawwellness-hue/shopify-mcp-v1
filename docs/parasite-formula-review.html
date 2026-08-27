@@ -1,4 +1,4 @@
-<title>Wormwood Monograph &amp; Claim Audit</title>
+<title>Parasite Cleanse Dose Model</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
@@ -296,6 +296,30 @@
     font-weight: 600;
   }
 
+  /* ---------- equation ---------- */
+
+  .eq {
+    font-family: var(--f-mono);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 1rem 1.2rem;
+    border-radius: 2px;
+    overflow-x: auto;
+    max-width: var(--measure);
+  }
+  .eq .lbl {
+    display: block;
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  .eq b { color: var(--accent); font-weight: 600; }
+
   /* ---------- tables ---------- */
 
   .scroller { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -333,6 +357,8 @@
   }
   td.num { font-family: var(--f-mono); font-size: 0.86rem; white-space: nowrap; }
   tbody tr:last-child td { border-bottom: none; }
+  tr.hi td { background: var(--critical-bg); }
+  tr.go td { background: var(--ok-bg); }
 
   /* ---------- callout ---------- */
 
@@ -398,226 +424,308 @@
 <div class="wrap">
 
   <header class="masthead">
-    <div class="eyebrow">Green Paw Wellness · Internal review</div>
-    <h1>Wormwood Monograph &amp; Claim Audit</h1>
-    <p class="standfirst">What the evidence actually says about <em class="term">Artemisia absinthium</em> in dogs and cats — and where the real regulatory exposure in the Parasite Cleanse sits, which is not where Google told you to look.</p>
+    <div class="eyebrow">Green Paw Wellness · Formulation review</div>
+    <h1>Parasite Cleanse Dose Model</h1>
+    <p class="standfirst">Working the exposure arithmetic behind <em class="term">1 capsule per 20 lb</em> — where the margin sits, where it thins, and the one specification that decides whether any of it holds.</p>
     <div class="meta-strip">
-      <span><b>Product</b> Parasite Cleanse (capsule)</span>
-      <span><b>Jurisdiction</b> US federal</span>
-      <span><b>Status</b> Draft — pending label data</span>
-      <span><b>Reviewed</b> 27 Aug 2026</span>
+      <span><b>Basis</b> 1 cap / 20 lb / day</span>
+      <span><b>Actives</b> Wormwood · Black walnut · Clove · Pumpkin seed</span>
+      <span><b>Status</b> Model built, awaiting mg/capsule</span>
+      <span><b>Revised</b> 27 Aug 2026</span>
     </div>
   </header>
 
   <div class="verdict">
     <h2>The short answer</h2>
-    <p class="lead">Your formulator is on defensible ground about wormwood. Your <em>copy</em> is not — and the problem is the word “dewormer,” not the herb.</p>
-    <p>Google flattens a dose-and-duration question into a yes/no, and lands on “no.” The regulators who have actually assessed wormwood did not: the European Medicines Agency permits internal human use at up to <strong>3&nbsp;mg thujone per day for a maximum of two weeks</strong>. Your two-week cycling protocol lines up with that almost exactly, which is a good sign your formulator knew the literature.</p>
-    <p>But US law treats pet products very differently from human supplements. There is no DSHEA for animals — a claim that a product affects the structure or function of an animal’s body makes it a <strong>drug</strong>. “Dewormer,” “kills parasites,” and “paralyzes intestinal worms” are drug claims. That, not thujone, is what draws a warning letter.</p>
+    <p class="lead">Your protocol is better designed than you probably realise. The exposure risk isn’t in the dose you wrote — it’s in the raw material you can’t see.</p>
+    <p>Three things in your dosing are quietly correct: the two-week duration, the AM/PM split, and per-weight scaling. Each maps onto something real in the toxicology. Your formulator built in the right controls.</p>
+    <p>But wormwood’s thujone content varies across roughly a <strong>500-fold range</strong> depending on chemotype and origin. That means “200 mg of wormwood herb” is not a dose. Two batches with identical labels can differ by two orders of magnitude in the only compound that matters. <strong>Until you specify assayed thujone rather than herb weight, you don’t have a dose — you have a weight.</strong> That is the finding.</p>
+    <p>The second issue is species: the clove load that suits a dog is roughly ten times what a cat should get. One capsule cannot serve both well.</p>
   </div>
 
   <section>
     <div class="sec-head">
-      <h2 class="sec-title">Part I — What is actually true about wormwood</h2>
+      <h2 class="sec-title">Part I — The model</h2>
     </div>
 
-    <h3>Why the “toxic” listing keeps coming up</h3>
-    <p>The ASPCA lists <em class="term">Artemisia</em> as toxic to dogs, cats and horses. That list answers one question: <em>should a pet be allowed to graze on this plant?</em> It is a poison-control triage tool for uncontrolled ingestion of unknown quantities. It is not a dosing assessment, and the same list carries garlic, aloe and chamomile. Citing it against a weighed, capsuled, cycled preparation is a category error — but it is the first thing a search engine surfaces, which is why you keep running into it.</p>
+    <p>Everything below runs off one conversion. Your label dose is 1 capsule per 20 lb, and 20 lb is 9.07 kg, so the per-kilogram exposure of any ingredient is simply its per-capsule mass divided by 9.07.</p>
 
-    <h3>What the regulators who did assess it concluded</h3>
-    <p>The EMA’s herbal committee reviewed <em class="term">A. absinthium</em> herb and set an acceptable intake of 3.0&nbsp;mg thujone/day for a human, capped at two weeks of continuous use. Notably, they set that limit while explicitly judging the underlying toxicology data thin — meaning 3&nbsp;mg/day is a <em>conservative</em> figure with safety margin built in, not a knife-edge threshold. A regulator permitting a substance for internal human use is a materially different fact from “Google says absolutely not.”</p>
+    <div class="eq">
+      <span class="lbl">Exposure at label dose</span>
+      mg/kg/day &nbsp;=&nbsp; <b>(mg per capsule)</b> ÷ 9.07
+      <br><br>
+      <span class="lbl" style="margin-top:0.5rem">Inverted — the ceiling you can formulate to</span>
+      max mg per capsule &nbsp;=&nbsp; <b>(target mg/kg/day)</b> × 9.07
+    </div>
+
+    <p>Useful property: under linear per-weight dosing the mg/kg figure is <em>constant across body weights</em>. A 10 lb dog and an 80 lb dog get the same exposure per kilogram. So a single per-capsule ceiling governs the whole range — which is what makes the model tractable. (The exception is at the top of the weight range; see Part IV.)</p>
+
+    <p>That leaves two ceilings to set: one for thujone, one for eugenol.</p>
+
+    <h3>Ceiling 1 — thujone, from wormwood</h3>
+    <p>The EMA accepts 3.0 mg thujone/day for a human for up to two weeks. Across a 70 kg adult that is <strong>0.043 mg/kg/day</strong>. Cross-checking against the rodent data: the benchmark dose lower limit for clonic seizures is 11 mg/kg bw/day, so the EMA figure carries a safety margin of roughly 250×. It is a conservative number, and in the absence of canine-specific data it is the most defensible target you have.</p>
+
+    <div class="eq">
+      0.043 mg/kg/day × 9.07 kg &nbsp;=&nbsp; <b>≈ 0.39 mg thujone per capsule</b>
+      <br>
+      Formulate to <b>0.35 mg</b> and you hold a working margin.
+    </div>
+
+    <h3>Ceiling 2 — eugenol, from clove</h3>
+    <p>The WHO acceptable daily intake for eugenol is 2.5 mg/kg bw/day, which for a dog gives 2.5 × 9.07 = <strong>≈ 22.7 mg eugenol per capsule</strong>. Clove bud powder runs roughly 10–15% eugenol by weight, so that ceiling permits somewhere around <strong>150–225 mg of clove powder</strong> per capsule. For dogs, clove is comfortable.</p>
+    <p>For cats it is a different calculation entirely, and Part III deals with it separately.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">Part II — Why herb weight is not a dose</h2>
+    </div>
+
+    <p>This is the headline finding, and it is the one worth taking to your formulator this week.</p>
+
+    <p>Thujone in dried wormwood herb is the product of two variables, each of which swings widely. Essential oil yield ranges from <strong>0.2% to 1.5%</strong> of the dried herb. Thujone as a fraction of that oil ranges from near-nothing to <strong>65%</strong> — β-thujone alone has been measured from 0.1% to 64.6% across samples. At least six chemotypes of European <em class="term">A. absinthium</em> are recognised, and only some of them are thujone chemotypes at all; others are dominated by sabinyl acetate or epoxyocimene and are effectively thujone-free.</p>
+
+    <p>Multiply the two ranges and dried wormwood herb spans roughly <strong>0.002% to 1.0% thujone</strong> — a 500-fold spread between the extremes.</p>
 
     <div class="scroller">
       <table>
-        <caption>Thujone toxicology — the numbers behind the limits</caption>
+        <caption>What 175 mg of “wormwood herb” actually delivers</caption>
         <thead>
-          <tr><th>Endpoint</th><th>Value</th><th>Source / model</th></tr>
+          <tr><th>Material</th><th>Thujone in herb</th><th>Per capsule</th><th>vs. 0.35 mg ceiling</th></tr>
         </thead>
         <tbody>
-          <tr><td>Accepted human intake</td><td class="num">3.0 mg/day, ≤2 wk</td><td>EMA HMPC, <em class="term">A. absinthium</em> monograph</td></tr>
-          <tr><td>NOEL — mortality &amp; tonic seizures</td><td class="num">12.5 mg/kg/day</td><td>Rat, chronic</td></tr>
-          <tr><td>BMDL<sub>10</sub> — clonic seizures</td><td class="num">11 mg/kg bw/day</td><td>Male rat</td></tr>
-          <tr><td>Lowest dose producing seizures</td><td class="num">100 mg/kg</td><td>Rat, 16-day gavage (3 of 5 females)</td></tr>
-          <tr><td>Mortality, all animals</td><td class="num">50 mg/kg</td><td>Rat, α,β-thujone, longer-term</td></tr>
-          <tr><td>Oral LD<sub>50</sub></td><td class="num">192 mg/kg</td><td>Rat, single dose</td></tr>
+          <tr><td>Low chemotype (sabinyl acetate)</td><td class="num">0.01%</td><td class="num">0.018 mg</td><td>5% of ceiling — inert</td></tr>
+          <tr><td>Low-mid</td><td class="num">0.05%</td><td class="num">0.09 mg</td><td>25% of ceiling</td></tr>
+          <tr class="go"><td>Mid (typical commercial)</td><td class="num">0.20%</td><td class="num">0.35 mg</td><td>On target</td></tr>
+          <tr class="hi"><td>High</td><td class="num">0.50%</td><td class="num">0.88 mg</td><td>2.5× over</td></tr>
+          <tr class="hi"><td>High β-thujone chemotype</td><td class="num">1.00%</td><td class="num">1.75 mg</td><td>5× over</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p class="note"><b>Why this matters to you:</b> dried wormwood <em>herb</em> is roughly 0.05–0.4% thujone by weight; the essential <em>oil</em> is up to 40% thujone. Those differ by two orders of magnitude. Nearly every scary result you will find online involves the oil or absinthe distillate. If your capsule uses milled herb, you are not in the same conversation — but I cannot prove that for you without the numbers in Part V.</p>
-
-    <h3>Does it actually work?</h3>
-    <p>There is real <em>in vivo</em> evidence, not just folklore. In sheep, crude ethanolic <em class="term">A. absinthium</em> extract produced a 90.5% faecal egg count reduction at 2.0&nbsp;g/kg and 82.9% at 1.0&nbsp;g/kg by day 15 — performance comparable to albendazole in that study. Separate work shows activity against <em class="term">Hymenolepis nana</em> benchmarked against praziquantel.</p>
-    <p>Be honest about the other half: several studies found strong <em>in vitro</em> activity that did not carry over <em>in vivo</em> at the doses tested. The literature supports “traditionally used, with supportive animal data.” It does not support “proven to eliminate parasites,” and no amount of field experience converts one into the other in a regulator’s eyes.</p>
-
-    <div class="finding ok">
+    <div class="finding crit">
       <div class="finding-head">
-        <span class="chip ok">Defensible</span>
-        <h3>Wormwood in a weighed, cycled oral formula for dogs</h3>
+        <span class="chip crit">Specification gap</span>
+        <h3>Same label, same weight, 100× difference in the active</h3>
       </div>
-      <p>Supported by a regulatory monograph for human internal use, a wide margin between herb-level thujone exposure and rodent seizure thresholds, and positive <em>in vivo</em> anthelmintic data in ruminants. Your two-week protocol matches the EMA duration cap. Keep the protocol; it is doing real work for you.</p>
+      <p>Both failure directions are real, and they fail differently. A low-thujone chemotype gives you a product that is safe and inert — customers see nothing, and your field results become unreproducible. A high-thujone chemotype puts you several-fold over the only regulatory reference point that supports the ingredient at all.</p>
+      <p>Neither is visible on a certificate that only says “<em>Artemisia absinthium</em>, aerial parts, 175 mg.” And batch-to-batch drift in a botanical is not a hypothetical — it is the default.</p>
+      <div class="fix">
+        <b>Action</b>
+        Add a thujone assay (GC-MS) to your incoming raw material spec, with a defined range — not just a maximum. State it on the COA per batch. Then dose to assayed thujone and let the herb weight float to hit it.
+        <br><br>
+        This is also the single best answer to anyone who challenges the ingredient: “we assay every batch and hold to the EMA reference” is a completely different conversation from “our formulator has used it for years.”
+      </div>
+    </div>
+
+    <p class="note"><b>This may also explain your field data.</b> If your formulator saw strong results in some periods and weaker ones in others across years of testing, uncontrolled chemotype variation is a more likely explanation than anything about the animals. Specifying thujone would make the formula reproducible as well as defensible — which is worth more to you than the compliance argument.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">Part III — Dogs and cats need different capsules</h2>
+    </div>
+
+    <p>Cats are missing the pathway most mammals use to clear phenolic compounds. They are deficient in UDP-glucuronosyltransferase, and eugenol is a phenol. That much is well established and widely cited.</p>
+
+    <p>The mechanistic detail is what makes this concrete. Eugenol at doses up to 600 mg/kg produced <em>no</em> hepatotoxicity in mice — but mice whose glutathione synthesis had been blocked developed liver damage at 400–600 mg/kg. Glutathione is the backstop. And cats are notoriously glutathione-limited; it is precisely why paracetamol is lethal to them at doses a dog shrugs off.</p>
+
+    <p>So the mouse glutathione-depletion model is, functionally, a model of the cat. A cat meets eugenol with both the primary clearance pathway impaired and the backup reserve thin.</p>
+
+    <p><strong>There is no established feline ADI for eugenol.</strong> I looked; the veterinary literature does not provide one. That absence is itself the finding — you cannot look this number up, so you have to build margin instead. Applying a further 10× factor to the human ADI on the basis of the two compounding deficits gives 0.25 mg/kg/day, which is a judgement call and should be labelled as one, but it is the direction any toxicologist would go.</p>
+
+    <div class="scroller">
+      <table>
+        <caption>Clove ceiling by species, at 1 capsule per 20 lb</caption>
+        <thead>
+          <tr><th>Species</th><th>Eugenol target</th><th>Eugenol / capsule</th><th>Clove powder / capsule</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Dog — WHO ADI applied directly</td><td class="num">2.5 mg/kg/day</td><td class="num">22.7 mg</td><td class="num">150–225 mg</td></tr>
+          <tr class="hi"><td>Cat — 10× factor for UGT + GSH deficit</td><td class="num">0.25 mg/kg/day</td><td class="num">2.3 mg</td><td class="num">15–23 mg</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="finding crit">
+      <div class="finding-head">
+        <span class="chip crit">Formulation fork</span>
+        <h3>One capsule cannot be right for both species</h3>
+      </div>
+      <p>The gap is about tenfold, and it is not a gap a disclaimer closes. You have three options and they are all legitimate:</p>
+      <ul>
+        <li><strong>Formulate to the cat ceiling.</strong> One SKU, ~20 mg clove. Safe across both species, but clove becomes close to a token inclusion for dogs.</li>
+        <li><strong>Split the line.</strong> A dog formula and a cat formula. More SKUs and more inventory, but each is dosed properly and it becomes a genuine selling point rather than a compromise.</li>
+        <li><strong>Drop clove from the cat version.</strong> Keep pumpkin seed and wormwood, which do not carry the same phenolic problem. Cleanest option if the SKU count worries you.</li>
+      </ul>
+      <div class="fix">
+        <b>What decides it</b>
+        Your current clove milligrams. If they already sit near 20 mg, you are fine as-is and this is a labelling clarification. If they sit near 150 mg, dog-appropriate, then cats on a full dose are the exposure to address first — ahead of anything in this document.
+      </div>
+    </div>
+
+    <div class="finding caut">
+      <div class="finding-head">
+        <span class="chip caut">Practical</span>
+        <h3>Most cats need a fraction of a capsule, and fractions don’t work</h3>
+      </div>
+      <p>A typical cat is 8–11 lb, so the label calls for 0.4–0.55 of a capsule. In practice that means the owner opening a capsule and eyeballing half the powder, which realistically lands anywhere within ±50%. The species with the narrowest margin is the one getting the least precise dose.</p>
+      <p>A lower-strength cat capsule dosed at one whole unit per cat solves the accuracy problem and the clove problem in the same move.</p>
     </div>
   </section>
 
   <section>
     <div class="sec-head">
-      <h2 class="sec-title">Part II — Your actual safety issue is clove, and it is about cats</h2>
+      <h2 class="sec-title">Part IV — Scaling, duration, and the parts you got right</h2>
     </div>
 
-    <p>This is the finding I most want you to sit with, because it inverts the thing you came in worried about. Wormwood is the ingredient you have been defending. Clove is the one that deserves scrutiny — specifically in cats.</p>
-
-    <div class="finding crit">
+    <div class="finding ok">
       <div class="finding-head">
-        <span class="chip crit">Investigate now</span>
-        <h3>Cats cannot clear eugenol the way dogs can</h3>
+        <span class="chip ok">Keep</span>
+        <h3>The AM/PM split is doing more work than you think</h3>
       </div>
-      <p>Cats are deficient in UDP-glucuronosyltransferase, the enzyme most mammals use to conjugate and excrete phenolic compounds. Eugenol is a phenol. Without that pathway it accumulates, and the documented consequences are hepatotoxicity, methaemoglobinaemia and red-cell oxidative injury.</p>
-      <p>Clove bud is roughly 15–20% volatile oil, and that oil is 70–90% eugenol — so milled clove bud is on the order of 10–15% eugenol by weight. This is not an essential-oil-only problem, and it is a dose question you can only answer with your actual per-capsule milligrams.</p>
+      <p>Thujone acts as a GABA<sub>A</sub> antagonist, and antagonist neurotoxicity is driven by peak plasma concentration rather than total daily exposure. Splitting a multi-capsule dose across morning and evening lowers C<sub>max</sub> directly. Whether or not it was chosen for that reason, it is pharmacologically the right instruction, and it should be a firm directive rather than the softer “if more than 1 capsule/day.”</p>
+    </div>
+
+    <div class="finding caut">
+      <div class="finding-head">
+        <span class="chip caut">Rewrite</span>
+        <h3>“Best used in 2-week intervals” is ambiguous, and it’s load-bearing</h3>
+      </div>
+      <p>Your entire safety case for wormwood rests on the EMA’s two-week duration cap. That cap means <em>fourteen days of continuous use, then stop</em>. But “used in 2-week intervals” can just as easily be read as “every two weeks, ongoing” — which is continuous use, and which dissolves the one control the formula most depends on.</p>
+      <p>A customer reading it the wrong way is not misusing your product. They are following your label.</p>
       <div class="fix">
-        <b>Action</b>
-        Calculate eugenol mg/kg at your top-of-range cat dose (1 capsule per 20 lb → a 20 lb cat gets a full adult capsule). Take that number to your formulator and to a veterinary toxicologist before you sell another cat unit. If the margin is thin, the fix is a cat-specific SKU or dose, not a disclaimer.
+        <b>Direction</b>
+        State the cycle explicitly and unambiguously: 14 days on, then a minimum of 14 days off. Give the maximum number of cycles per year. This costs you nothing, and it converts your strongest safety argument from implied to documented.
       </div>
     </div>
+
+    <div class="finding caut">
+      <div class="finding-head">
+        <span class="chip caut">Cap it</span>
+        <h3>Linear scaling over-doses large dogs</h3>
+      </div>
+      <p>Metabolic clearance scales to roughly body weight<sup>0.75</sup>, not body weight<sup>1.0</sup>. Linear per-pound dosing therefore tracks metabolism correctly at your 20 lb reference point and drifts high above it — by a factor of (BW ÷ 9.07)<sup>0.25</sup>.</p>
+      <div class="scroller">
+        <table>
+          <caption>Linear dose vs. metabolically scaled dose</caption>
+          <thead>
+            <tr><th>Dog</th><th>Label says</th><th>Allometric equivalent</th><th>Over-exposure</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>20 lb — reference</td><td class="num">1.0 cap</td><td class="num">1.0 cap</td><td class="num">—</td></tr>
+            <tr><td>50 lb</td><td class="num">2.5 caps</td><td class="num">2.0 caps</td><td class="num">+25%</td></tr>
+            <tr><td>100 lb</td><td class="num">5.0 caps</td><td class="num">3.3 caps</td><td class="num">+50%</td></tr>
+            <tr class="hi"><td>150 lb</td><td class="num">7.5 caps</td><td class="num">4.5 caps</td><td class="num">+66%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Given the ~250× margin built into the thujone target, a mastiff at +66% is not in danger. But it is the direction margin erodes, and seven and a half capsules a day is a compliance problem before it is a toxicology one.</p>
+      <div class="fix">
+        <b>Direction</b>
+        Cap the daily dose — 4 capsules regardless of body weight is a defensible ceiling — or move to weight bands with a deliberately flattened top end. Small dogs are unaffected: linear dosing under-shoots below 20 lb, which is the safe direction.
+      </div>
+    </div>
+
+    <div class="finding ok">
+      <div class="finding-head">
+        <span class="chip ok">No concern</span>
+        <h3>Pumpkin seed is your free ingredient</h3>
+      </div>
+      <p>Cucurbitin, the studied anthelmintic principle, is reported to have essentially no side effects, with only weak toxicity described in dogs and humans. There is no meaningful exposure ceiling to work against here. If you need to reduce total actives to bring thujone or eugenol into range, pumpkin seed is what you increase to hold the fill volume.</p>
+      <p class="note" style="margin-top:0.4rem"><b>Fix the chemistry while you are in there:</b> the compound is <strong>cucurbitin</strong>, a non-proteic amino acid (3-amino-pyrrolidine-3-carboxylic acid). <strong>Cucurbitacin B</strong> is a different molecule — a triterpenoid. Your copy currently calls cucurbitacin an amino acid, which merges the two.</p>
+    </div>
+
+    <div class="finding caut">
+      <div class="finding-head">
+        <span class="chip caut">Supplier control</span>
+        <h3>Black walnut needs a mycotoxin screen, not a dose ceiling</h3>
+      </div>
+      <p>Black walnut has no established exposure limit to formulate against, and the canine safety literature concerns mouldy hulls and tremorgenic mycotoxins rather than the botanical itself. So this is a raw-material question: your black walnut COA should show mycotoxin screening per batch. It also carries the thinnest efficacy evidence of your four actives, which is worth knowing when you decide how much weight it gets in the formula.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">Part V — On wormwood itself</h2>
+    </div>
+
+    <p>Carried over from the first pass, condensed, because it is settled and it supports you.</p>
+
+    <p>The ASPCA toxicity listing that dominates search results answers a different question than the one you are asking: <em>should an animal graze freely on this plant?</em> It is poison-control triage for uncontrolled ingestion of an unknown quantity. Garlic and chamomile sit on the same list. It is not an assessment of a weighed, assayed, cycled preparation, and applying it to one is a category error.</p>
+
+    <p>The bodies that did assess wormwood for internal use reached a different conclusion. The EMA permits it in humans with a thujone cap and a duration cap. And there is genuine <em>in vivo</em> efficacy data: ethanolic extract produced 90.5% faecal egg count reduction in sheep at 2.0 g/kg, comparable to albendazole in that study, with separate work benchmarking it against praziquantel against <em class="term">Hymenolepis nana</em>.</p>
+
+    <p>Be even-handed about the rest: several studies found strong <em>in vitro</em> activity that did not carry through <em>in vivo</em> at the doses tested. The honest position is “traditionally used, with supportive animal data, dosed to a recognised thujone limit.” That is a strong position. It is stronger than what most of your competitors can say, and it does not require overstating anything.</p>
+
+    <div class="scroller">
+      <table>
+        <caption>Reference points — thujone</caption>
+        <thead>
+          <tr><th>Endpoint</th><th>Value</th><th>Source</th></tr>
+        </thead>
+        <tbody>
+          <tr class="go"><td>Accepted human intake</td><td class="num">3.0 mg/day, ≤2 wk</td><td>EMA HMPC monograph</td></tr>
+          <tr><td>BMDL<sub>10</sub>, clonic seizures</td><td class="num">11 mg/kg bw/day</td><td>Male rat</td></tr>
+          <tr><td>NOEL, mortality &amp; tonic seizures</td><td class="num">12.5 mg/kg/day</td><td>Rat, chronic</td></tr>
+          <tr><td>Lowest seizure-producing dose</td><td class="num">100 mg/kg</td><td>Rat, 16-day gavage</td></tr>
+          <tr><td>Oral LD<sub>50</sub></td><td class="num">192 mg/kg</td><td>Rat, single dose</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">Part VI — One thing to check on the copy</h2>
+    </div>
+
+    <p>Setting the wider claims review aside, since dose is the priority — one item is worth thirty seconds because it is invisible from the page itself.</p>
 
     <div class="finding caut">
       <div class="finding-head">
         <span class="chip caut">Verify</span>
-        <h3>Black walnut is the weakest link in the stack</h3>
+        <h3>Your SEO title may not match your on-page copy</h3>
       </div>
-      <p>It carries the least supporting evidence of your four actives, and the canine safety literature on it concerns mouldy hulls and tremorgenic mycotoxins. That is a raw-material and supplier-testing question rather than an inherent-toxicity one — but it means your black walnut COA needs to show mycotoxin screening, and your copy should make the smallest claim of any ingredient, not the boldest.</p>
-    </div>
-
-    <p class="note"><b>Framing for your own peace of mind:</b> none of this says your formula is unsafe. It says the risk sits somewhere other than where the internet pointed you, and that a defensible product needs the arithmetic written down. Your formulator’s years of field experience is genuinely meaningful evidence — it is just not <em>documented</em> evidence until someone writes down doses, weights, durations and outcomes.</p>
-  </section>
-
-  <section>
-    <div class="sec-head">
-      <h2 class="sec-title">Part III — Where the legal trouble actually is</h2>
-    </div>
-
-    <h3>There is no DSHEA for animals</h3>
-    <p>This is the single most misunderstood fact in the pet supplement industry, and it is the one that will bite you. For human supplements, DSHEA lets you make structure/function claims — “supports digestive health” — without pre-approval. <strong>That exemption does not exist for animal products.</strong> FDA’s Center for Veterinary Medicine applies the FD&amp;C Act drug definition directly: anything intended to diagnose, cure, mitigate, treat or prevent disease, <em>or to affect the structure or function of the body</em>, is a drug. An unapproved one, absent an approved NADA, conditional approval or index listing.</p>
-    <p>The informal shelter people used to rely on — Compliance Policy Guide 690.100 on nutritional supplements for companion animals — was <strong>withdrawn on 20 February 2020</strong>. The enforcement discretion it described is gone, and warning letters to pet supplement companies have been climbing since (four in April 2025, four more in November 2024).</p>
-
-    <h3>Claim audit</h3>
-    <p>These lines are drawn from how your product and blog pages are currently indexed by search engines. I could not open greenpawwellness.com from this environment, so <strong>treat every line below as needing verification against your live page</strong> before you act on it.</p>
-
-    <div class="finding crit">
-      <div class="finding-head">
-        <span class="chip crit">Highest exposure</span>
-        <h3>The word “Dewormer” in your page title</h3>
-      </div>
-      <p class="quoted">Dewormer for Dogs | Natural Parasite Cleanse Supplement</p>
-      <p>A dewormer is a drug. The term names an intended therapeutic use against a parasitic infestation, and it sits in your title tag, your H1 and probably your meta description — the three places a reviewer looks first. Everything else on this page is a smaller problem than this.</p>
+      <p>You use “cleanse,” and your on-page copy may well be consistent about it. But the title tag currently indexed for <code>/products/parasite-cleanse</code> reads “Dewormer for Dogs | Natural Parasite Cleanse Supplement.” In Shopify the SEO title is a separate field from your product title and H1, and SEO apps frequently write it for you.</p>
+      <p>It matters because a dewormer is a drug by definition, and the title tag is among the first things a reviewer looks at. If the field is clean, this finding disappears.</p>
       <div class="fix">
-        <b>Direction</b>
-        Move the product’s identity off the disease and onto the composition: a herbal blend, a seasonal routine, a gut-support formula. You will lose the “dewormer” search volume. That is the trade, and it is worth taking deliberately rather than discovering it in a warning letter.
-      </div>
-    </div>
-
-    <div class="finding crit">
-      <div class="finding-head">
-        <span class="chip crit">Near-verbatim match</span>
-        <h3>“Paralyzes intestinal worms so they release their grip on the gut wall”</h3>
-      </div>
-      <p>FDA has already cited nearly this exact construction. In a warning letter over praziquantel tapeworm capsules, the flagged language was that the product “paralyzes the tapeworms forcing them to release themselves from the digestive tract.” Your sentence is a paraphrase of a claim that is already on the record as a drug claim.</p>
-      <div class="fix">
-        <b>Direction</b>
-        Cut the mechanism-of-action sentence entirely. Describing <em>how</em> an ingredient acts on a parasite is the clearest possible statement of therapeutic intent — mechanism copy is where enforcement reads intent most easily.
-      </div>
-    </div>
-
-    <div class="finding crit">
-      <div class="finding-head">
-        <span class="chip crit">Efficacy claim</span>
-        <h3>The lifecycle-coverage framing</h3>
-      </div>
-      <p class="quoted">Clove on eggs, wormwood on adults, black walnut on motility and protozoa — together they cover the parasite’s full timeline.</p>
-      <p>Two separate problems. It is a therapeutic efficacy claim (drug). And it is a specific, testable assertion that the FTC would require <em>competent and reliable scientific evidence</em> to back — its 2023 Health Products Compliance Guidance points to controlled trials for claims of this specificity. Sheep FECR data and your formulator’s field observations will not meet that bar for a stage-by-stage coverage claim in dogs and cats.</p>
-      <div class="fix">
-        <b>Direction</b>
-        This is your best content, so do not delete it — reframe it as traditional-use education rather than product performance. Write about what herbalists have historically used each plant for, keep it on the blog, and stop it from reading as a specification of what your capsule does.
-      </div>
-    </div>
-
-    <div class="finding caut">
-      <div class="finding-head">
-        <span class="chip caut">Rephrase</span>
-        <h3>“Removal of unwanted organisms”</h3>
-      </div>
-      <p>The euphemism does not help. “Unwanted organisms” in a product named Parasite Cleanse reads as “parasites” to any reviewer, and coy phrasing tends to read as consciousness of the problem rather than as a defence.</p>
-    </div>
-
-    <div class="finding caut">
-      <div class="finding-head">
-        <span class="chip caut">Two more things to check</span>
-        <h3>Testimonials and the veterinary disclaimer</h3>
-      </div>
-      <p>Under FTC rules a testimonial conveys the same claim as if you made it yourself — a review saying “passed worms in three days” is an efficacy claim you now have to substantiate. Audit what your review widget is displaying and be prepared to curate it.</p>
-      <p>Separately, “consult your veterinarian before use” is good practice and worth keeping, but it does not convert a drug claim into a legal one. No disclaimer does. Its value is safety, not shelter.</p>
-    </div>
-  </section>
-
-  <section>
-    <div class="sec-head">
-      <h2 class="sec-title">Part IV — One factual error to fix regardless</h2>
-    </div>
-
-    <div class="finding caut">
-      <div class="finding-head">
-        <span class="chip caut">Correct this</span>
-        <h3>Cucurbitacin is not an amino acid</h3>
-      </div>
-      <p class="quoted">Pumpkin seed contains cucurbitacin, an amino acid that paralyzes intestinal worms…</p>
-      <p>Two compounds are being conflated. <strong>Cucurbitacin B</strong> is a triterpenoid. <strong>Cucurbitin</strong> — the one you almost certainly mean — is the non-proteic amino acid (3-amino-pyrrolidine-3-carboxylic acid) found in the seed and studied as the anthelmintic principle. The names differ by three letters and the chemistry is unrelated.</p>
-      <p>Worth fixing quickly and quietly. A visible chemistry error in your ingredient education is exactly the detail a skeptical vet, a competitor, or a regulator uses to argue the whole formulation rationale is unserious — and it undercuts the very credibility you are trying to build against the Google narrative.</p>
-      <div class="fix">
-        <b>Note</b>
-        Fix the chemistry, but drop “paralyzes intestinal worms” in the same edit rather than correcting the compound name inside a sentence that is itself a drug claim.
+        <b>Where to look</b>
+        Shopify admin → Products → Parasite Cleanse → Search engine listing → Edit. Check the same field on your two blog posts while you are there.
       </div>
     </div>
   </section>
 
   <section>
     <div class="sec-head">
-      <h2 class="sec-title">Part V — What I need to finish this</h2>
+      <h2 class="sec-title">Part VII — What closes this out</h2>
     </div>
-    <p>Everything above is solid on the science and the regulatory framework. The claim audit is built on search-indexed copy, and the toxicology cannot be closed out without your label data. Six things:</p>
+    <p>The model is built. Four numbers turn it from a framework into an answer about your actual product.</p>
 
     <div class="asks">
       <div class="ask">
         <span class="k">01</span>
-        <p class="v">Milligrams per capsule of each active — wormwood, black walnut, clove, pumpkin seed.</p>
-        <p class="why">Without this, no exposure margin can be calculated for either thujone or eugenol.</p>
+        <p class="v">Milligrams per capsule — wormwood, black walnut, clove, pumpkin seed.</p>
+        <p class="why">Divide by 9.07 and every exposure figure in this document resolves for your formula specifically.</p>
       </div>
       <div class="ask">
         <span class="k">02</span>
-        <p class="v">For each: milled herb or extract? If extract, the ratio and solvent.</p>
-        <p class="why">A 10:1 extract changes the thujone and eugenol arithmetic by an order of magnitude.</p>
+        <p class="v">Assayed thujone content of your current wormwood lot.</p>
+        <p class="why">The one number that decides whether Part II is a live problem or already handled. If your supplier can’t provide it, that is itself the answer.</p>
       </div>
       <div class="ask">
         <span class="k">03</span>
-        <p class="v">A certificate of analysis showing thujone content, plus mycotoxin screening on the black walnut.</p>
-        <p class="why">This is the document that converts “my formulator tested it” into evidence someone else can check.</p>
+        <p class="v">Milled herb or extract, for each active — and if extract, the ratio.</p>
+        <p class="why">A 10:1 extract moves every ceiling in this document by an order of magnitude. The model holds; the numbers don’t.</p>
       </div>
       <div class="ask">
         <span class="k">04</span>
-        <p class="v">The full live copy — product page, both blog posts, label, and any ad or email copy.</p>
-        <p class="why">Your site is blocked from this environment. Paste it and I will audit line by line rather than from search snippets.</p>
-      </div>
-      <div class="ask">
-        <span class="k">05</span>
-        <p class="v">Whatever your formulator recorded from the years of dog and cat testing.</p>
-        <p class="why">Weights, doses, durations, adverse events, outcomes. This is your strongest asset and it is worth nothing undocumented.</p>
-      </div>
-      <div class="ask">
-        <span class="k">06</span>
-        <p class="v">Where you ship, and whether you are an NASC member.</p>
-        <p class="why">EU, UK, Canada and Australia each apply different rules. NASC membership brings a labelling framework worth adopting either way.</p>
+        <p class="v">Whether the cat dose is the same capsule at the same per-pound rate.</p>
+        <p class="why">Determines which of the three options in Part III applies.</p>
       </div>
     </div>
 
-    <p class="note"><b>One thing outside my lane.</b> I can map the terrain and I am confident in the analysis above, but I am not your lawyer. A product whose name states a disease condition is a specific enough exposure that it is worth an hour with an attorney who does FDA/CVM work — before you rewrite, so the rewrite only happens once.</p>
+    <p class="note"><b>Scope note.</b> This is a formulation and toxicology orientation, not veterinary or legal advice, and the feline eugenol factor in Part III is my derived judgement rather than an established standard — flagged as such because you should be able to see which numbers are borrowed from regulators and which are reasoned. Before a formulation change ships, the thujone spec and the cat dose are both worth an hour with a veterinary toxicologist. The model gives you the specific questions to bring.</p>
   </section>
 
   <section class="sources">
@@ -625,23 +733,21 @@
       <h2 class="sec-title">Sources</h2>
     </div>
     <ol>
-      <li>FDA — <a href="https://www.fda.gov/animal-veterinary/compliance-enforcement/unapproved-animal-drugs">Unapproved Animal Drugs</a>, and <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/cpg-sec-690100-nutritional-supplements-companion-animals-withdrawn-2202020">CPG Sec. 690.100, Nutritional Supplements for Companion Animals (withdrawn 20 Feb 2020)</a>.</li>
-      <li>Burdock Group — <a href="https://www.burdockgroup.com/dietary-supplements-for-pets-are-they-drugs">Dietary Supplements for Pets: Are They Drugs?</a> on why DSHEA structure/function claims do not carry over to animal products.</li>
-      <li>NASC — <a href="https://www.nasc.cc/members-health/fda-warning-letters-sent-to-pet-product-companies/">FDA Warning Letters Sent to Pet Product Companies</a>, including the praziquantel “paralyzes the tapeworms” citation.</li>
-      <li>FTC — <a href="https://www.ftc.gov/business-guidance/resources/health-products-compliance-guidance">Health Products Compliance Guidance</a> (2023), on the competent-and-reliable-scientific-evidence standard.</li>
-      <li>EMA HMPC — <a href="https://www.ema.europa.eu/en/documents/herbal-report/addendum-assessment-report-artemisia-absinthium-l-herba_en.pdf">Addendum to the assessment report on <em class="term">Artemisia absinthium</em> L., herba</a>, and the <a href="https://www.ema.europa.eu/en/documents/public-statement/draft-public-statement-use-herbal-medicinal-products-containing-thujone_en.pdf">public statement on thujone-containing herbal medicinal products</a>.</li>
-      <li>NTP — <a href="https://ntp.niehs.nih.gov/publications/reports/tr/tr570">Technical Report TR-570, α,β-Thujone</a>, for NOEL, BMDL and seizure data.</li>
+      <li>EMA HMPC — <a href="https://www.ema.europa.eu/en/documents/herbal-report/final-assessment-report-artemisia-absinthium-l-herba-revision-1_en.pdf">Assessment report on <em class="term">Artemisia absinthium</em> L., herba</a>, and the <a href="https://www.ema.europa.eu/en/documents/public-statement/draft-public-statement-use-herbal-medicinal-products-containing-thujone_en.pdf">public statement on thujone-containing herbal medicinal products</a>, for the 3 mg/day, two-week limit.</li>
+      <li>NTP — <a href="https://ntp.niehs.nih.gov/publications/reports/tr/tr570">Technical Report TR-570, α,β-Thujone</a>, for NOEL, BMDL<sub>10</sub> and seizure thresholds.</li>
       <li>Lachenmeier &amp; Uebelacker — <a href="https://www.sciencedirect.com/science/article/abs/pii/S0273230012002218">Thujone and thujone-containing herbal medicinal and botanical products: toxicological assessment</a>.</li>
-      <li>Tariq et al. — <a href="https://pubmed.ncbi.nlm.nih.gov/19070963/">Anthelmintic activity of extracts of <em class="term">Artemisia absinthium</em> against ovine nematodes</a>, and <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7070545/">Wormwood and mallow against <em class="term">Haemonchus contortus</em> in sheep</a>.</li>
-      <li>Cambridge — <a href="https://www.cambridge.org/core/journals/journal-of-helminthology/article/therapeutic-efficacy-of-artemisia-absinthium-against-hymenolepis-nana-in-vitro-and-in-vivo-studies-in-comparison-with-the-anthelmintic-praziquantel/D5D84BB8E7A01A7CE1D952A7F1C2B398">Therapeutic efficacy of <em class="term">A. absinthium</em> against <em class="term">Hymenolepis nana</em> vs praziquantel</a>.</li>
-      <li>Grzybek et al. — <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5037735/">Anthelmintic activity and composition of pumpkin seed extracts</a>, on cucurbitin and cucurbitacin B.</li>
-      <li>NIH/PMC — <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9599722/">Pulegone and eugenol oral supplementation in laboratory animals: acute and chronic studies</a>.</li>
+      <li>Chemotype and essential-oil variability — <a href="https://www.researchgate.net/publication/332607663_Variability_of_thujone_content_in_essential_oil_due_to_plant_development_and_organs_from_Artemisia_absinthium_L_and_Salvia_officinalis_L">Variability of thujone content by plant development and organ</a>; <a href="https://www.researchgate.net/publication/237752621_Composition_of_the_essential_oil_of_Artemisia_absinthium_L_of_different_geographical_origin">Composition of the essential oil of <em class="term">A. absinthium</em> by geographical origin</a>; <a href="https://mokslozurnalai.lmaleidykla.lt/publ/0235-7216/2004/4/Che064_068.pdf">Chemical composition of wormwood essential oils, Vilnius samples</a>.</li>
+      <li>JECFA / WHO — <a href="https://inchem.org/documents/jecfa/jecmono/v14je11.htm">Eugenol, WHO Food Additives Series 14</a>, for the 2.5 mg/kg bw/day ADI.</li>
+      <li>Mizutani et al. — <a href="https://pubmed.ncbi.nlm.nih.gov/2047567/">Hepatotoxicity of eugenol in mice depleted of glutathione</a>, the basis for the feline margin argument.</li>
+      <li>Tariq et al. — <a href="https://pubmed.ncbi.nlm.nih.gov/19070963/">Anthelmintic activity of extracts of <em class="term">A. absinthium</em> against ovine nematodes</a>; and <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7070545/">Wormwood and mallow against <em class="term">Haemonchus contortus</em> in sheep</a>.</li>
+      <li>Grzybek et al. — <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5037735/">Anthelmintic activity and composition of pumpkin seed extracts</a>, distinguishing cucurbitin from cucurbitacin B.</li>
+      <li>FDA — <a href="https://www.fda.gov/animal-veterinary/compliance-enforcement/unapproved-animal-drugs">Unapproved Animal Drugs</a>, background to Part VI.</li>
     </ol>
   </section>
 
   <footer>
-    Prepared for Green Paw Wellness · 27 August 2026 · Draft pending label data.<br>
-    This is a research and compliance-orientation document, not legal or veterinary advice. Claim lines quoted in Part III were reconstructed from search-engine indexing of greenpawwellness.com, which was unreachable from this environment, and must be verified against the live pages before any edit is made.
+    Prepared for Green Paw Wellness · Revised 27 August 2026 · Dose model complete, pending per-capsule data.<br>
+    Not veterinary or legal advice. Regulator-derived figures (EMA, NTP, JECFA) are cited to source; the feline eugenol safety factor in Part III is a reasoned estimate and is labelled as one. The SEO finding in Part VI reflects search-engine indexing of greenpawwellness.com, which was unreachable from this environment, and needs confirming in the Shopify admin.
   </footer>
 
 </div>
