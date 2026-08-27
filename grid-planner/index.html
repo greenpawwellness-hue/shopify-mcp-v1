@@ -1,0 +1,1503 @@
+<title>Green Paw Grid Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Karla:wght@300..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+/* ============================================================
+   TOKENS — light is the base; dark redefines tokens only.
+   Post-tile colors are deliberately theme-independent (below):
+   a real Instagram post doesn't change with your OS setting.
+   ============================================================ */
+:root {
+  color-scheme: light;
+
+  --paper:      #F4F5EF;
+  --surface:    #FFFFFF;
+  --surface-2:  #EDEFE5;
+  --surface-3:  #E3E7D8;
+  --line:       #DDE1D2;
+  --line-2:     #C6CDB6;
+
+  --ink:        #161C15;
+  --ink-2:      #3E4839;
+  --ink-3:      #6C7666;
+
+  --forest:     #187329;
+  --forest-ink: #12571F;
+  --lime:       #88C03F;
+  --lime-ink:   #56901F;
+  --amber:      #B5811A;
+  --sage:       #3F6E7A;
+
+  --b1: var(--forest);   /* Hook / Education    */
+  --b2: var(--amber);    /* Identity / Community */
+  --b3: var(--sage);     /* Product-in-Context  */
+  --b4: var(--lime-ink); /* Routine / Value     */
+
+  --focus:      #187329;
+  --shadow:     0 1px 2px rgba(20,32,20,.05), 0 8px 24px -12px rgba(20,32,20,.18);
+  --shadow-lift:0 2px 4px rgba(20,32,20,.06), 0 22px 44px -18px rgba(20,32,20,.30);
+
+  --radius:  14px;
+  --radius-s: 8px;
+
+  --step--1: clamp(.75rem, .73rem + .1vw, .8rem);
+  --step-0:  clamp(.9rem, .87rem + .14vw, .97rem);
+  --step-1:  clamp(1.05rem, 1rem + .25vw, 1.2rem);
+  --step-2:  clamp(1.3rem, 1.18rem + .55vw, 1.65rem);
+  --step-3:  clamp(1.7rem, 1.44rem + 1.2vw, 2.5rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper:     #101510;
+    --surface:   #1A211A;
+    --surface-2: #222B22;
+    --surface-3: #2A342A;
+    --line:      #2E392E;
+    --line-2:    #435043;
+
+    --ink:       #E9EEE3;
+    --ink-2:     #BAC5B4;
+    --ink-3:     #8B9787;
+
+    --forest:     #52B063;
+    --forest-ink: #6FC57E;
+    --lime:       #9ED455;
+    --lime-ink:   #A8DA63;
+    --amber:      #DCA83A;
+    --sage:       #6FA8B6;
+
+    --b1: var(--forest);
+    --b2: var(--amber);
+    --b3: var(--sage);
+    --b4: var(--lime-ink);
+
+    --focus:  #9ED455;
+    --shadow:      0 1px 2px rgba(0,0,0,.35), 0 8px 24px -12px rgba(0,0,0,.6);
+    --shadow-lift: 0 2px 4px rgba(0,0,0,.4),  0 22px 44px -18px rgba(0,0,0,.7);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper:     #101510;
+  --surface:   #1A211A;
+  --surface-2: #222B22;
+  --surface-3: #2A342A;
+  --line:      #2E392E;
+  --line-2:    #435043;
+
+  --ink:       #E9EEE3;
+  --ink-2:     #BAC5B4;
+  --ink-3:     #8B9787;
+
+  --forest:     #52B063;
+  --forest-ink: #6FC57E;
+  --lime:       #9ED455;
+  --lime-ink:   #A8DA63;
+  --amber:      #DCA83A;
+  --sage:       #6FA8B6;
+
+  --b1: var(--forest);
+  --b2: var(--amber);
+  --b3: var(--sage);
+  --b4: var(--lime-ink);
+
+  --focus:  #9ED455;
+  --shadow:      0 1px 2px rgba(0,0,0,.35), 0 8px 24px -12px rgba(0,0,0,.6);
+  --shadow-lift: 0 2px 4px rgba(0,0,0,.4),  0 22px 44px -18px rgba(0,0,0,.7);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Karla", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: var(--step-0);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  font-synthesis-weight: none;
+}
+
+h1, h2, h3, h4 { margin: 0; text-wrap: balance; font-weight: 500; }
+p { margin: 0; }
+button { font: inherit; color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.wrap {
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 3vw, 2.25rem);
+}
+
+.eyebrow {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .66rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+.serif {
+  font-family: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  font-variation-settings: "SOFT" 30, "opsz" 40;
+}
+
+.hr { height: 1px; background: var(--line); border: 0; margin: 0; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.masthead {
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+.masthead-in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: clamp(1.5rem, 4vw, 2.75rem) clamp(1.25rem, 3vw, 2rem);
+}
+.brandmark {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  color: var(--forest);
+  margin-bottom: .9rem;
+}
+.brandmark svg { width: 22px; height: 22px; }
+.brandmark span {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .68rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.masthead h1 {
+  font-family: "Fraunces", ui-serif, Georgia, serif;
+  font-variation-settings: "SOFT" 45, "opsz" 110;
+  font-weight: 600;
+  font-size: var(--step-3);
+  line-height: 1.02;
+  letter-spacing: -.02em;
+  max-width: 16ch;
+}
+.masthead h1 em {
+  font-style: italic;
+  font-variation-settings: "SOFT" 90, "opsz" 110;
+  color: var(--forest);
+}
+.masthead .sub {
+  margin-top: .7rem;
+  color: var(--ink-2);
+  max-width: 52ch;
+  font-size: var(--step-0);
+}
+.runline {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  align-items: flex-end;
+  padding-bottom: .2rem;
+}
+.runline .range {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: var(--step-1);
+  font-weight: 500;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 700px) { .runline { text-align: left; align-items: flex-start; } }
+
+/* ============================================================
+   HEALTH STRIP
+   ============================================================ */
+.health {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-block: clamp(1.5rem, 4vw, 2.5rem);
+}
+.hcard {
+  background: var(--surface);
+  padding: 1.05rem 1.15rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+}
+.hcard .big {
+  font-family: "Fraunces", ui-serif, Georgia, serif;
+  font-variation-settings: "SOFT" 40, "opsz" 90;
+  font-weight: 600;
+  font-size: 1.75rem;
+  line-height: 1;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+.hcard .note { font-size: var(--step--1); color: var(--ink-3); line-height: 1.4; }
+.hcard .note b { color: var(--ink-2); font-weight: 600; }
+
+.mixbar {
+  display: flex;
+  height: 9px;
+  border-radius: 99px;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.mixbar i { display: block; }
+.mixkey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .1rem .85rem;
+  font-size: .69rem;
+  color: var(--ink-2);
+}
+.mixkey span { display: inline-flex; align-items: center; gap: .34rem; white-space: nowrap; }
+.mixkey s { width: 7px; height: 7px; border-radius: 2px; display: inline-block; text-decoration: none; }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.board {
+  display: grid;
+  grid-template-columns: minmax(0, 430px) minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: start;
+  padding-bottom: 3rem;
+}
+@media (max-width: 940px) { .board { grid-template-columns: minmax(0, 1fr); } }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: .85rem;
+}
+.section-head h2 {
+  font-family: "Fraunces", ui-serif, Georgia, serif;
+  font-variation-settings: "SOFT" 40, "opsz" 60;
+  font-weight: 600;
+  font-size: var(--step-2);
+  letter-spacing: -.015em;
+}
+
+/* ============================================================
+   IG PROFILE MOCK
+   ============================================================ */
+.phone {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: sticky;
+  top: 1rem;
+}
+@media (max-width: 940px) { .phone { position: static; } }
+
+.profile {
+  display: flex;
+  gap: .95rem;
+  align-items: center;
+  padding: 1.05rem 1.05rem .8rem;
+}
+.avatar {
+  width: 58px; height: 58px;
+  flex: 0 0 58px;
+  border-radius: 50%;
+  background: linear-gradient(150deg, #1E8A33, #12571F 70%);
+  display: grid;
+  place-items: center;
+  color: #DCEFC6;
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--lime);
+}
+.avatar svg { width: 27px; height: 27px; }
+.handle {
+  font-weight: 700;
+  font-size: .95rem;
+  letter-spacing: -.01em;
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+.handle svg { width: 13px; height: 13px; color: var(--forest); }
+.bio { font-size: .78rem; color: var(--ink-2); line-height: 1.45; margin-top: .12rem; }
+.bio .loc { color: var(--ink-3); }
+
+.counts {
+  display: flex;
+  gap: 1.4rem;
+  padding: 0 1.05rem .85rem;
+  border-bottom: 1px solid var(--line);
+}
+.counts div { display: flex; flex-direction: column; gap: 0; }
+.counts b {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .95rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+}
+.counts em {
+  font-style: normal;
+  font-size: .66rem;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--line);
+}
+.tabs div {
+  flex: 1;
+  text-align: center;
+  padding: .5rem 0;
+  font-size: .66rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.tabs div[aria-current] {
+  color: var(--ink);
+  box-shadow: inset 0 -2px 0 var(--ink);
+  font-weight: 700;
+}
+
+/* ============================================================
+   THE GRID
+   ============================================================ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  padding: 3px;
+  background: var(--line);
+}
+
+.tile {
+  position: relative;
+  aspect-ratio: 1;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  display: block;
+  text-align: left;
+  isolation: isolate;
+  transition: transform .28s cubic-bezier(.2,.8,.3,1), filter .28s ease;
+}
+.tile:hover { transform: scale(1.035); z-index: 3; filter: saturate(1.06); }
+.tile:focus-visible { z-index: 4; outline-offset: -3px; }
+.tile[aria-pressed="true"] { z-index: 3; }
+.tile[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--lime);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.35);
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* fixed post-tile palettes — identical in light and dark */
+.tile[data-pal="bone"]   { background: linear-gradient(160deg, #F2F1E6, #E4E4D4); color: #17301C; }
+.tile[data-pal="forest"] { background: linear-gradient(155deg, #1A5027, #0C2B14); color: #E9F4E1; }
+.tile[data-pal="lime"]   { background: linear-gradient(160deg, #CDE6A0, #A5CE68); color: #1A3A1E; }
+.tile[data-pal="mist"]   { background: linear-gradient(160deg, #DFE8DA, #C4D4C1); color: #1B2C1D; }
+.tile[data-pal="ink"]    { background: linear-gradient(150deg, #1E2A20, #0D130E); color: #E7EEE2; }
+
+.tile .motif {
+  position: absolute;
+  right: -14%;
+  bottom: -12%;
+  width: 74%;
+  height: 74%;
+  opacity: .16;
+  z-index: 0;
+  pointer-events: none;
+}
+.tile[data-pal="forest"] .motif,
+.tile[data-pal="ink"] .motif { opacity: .22; }
+
+.tile .num {
+  position: absolute;
+  top: 7px; left: 8px;
+  z-index: 2;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .62rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  width: 19px; height: 19px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: currentColor;
+  mix-blend-mode: normal;
+}
+.tile .num s { text-decoration: none; }
+.tile[data-pal="bone"]   .num s,
+.tile[data-pal="lime"]   .num s,
+.tile[data-pal="mist"]   .num s { color: #F2F1E6; }
+.tile[data-pal="forest"] .num s { color: #0C2B14; }
+.tile[data-pal="ink"]    .num s { color: #0D130E; }
+
+.tile .fmt {
+  position: absolute;
+  top: 8px; right: 8px;
+  z-index: 2;
+  width: 15px; height: 15px;
+  opacity: .92;
+}
+
+.tile .txt {
+  position: absolute;
+  z-index: 2;
+  left: 9px; right: 9px;
+  font-family: "Fraunces", ui-serif, Georgia, serif;
+  font-variation-settings: "SOFT" 55, "opsz" 30;
+  font-weight: 600;
+  font-size: clamp(.62rem, 1.55vw, .82rem);
+  line-height: 1.13;
+  letter-spacing: -.015em;
+  text-wrap: balance;
+}
+.tile[data-place="center"] .txt { top: 50%; transform: translateY(-50%); text-align: center; }
+.tile[data-place="bottom"] .txt { bottom: 9px; }
+.tile[data-place="stack"]  .txt { bottom: 9px; }
+.tile[data-place="stack"] .kicker {
+  display: block;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .5rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  opacity: .72;
+  margin-bottom: .28rem;
+  font-variation-settings: normal;
+}
+
+.tile .dot {
+  position: absolute;
+  bottom: 7px; right: 8px;
+  z-index: 2;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px rgba(0,0,0,.22);
+}
+.tile[data-status="idea"] .dot      { display: none; }
+.tile[data-status="drafted"] .dot   { background: #E4B92E; }
+.tile[data-status="scheduled"] .dot { background: #4FA6D6; }
+.tile[data-status="posted"] .dot    { background: #61C24A; }
+
+.gridnote {
+  padding: .7rem 1.05rem .95rem;
+  font-size: .72rem;
+  color: var(--ink-3);
+  line-height: 1.45;
+  border-top: 1px solid var(--line);
+}
+.gridnote b { color: var(--ink-2); font-weight: 600; }
+
+.statuskey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .1rem .9rem;
+  margin-top: .5rem;
+  font-size: .68rem;
+}
+.statuskey span { display: inline-flex; align-items: center; gap: .3rem; }
+.statuskey i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
+/* ============================================================
+   DETAIL PANEL
+   ============================================================ */
+.detail {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.d-top {
+  padding: 1.15rem clamp(1.1rem, 2.4vw, 1.6rem) 1.25rem;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+.d-top::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--bcolor, var(--forest));
+}
+.d-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .45rem .6rem;
+  margin-bottom: .85rem;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .64rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: .24rem .55rem;
+  border-radius: 99px;
+  border: 1px solid var(--line-2);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.chip.bucket { color: var(--bcolor); border-color: color-mix(in srgb, var(--bcolor) 42%, transparent); background: color-mix(in srgb, var(--bcolor) 8%, transparent); }
+.chip.date   { color: var(--ink); border-color: var(--line-2); font-variant-numeric: tabular-nums; }
+.chip svg { width: 11px; height: 11px; }
+
+.d-hook {
+  font-family: "Fraunces", ui-serif, Georgia, serif;
+  font-variation-settings: "SOFT" 50, "opsz" 100;
+  font-weight: 600;
+  font-size: var(--step-2);
+  line-height: 1.14;
+  letter-spacing: -.02em;
+  max-width: 30ch;
+}
+.d-angle { margin-top: .6rem; color: var(--ink-2); max-width: 62ch; font-size: var(--step-0); }
+
+.statusrow {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  margin-top: 1.05rem;
+  flex-wrap: wrap;
+}
+.statusrow .lbl {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-right: .2rem;
+}
+.sbtn {
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  color: var(--ink-2);
+  border-radius: 99px;
+  padding: .27rem .7rem;
+  font-size: .74rem;
+  cursor: pointer;
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+.sbtn:hover { background: var(--surface-2); }
+.sbtn[aria-pressed="true"] {
+  background: var(--forest);
+  border-color: var(--forest);
+  color: #F3FAEE;
+  font-weight: 600;
+}
+:root[data-theme="dark"] .sbtn[aria-pressed="true"] { color: #0E140F; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .sbtn[aria-pressed="true"] { color: #0E140F; }
+}
+
+.d-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+  gap: 1px;
+  background: var(--line);
+}
+.blk {
+  background: var(--surface);
+  padding: 1.05rem clamp(1.1rem, 2.4vw, 1.6rem) 1.25rem;
+}
+.blk h3 {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .64rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+  margin-bottom: .7rem;
+}
+.blk.span2 { grid-column: 1 / -1; }
+
+ol.beats { margin: 0; padding: 0; list-style: none; counter-reset: b; display: flex; flex-direction: column; gap: .5rem; }
+ol.beats li {
+  counter-increment: b;
+  display: grid;
+  grid-template-columns: 1.5rem 1fr;
+  gap: .1rem;
+  font-size: var(--step--1);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+ol.beats li::before {
+  content: counter(b);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .68rem;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  padding-top: .07rem;
+}
+ol.beats li b { color: var(--ink); font-weight: 600; }
+
+.caption {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  padding: .85rem .95rem;
+  font-size: var(--step--1);
+  line-height: 1.62;
+  white-space: pre-line;
+  color: var(--ink-2);
+}
+.caption strong { color: var(--ink); font-weight: 600; }
+
+.tags {
+  margin-top: .7rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .68rem;
+  line-height: 1.7;
+  color: var(--forest-ink);
+  word-spacing: .18em;
+}
+
+.kv { display: flex; flex-direction: column; gap: .6rem; }
+.kv div { display: grid; grid-template-columns: 5.2rem 1fr; gap: .7rem; font-size: var(--step--1); }
+.kv dt {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .62rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: .12rem;
+}
+.kv dd { margin: 0; color: var(--ink-2); line-height: 1.5; }
+
+.why {
+  border-left: 2px solid var(--bcolor, var(--forest));
+  padding: .1rem 0 .1rem .85rem;
+  font-size: var(--step--1);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.why b { color: var(--ink); font-weight: 600; }
+
+.flag {
+  display: flex;
+  gap: .6rem;
+  align-items: flex-start;
+  margin-top: .9rem;
+  padding: .7rem .8rem;
+  border-radius: var(--radius-s);
+  background: color-mix(in srgb, var(--amber) 11%, transparent);
+  border: 1px solid color-mix(in srgb, var(--amber) 34%, transparent);
+  font-size: var(--step--1);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.flag svg { width: 14px; height: 14px; flex: 0 0 14px; margin-top: .16rem; color: var(--amber); }
+.flag b { color: var(--ink); font-weight: 600; }
+
+.src {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .61rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .2rem .5rem;
+  border-radius: 4px;
+  margin-top: .75rem;
+  background: var(--surface-3);
+  color: var(--ink-2);
+}
+.src i { width: 6px; height: 6px; border-radius: 50%; background: var(--bcolor); display: inline-block; }
+
+/* ============================================================
+   BACKLOG + GUARDRAILS
+   ============================================================ */
+.strip { border-top: 1px solid var(--line); background: var(--surface); }
+.strip-in { padding-block: clamp(2rem, 5vw, 3.25rem); }
+
+.backlog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: .8rem;
+}
+.bl {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  padding: .85rem .95rem 1rem;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  border-left: 3px solid var(--bcolor, var(--line-2));
+}
+.bl .t {
+  font-family: "Fraunces", ui-serif, Georgia, serif;
+  font-variation-settings: "SOFT" 40, "opsz" 40;
+  font-weight: 600;
+  font-size: .96rem;
+  line-height: 1.24;
+  letter-spacing: -.01em;
+}
+.bl .p {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .62rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--bcolor, var(--ink-3));
+}
+.bl .n { font-size: .78rem; color: var(--ink-3); line-height: 1.48; }
+
+.guards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(268px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.g { background: var(--surface); padding: 1.1rem 1.2rem 1.3rem; }
+.g h3 {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: .64rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+  margin-bottom: .8rem;
+}
+.words { display: flex; flex-wrap: wrap; gap: .35rem; }
+.w {
+  font-size: .76rem;
+  padding: .2rem .55rem;
+  border-radius: 4px;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+}
+.w.no { text-decoration: line-through; text-decoration-color: color-mix(in srgb, #C4453B 75%, transparent); text-decoration-thickness: 1.5px; color: var(--ink-3); }
+.w.yes { color: var(--forest-ink); border-color: color-mix(in srgb, var(--forest) 32%, transparent); background: color-mix(in srgb, var(--forest) 7%, transparent); }
+.g .gnote { margin-top: .8rem; font-size: .74rem; color: var(--ink-3); line-height: 1.5; }
+
+footer.foot {
+  border-top: 1px solid var(--line);
+  padding-block: 1.5rem 2.5rem;
+  font-size: .74rem;
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
+
+@keyframes rise { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+.tile { animation: rise .5s cubic-bezier(.2,.8,.3,1) backwards; }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="m-leaf" viewBox="0 0 100 100">
+      <path d="M50 96V26" stroke="currentColor" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M50 40c-14-3-22-13-24-27 15-1 24 8 24 27ZM50 40c14-3 22-13 24-27-15-1-24 8-24 27ZM50 62c-13-3-20-12-22-25 14-1 22 7 22 25ZM50 62c13-3 20-12 22-25-14-1-22 7-22 25ZM50 26c-6-6-8-15-5-24 8 5 10 14 5 24Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="m-paw" viewBox="0 0 100 100">
+      <ellipse cx="30" cy="34" rx="10" ry="13" fill="currentColor"/>
+      <ellipse cx="52" cy="26" rx="10" ry="14" fill="currentColor"/>
+      <ellipse cx="74" cy="36" rx="9.5" ry="12.5" fill="currentColor"/>
+      <path d="M52 46c15 0 26 10 26 22 0 11-9 17-26 17S26 79 26 68c0-12 11-22 26-22Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="m-cat" viewBox="0 0 100 100">
+      <path d="M24 44 18 18l20 12a44 44 0 0 1 24 0l20-12-6 26a34 34 0 0 1 6 20c0 20-16 32-32 32S18 84 18 64a34 34 0 0 1 6-20Z" fill="currentColor"/>
+      <circle cx="40" cy="56" r="4" fill="#fff" opacity=".55"/>
+      <circle cx="62" cy="56" r="4" fill="#fff" opacity=".55"/>
+    </symbol>
+    <symbol id="m-dachs" viewBox="0 0 100 100">
+      <path d="M14 46c0-7 5-12 12-12h44c8 0 14 5 14 12v10c0 7-6 12-14 12H26c-7 0-12-5-12-12Z" fill="currentColor"/>
+      <path d="M74 34c0-9 5-16 12-16s10 6 10 13c0 5-3 9-7 11" fill="currentColor"/>
+      <circle cx="90" cy="28" r="9" fill="currentColor"/>
+      <path d="M82 22c-5 1-8 7-7 14 4 1 8-4 9-9Z" fill="currentColor" opacity=".55"/>
+      <rect x="22" y="66" width="7" height="20" rx="3.5" fill="currentColor"/>
+      <rect x="38" y="66" width="7" height="20" rx="3.5" fill="currentColor"/>
+      <rect x="58" y="66" width="7" height="20" rx="3.5" fill="currentColor"/>
+      <rect x="74" y="66" width="7" height="20" rx="3.5" fill="currentColor"/>
+      <path d="M14 46 4 32" stroke="currentColor" stroke-width="6" stroke-linecap="round" fill="none"/>
+    </symbol>
+    <symbol id="m-bowl" viewBox="0 0 100 100">
+      <path d="M12 52h76c0 20-17 32-38 32S12 72 12 52Z" fill="currentColor"/>
+      <rect x="6" y="42" width="88" height="11" rx="5.5" fill="currentColor"/>
+      <path d="M66 38c0-12 6-22 14-22M78 38c0-8 4-14 10-14" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="34" cy="30" r="6" fill="currentColor" opacity=".6"/>
+      <circle cx="48" cy="22" r="4.5" fill="currentColor" opacity=".45"/>
+    </symbol>
+    <symbol id="m-bottle" viewBox="0 0 100 100">
+      <rect x="36" y="8" width="28" height="13" rx="4" fill="currentColor"/>
+      <rect x="26" y="21" width="48" height="71" rx="10" fill="currentColor"/>
+      <rect x="34" y="42" width="32" height="26" rx="3" fill="#fff" opacity=".38"/>
+    </symbol>
+    <symbol id="m-ripple" viewBox="0 0 100 100">
+      <path d="M2 40c12 0 12-9 24-9s12 9 24 9 12-9 24-9 12 9 24 9M2 62c12 0 12-9 24-9s12 9 24 9 12-9 24-9 12 9 24 9M2 84c12 0 12-9 24-9s12 9 24 9 12-9 24-9 12 9 24 9" stroke="currentColor" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="m-moon" viewBox="0 0 100 100">
+      <path d="M62 12a40 40 0 1 0 26 62A44 44 0 0 1 62 12Z" fill="currentColor"/>
+      <circle cx="80" cy="24" r="3.5" fill="currentColor"/>
+      <circle cx="92" cy="42" r="2.5" fill="currentColor"/>
+    </symbol>
+    <symbol id="m-check" viewBox="0 0 100 100">
+      <path d="M10 40l14 14 26-30M10 74l14 14 26-30" stroke="currentColor" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="60" y="34" width="34" height="6" rx="3" fill="currentColor"/>
+      <rect x="60" y="68" width="34" height="6" rx="3" fill="currentColor"/>
+    </symbol>
+    <symbol id="m-lines" viewBox="0 0 100 100">
+      <rect x="8" y="18" width="84" height="7" rx="3.5" fill="currentColor"/>
+      <rect x="8" y="36" width="70" height="7" rx="3.5" fill="currentColor"/>
+      <rect x="8" y="54" width="78" height="7" rx="3.5" fill="currentColor"/>
+      <rect x="8" y="72" width="46" height="7" rx="3.5" fill="currentColor"/>
+    </symbol>
+
+    <symbol id="i-reel" viewBox="0 0 24 24">
+      <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="none" stroke="currentColor" stroke-width="1.9"/>
+      <path d="m10 9 5.5 3L10 15z" fill="currentColor"/>
+      <path d="m7.5 2.8 3 5.4M13.5 2.8l3 5.4" stroke="currentColor" stroke-width="1.6"/>
+    </symbol>
+    <symbol id="i-carousel" viewBox="0 0 24 24">
+      <rect x="7.5" y="2.5" width="14" height="14" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.9"/>
+      <path d="M17 20.5H6A2.5 2.5 0 0 1 3.5 18V7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-verified" viewBox="0 0 24 24">
+      <path d="m12 1.5 2.6 2.2 3.4-.3.6 3.4 3 1.7-1.5 3.1 1.5 3.1-3 1.7-.6 3.4-3.4-.3L12 21.7l-2.6-2.2-3.4.3-.6-3.4-3-1.7L3.9 11.6 2.4 8.5l3-1.7.6-3.4 3.4.3z" fill="currentColor"/>
+      <path d="m8.6 12 2.2 2.3 4.5-4.6" fill="none" stroke="var(--surface)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24">
+      <path d="M12 3.2 22 20H2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M12 9.5v4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="12" cy="16.8" r="1.15" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24">
+      <rect x="3" y="5" width="18" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="masthead">
+  <div class="wrap masthead-in">
+    <div>
+      <div class="brandmark">
+        <svg aria-hidden="true"><use href="#m-paw"></use></svg>
+        <span>Green Paw Wellness &nbsp;·&nbsp; Content Studio</span>
+      </div>
+      <h1>Twelve posts, <em>in the order they go up</em></h1>
+      <p class="sub">A grid preview for the next four weeks — built from your flywheel sheet, your reel analytics, and the ad angles you've already captured. Tap any square for the hook, the shot list, the caption and the reason it earned a slot.</p>
+    </div>
+    <div class="runline">
+      <div class="eyebrow">Planning window</div>
+      <div class="range">Sep 1 &rarr; Sep 26, 2026</div>
+      <div class="eyebrow" style="margin-top:.35rem">Tue &middot; Thu &middot; Sat &nbsp;/&nbsp; 3&times; a week</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="health" aria-label="Grid health">
+    <div class="hcard">
+      <div class="eyebrow">Bucket mix</div>
+      <div class="mixbar" role="img" aria-label="Education 4, Community 4, Product-in-context 2, Routine 2">
+        <i style="background:var(--b1);width:33.34%"></i>
+        <i style="background:var(--b2);width:33.33%"></i>
+        <i style="background:var(--b3);width:16.66%"></i>
+        <i style="background:var(--b4);width:16.67%"></i>
+      </div>
+      <div class="mixkey">
+        <span><s style="background:var(--b1)"></s>Education 4</span>
+        <span><s style="background:var(--b2)"></s>Community 4</span>
+        <span><s style="background:var(--b3)"></s>Product 2</span>
+        <span><s style="background:var(--b4)"></s>Routine 2</span>
+      </div>
+    </div>
+    <div class="hcard">
+      <div class="eyebrow">Format</div>
+      <div class="big">7 <span style="font-size:.9rem;font-weight:400;letter-spacing:0">reels</span> &middot; 5 <span style="font-size:.9rem;font-weight:400;letter-spacing:0">carousels</span></div>
+      <div class="note">Every reel is written to land <b>under 15 seconds</b>. Your two long ones (22s and 31s) leaked in the middle; the 6.2s one looped.</div>
+    </div>
+    <div class="hcard">
+      <div class="eyebrow">Cats named</div>
+      <div class="big">5 <span style="font-size:.9rem;font-weight:400;letter-spacing:0">of 12</span></div>
+      <div class="note">Three of the last five planned reels scored <b>4/10</b> with the cat-parent persona for being dog-only. One post here is cat-led outright.</div>
+    </div>
+    <div class="hcard">
+      <div class="eyebrow">Where it came from</div>
+      <div class="big">12 <span style="font-size:.9rem;font-weight:400;letter-spacing:0">of 12</span></div>
+      <div class="note">Nothing invented. <b>7</b> from your own data, <b>3</b> from captured competitor angles, <b>2</b> straight from the brand brief.</div>
+    </div>
+  </section>
+
+  <div class="board">
+    <div>
+      <div class="section-head">
+        <h2 class="serif">The grid</h2>
+        <span class="eyebrow">Preview</span>
+      </div>
+      <div class="phone">
+        <div class="profile">
+          <div class="avatar"><svg aria-hidden="true"><use href="#m-paw"></use></svg></div>
+          <div>
+            <div class="handle">greenpawwellness <svg aria-hidden="true"><use href="#i-verified"></use></svg></div>
+            <div class="bio">Clean formulas. Real results. Nothing your pet doesn't need.<br><span class="loc">San Clemente, CA &middot; Formulated by a PhD, ND</span></div>
+          </div>
+        </div>
+        <div class="counts">
+          <div><b>12</b><em>planned</em></div>
+          <div><b>4</b><em>weeks</em></div>
+          <div><b>7</b><em>reels</em></div>
+          <div><b>5</b><em>carousels</em></div>
+        </div>
+        <div class="tabs">
+          <div aria-current="true">Grid</div><div>Reels</div><div>Tagged</div>
+        </div>
+        <div class="grid" id="grid"></div>
+        <div class="gridnote">
+          <b>Newest sits top-left</b>, the way the feed actually fills in — so post 1 is the bottom-right square and goes up first. Colour blocks show how the feed reads as a whole, not the final art; each brief tells you what to shoot.
+          <div class="statuskey">
+            <span><i style="background:transparent;box-shadow:0 0 0 1.5px var(--line-2)"></i>Idea</span>
+            <span><i style="background:#E4B92E"></i>Drafted</span>
+            <span><i style="background:#4FA6D6"></i>Scheduled</span>
+            <span><i style="background:#61C24A"></i>Posted</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-head">
+        <h2 class="serif">The brief</h2>
+        <span class="eyebrow" id="briefCount">Post 1 of 12</span>
+      </div>
+      <article class="detail" id="detail" aria-live="polite"></article>
+    </div>
+  </div>
+</main>
+
+<section class="strip">
+  <div class="wrap strip-in">
+    <div class="section-head">
+      <h2 class="serif">Bench</h2>
+      <span class="eyebrow">Swap one in if a post falls through</span>
+    </div>
+    <p style="color:var(--ink-2);max-width:66ch;margin-bottom:1.1rem">These didn't make the four weeks, mostly because the products are quieter or the angle needs a season it isn't yet. Four of your SKUs get no grid time at all this cycle — Activated Charcoal, Bladder Health, Heart Support and Diatomaceous Earth — and that's the first gap to close in October.</p>
+    <div class="backlog" id="backlog"></div>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="wrap strip-in">
+    <div class="section-head">
+      <h2 class="serif">Before you hit post</h2>
+      <span class="eyebrow">From the master brand brief</span>
+    </div>
+    <div class="guards">
+      <div class="g">
+        <h3>Never in customer-facing copy</h3>
+        <div class="words">
+          <span class="w no">cure</span><span class="w no">treat</span><span class="w no">heal</span><span class="w no">diagnose</span><span class="w no">prevent disease</span><span class="w no">clinically proven</span><span class="w no">FDA approved</span>
+        </div>
+        <div class="gnote">Two of these posts sit close to the line — the Apoquel carousel and the dachshund reel. Both briefs carry a flag.</div>
+      </div>
+      <div class="g">
+        <h3>Say it this way instead</h3>
+        <div class="words">
+          <span class="w yes">may support</span><span class="w yes">has been studied for</span><span class="w yes">traditionally used to</span><span class="w yes">many pet parents report</span><span class="w yes">supports a normal response</span>
+        </div>
+        <div class="gnote">Soft benefit language, every time. It also happens to sound more like you than a claim does.</div>
+      </div>
+      <div class="g">
+        <h3>Words the brand doesn't use</h3>
+        <div class="words">
+          <span class="w no">pooch</span><span class="w no">pupper</span><span class="w no">doggo</span><span class="w no">fur kid</span><span class="w no">feline friend</span><span class="w no">companion animal</span><span class="w no">canine companion</span><span class="w no">pet guardian</span>
+        </div>
+        <div class="gnote">Use: pup, fur baby, kitty, pet parent, dog mom, cat dad, the human — and <b>the pack</b> for the community.</div>
+      </div>
+      <div class="g">
+        <h3>The two promises, together</h3>
+        <div class="words">
+          <span class="w yes">No artificial ingredients — ever</span><span class="w yes">No harmful fillers</span>
+        </div>
+        <div class="gnote">Always both, never one alone. Diatomaceous earth is natural, functional and earns its place — say so if anyone asks.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    Built from <b>Green-Paw-Wellness-Master-Brand-Brief.pdf</b>, <b>GPW Instagram Flywheel</b> (outlines, idea backlog, hook library, winners, reel analytics, competitor hooks), <b>01-Content-Studio-SYSTEM</b>, <b>Social Media Ideas</b> and <b>Reel Hook Ideas / Content Brainstorm</b>. Status marks save in this browser only.
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+const BUCKETS = {
+  edu:       { label: "1 Hook / Education",    v: "--b1" },
+  community: { label: "2 Identity / Community", v: "--b2" },
+  product:   { label: "3 Product-in-Context",  v: "--b3" },
+  routine:   { label: "4 Routine / Value",     v: "--b4" }
+};
+
+const SOURCES = {
+  winner:     "Your winning reel",
+  analytics:  "Your reel analytics",
+  board:      "Persona board score",
+  competitor: "Captured competitor angle",
+  brief:      "Master brand brief"
+};
+
+const POSTS = [
+  {
+    n: 1, date: "Tue Sep 1", pal: "lime", place: "center", motif: "m-leaf",
+    bucket: "edu", format: "reel", len: "9 sec",
+    product: "Natural Allergy Relief",
+    tile: "fall is the<br>second wave",
+    hook: "Your dog's itching didn't end with summer. Fall is the second wave.",
+    angle: "A seasonal myth-bust. Most pet parents file allergies under 'spring thing' and stop looking in September — right as ragweed, leaf mold and the first run of the heater arrive.",
+    beatsLabel: "Shot list",
+    beats: [
+      "<b>0–2s</b> Marley scratching at the doorframe. On-screen: the hook, in two lines.",
+      "<b>2–4s</b> Hard cut outside — wet leaves, a gust, late-summer light going gold.",
+      "<b>4–7s</b> Back inside: the heater vent, dust in the sunbeam. On-screen: <i>ragweed. leaf mold. the heater turning on.</i>",
+      "<b>7–9s</b> The bottle on the counter, hand reaching in. On-screen: <i>quercetin. nettle leaf. white oak bark.</i>"
+    ],
+    caption: "your dog's itching didn't end with summer. fall is the second wave.\n\nragweed, mold coming off wet leaves, and the dust that hits the air the first time the heater kicks on — a lot of pets react harder to the back half of the year than they ever did to spring. if the paw-licking came back in the last two weeks, it isn't random. the season changed.\n\nour Natural Allergy Relief is quercetin, nettle leaf and white oak bark. no bacon flavoring, no fillers, and the same formula works for dogs and cats — it supports a normal histamine response, gently.\n\nwhat does fall look like at your house: better, worse, or no change? 👇",
+    tags: "#dogallergies #catallergies #itchydog #naturalpethealth #dogwellness #holisticpetcare #petsupplements #dogmom #catmom #cleaningredients #pawlicking #pethealth",
+    cta: "Answer in the comments · link in bio",
+    visual: "Real light, real house. Do not shoot this on white seamless — the whole point is that it looks like a Tuesday.",
+    src: "competitor",
+    why: "Fera is running an allergy line across <b>many active variants</b> right now, which is the market telling you the demand is there. <b>IDEA-012</b> in your backlog says to time this for late summer / fall. That's now.",
+    flag: null
+  },
+  {
+    n: 2, date: "Thu Sep 3", pal: "bone", place: "bottom", motif: "m-dachs",
+    bucket: "community", format: "carousel", len: "7 slides",
+    product: "Natural Allergy Relief (soft mention, slide 6)",
+    tile: "this brand exists because of one itchy dachshund",
+    hook: "This whole brand exists because of one itchy dachshund.",
+    angle: "The founder story, told properly, on the grid — not in a highlight. Marley's story is the single most shareable thing the brand owns and it has never been posted as a carousel.",
+    beatsLabel: "Slides",
+    beats: [
+      "<b>Hook</b> — This whole brand exists because of one itchy dachshund.",
+      "<b>Value</b> — 8 weeks old, and already hot spots. One flea bite set off his whole body.",
+      "<b>Value</b> — Elimination diet. Single-source protein. Raw. A 5Strands panel to find out what he was actually reacting to.",
+      "<b>Value</b> — The food side, I could solve with research. The supplement aisle I couldn't.",
+      "<b>Value</b> — Read the first three ingredients on most chews. Pea flour. Glycerin. 'Natural flavor.'",
+      "<b>Soft pitch</b> — So we spent a year with a Naturopathic Doctor building the thing that didn't exist.",
+      "<b>CTA</b> — He's the reason for all of it. Link in bio."
+    ],
+    caption: "this whole brand exists because of one itchy dachshund.\n\nmarley came home at 8 weeks already itching. hot spots, gut trouble, and a flea allergy so severe that a single bite turns into a full-body reaction. at a year old he hurt his back at the groomer, and suddenly it was skin, gut, allergies and joints all at once.\n\nthe food side I could figure out — elimination diet, single-source proteins, raw, rotating to keep his gut steady, a 5Strands panel to see exactly what he was reacting to. what I couldn't figure out was the supplement aisle. fillers listed first, the real ingredients underdosed at the bottom, flavoring covering for quality.\n\nso I stopped shopping and spent a year with a Naturopathic Doctor building what I actually wanted to give him.\n\nhis skin cleared. his gut settled. that's the whole origin story.\n\nwho's the pet that changed how you shop? 👇",
+    tags: "#dachshund #dachshundsofinstagram #foundermade #smallbatch #naturalpethealth #dogallergies #itchydog #holisticpetcare #cleaningredients #dogmom #petsupplements #madeincalifornia",
+    cta: "Answer in the comments · link in bio",
+    visual: "Dig out the puppy photos. A grainy phone shot of Marley at 8 weeks will outperform anything you style. Slide 5 is the only designed slide — set the filler ingredients in type on forest green.",
+    src: "analytics",
+    why: "Your emotional bond reel pulled <b>13 shares and 15 comments off only 429 reach</b> — by far the best share rate on the account, even though retention was mid. Emotion is what this audience passes on. Tighten the middle and lead with the feeling in the first two seconds.",
+    flag: null
+  },
+  {
+    n: 3, date: "Sat Sep 5", pal: "ink", place: "center", motif: "m-lines",
+    bucket: "edu", format: "reel", len: "8 sec, loopable",
+    product: "Any GPW — this is the brand wedge",
+    tile: "read the first three ingredients",
+    hook: "Read the first three ingredients on your dog's chews. I'll wait.",
+    angle: "The anti-filler wedge, stated flatly and without a villain. No fear, no brand names — just the label, read out loud.",
+    beatsLabel: "Shot list",
+    beats: [
+      "<b>0–2s</b> Hand flips a chew bag over. On-screen: the hook.",
+      "<b>2–5s</b> Finger traces the panel, one ingredient at a time. On-screen, appearing in sequence: <i>pea flour · vegetable glycerin · natural chicken flavor.</i>",
+      "<b>5–7s</b> Cut to a GPW capsule pulled apart over a bowl. On-screen: <i>ours is the ingredient. that's the whole list.</i>",
+      "<b>7–8s</b> Loop back to the first frame so it runs again without a seam."
+    ],
+    caption: "read the first three ingredients on your dog's chews. I'll wait.\n\npea flour. vegetable glycerin. natural chicken flavor. that's a pretty standard top three — and the thing you actually bought the bag for is usually sitting at number seven, underdosed.\n\nthis is the entire reason we make powders and capsules instead of chews. nothing has to be shaped, sweetened or flavored into something a dog will eat, so nothing has to be disguised. no artificial ingredients, ever. no harmful fillers.\n\nwhat's the first ingredient on the bag in your cupboard right now? go look — I'm genuinely curious 👇",
+    tags: "#readthelabel #dogsupplements #catsupplements #cleaningredients #naturalpethealth #petsupplements #holisticpetcare #nofillers #dogmom #catmom #dogwellness #smallbatch",
+    cta: "Comment the first ingredient · link in bio",
+    visual: "Shoot it top-down on a wood counter in daylight. Keep your hands in frame — it should feel like someone showing you something, not an ad.",
+    src: "brief",
+    why: "The brand brief calls the filler problem the core differentiator and lists the exact ingredients to name. It has never been a post. Built at <b>8 seconds and loopable</b> on purpose — your 6.2s reel had a 10.0s average watch because people re-watched it, while your 22s and 31s reels leaked through the middle.",
+    flag: null
+  },
+  {
+    n: 4, date: "Tue Sep 8", pal: "mist", place: "stack", motif: "m-bottle",
+    bucket: "edu", format: "carousel", len: "7 slides",
+    kicker: "for the ones who tried everything",
+    product: "Natural Allergy Relief",
+    tile: "read this before the next pill",
+    hook: "Read this before the next Apoquel pill.",
+    angle: "Interrupt at the decision point. This speaks to the pet parent standing in the kitchen at 7am with the bottle in their hand, wondering if this is really the plan for the next ten years.",
+    beatsLabel: "Slides",
+    beats: [
+      "<b>Hook</b> — Read this before the next Apoquel pill.",
+      "<b>Value</b> — Not 'don't.' Just: know what else can sit alongside it.",
+      "<b>Value</b> — Itching is a histamine response. The pill interrupts the signal. It doesn't change what's driving it.",
+      "<b>Value</b> — Quercetin has been studied for its role in supporting a normal histamine response.",
+      "<b>Value</b> — Nettle leaf and white oak bark, traditionally used for skin comfort and seasonal irritation.",
+      "<b>Soft pitch</b> — That's our Natural Allergy Relief. Unflavored, so picky pets take it. Same formula for cats.",
+      "<b>CTA</b> — Talk to your vet, then come find us. Link in bio."
+    ],
+    caption: "read this before the next Apoquel pill.\n\nnot 'don't take it.' that's between you and your vet, and for some pets it's the right call. but a lot of pet parents get handed a prescription and never get told what else can sit alongside it.\n\nitching is a histamine response. medication interrupts the signal — it doesn't change what's driving it. that's why so many of you tell us the itch comes straight back the week you stop.\n\nquercetin has been studied for its role in supporting a normal histamine response. nettle leaf and white oak bark have been used traditionally for skin comfort. that's the whole idea behind our Natural Allergy Relief — support the body's normal response instead of only muting the signal.\n\nif you've been on the meds a while and you're wondering what else there is: ask your vet about adding support. then come talk to us.\n\nhow long has your pet been on allergy medication? 👇",
+    tags: "#dogallergies #itchydog #naturalallergyrelief #holisticpetcare #naturalpethealth #dogskinhealth #quercetin #nettleleaf #petsupplements #dogmom #catallergies #cleaningredients",
+    cta: "Answer in the comments · link in bio",
+    visual: "Type-led carousel on bone and forest. One real photo on slide 6 — the bottle in a hand, kitchen counter, morning light.",
+    src: "competitor",
+    why: "This is the only angle your competitor sweep confirmed <b>twice</b> — The Itchy Dog Journal and Emily Carter are both running 'read this before…' allergy advertorials across many variants. Your sheet flags it GPW GOLD. Anti-pharma framing is exactly this audience.",
+    flag: "Stay on the right side of the line. Never suggest stopping or replacing a medication, and never say cure, treat or prevent. 'Ask your vet about adding support' is the safe frame — and it's also the honest one."
+  },
+  {
+    n: 5, date: "Thu Sep 10", pal: "forest", place: "center", motif: "m-cat",
+    bucket: "community", format: "reel", len: "11 sec",
+    product: "Greens Superfood Blend",
+    tile: "the supplement aisle forgets cat parents exist",
+    hook: "The supplement aisle forgets cat parents exist.",
+    angle: "Call out an overlooked audience by name so they self-select instantly. Then land the thing almost none of them know: every GPW formula is built for cats too.",
+    beatsLabel: "Shot list",
+    beats: [
+      "<b>0–3s</b> Slow pan along a shelf of pet supplements — every label says DOG. On-screen: the hook.",
+      "<b>3–6s</b> A cat walks through frame, unbothered. On-screen: <i>she's on her own out here.</i>",
+      "<b>6–9s</b> The GPW bottle, label turned so 'for dogs and cats' is legible. On-screen: <i>same formula. on purpose.</i>",
+      "<b>9–11s</b> Powder going into a cat bowl. On-screen: <i>unflavored — which is why she'll actually eat it.</i>"
+    ],
+    caption: "the supplement aisle forgets cat parents exist.\n\nwalk the shelf. it's dog, dog, dog, dog, and then one sad cat product in the corner that's mostly flavoring. if you have a cat, you've probably just given up and assumed there wasn't a clean option.\n\nevery formula we make is built for dogs and cats — same bottle, same blend, adjusted by weight. that was a decision, not an accident. and because everything we make is unflavored, there's no artificial chicken or bacon for a cat to sniff once and walk away from.\n\nour Greens Superfood Blend is spirulina and chlorella, and it supports immune health for both.\n\ncat parents — what have you actually been able to get yours to take? 👇",
+    tags: "#catparents #catsofinstagram #cathealth #catwellness #catsupplements #naturalpethealth #holisticpetcare #catmom #pickycat #cleaningredients #petsupplements #catnutrition",
+    cta: "Answer in the comments · link in bio",
+    visual: "Shoot in an actual pet store aisle if you can — the wall of dog labels does the argument for you. If not, stage it with what you have and keep the pan slow.",
+    src: "board",
+    why: "Your persona board scored three of the last five planned reels at <b>4 out of 10</b> from the cat parent — every time, for being dog-only. Fera is already running cat-immunity ads. Your sheet's words: <b>the cat lane is wide open</b>. This is the cheapest reach on the board.",
+    flag: null
+  },
+  {
+    n: 6, date: "Sat Sep 12", pal: "bone", place: "bottom", motif: "m-bowl",
+    bucket: "routine", format: "reel", len: "12 sec",
+    product: "Probiotics with Prebiotics",
+    tile: "about 70% of it lives in the gut",
+    hook: "About 70% of your pet's immune system lives in their gut.",
+    angle: "Curiosity-stat hook into a thirty-second morning routine anyone can copy. Positive framing, no gross-out — the clean version of what everyone else does with a poop emoji.",
+    beatsLabel: "Shot list",
+    beats: [
+      "<b>0–3s</b> Scoop going into the jar. On-screen: the stat, big.",
+      "<b>3–6s</b> Powder over food, a stir, no voiceover — just the sound. On-screen: <i>a powder. not a filler chew.</i>",
+      "<b>6–10s</b> Dog eats. Cut. Cat eats the same thing. On-screen: <i>same scoop, both bowls.</i>",
+      "<b>10–12s</b> Bowl licked clean. On-screen: <i>thirty seconds. every morning.</i>"
+    ],
+    caption: "about 70% of your pet's immune system lives in their gut. dogs and cats both.\n\nwhich is why gut support isn't really a digestion thing — it's an everything thing. skin, energy, how well they handle a change in food, how they bounce back from a rough week.\n\nours is a live lactobacillus probiotic with prebiotics to feed it, in a powder that takes about thirty seconds to stir into breakfast. no chew to chase, no flavoring to hide behind, and the same scoop works for the cat.\n\nstart there before you start anywhere else.\n\nwhat's already in your pet's morning bowl? 👇",
+    tags: "#petgut #doggut #cathealth #probioticsforpets #guthealth #naturalpethealth #dogwellness #catwellness #petsupplements #holisticpetcare #morningroutine #cleaningredients",
+    cta: "Answer in the comments · link in bio",
+    visual: "ASMR energy. Close, warm, no music over the pouring. This is the one to shoot in the nicest morning light you get all week.",
+    src: "board",
+    why: "The highest board score in your whole pipeline — <b>8.2</b>, and the only idea every single persona rated 8 or above, including the cat parent and the skeptic. Your notes call it the strongest all-rounder and the second-best Meta ad candidate.",
+    flag: null
+  },
+  {
+    n: 7, date: "Tue Sep 15", pal: "ink", place: "bottom", motif: "m-dachs",
+    bucket: "edu", format: "reel", len: "10 sec",
+    product: "Hip &amp; Joint Support",
+    tile: "he looks completely fine",
+    hook: "Your dachshund looks completely fine. That's the part nobody warns you about.",
+    angle: "A breed callout aimed at long-backed dogs. It reveals something slow and invisible rather than shouting about an emergency — and it's a breed you have every right to talk about.",
+    beatsLabel: "Shot list",
+    beats: [
+      "<b>0–3s</b> Marley at the bottom of the stairs, looking up, not going. On-screen: the hook.",
+      "<b>3–6s</b> He takes them, but slowly. On-screen: <i>dachshunds, frenchies, corgis, bassets — long backs, short legs.</i>",
+      "<b>6–8s</b> Cut to the ramp by the couch. On-screen: <i>you support the back before there's a problem, not after.</i>",
+      "<b>8–10s</b> The scoop into the bowl. On-screen: <i>glucosamine. MSM. boswellia. devil's claw.</i>"
+    ],
+    caption: "your dachshund looks completely fine. that's the part nobody warns you about.\n\nlong back, short legs — the build that makes them them is also the build that asks a lot of their spine every single day. and dogs are extremely good at looking fine right up until they don't.\n\nmarley is four. he has a ramp, he doesn't do stairs if I can help it, he gets a daily scoop with glucosamine, MSM, boswellia and devil's claw. not because something's wrong. because he's a dachshund and I'd rather support his joints now than react later.\n\nif you have a long-backed breed, this is your reminder to start before you think you need to.\n\nwhat breed is yours, and do they do stairs? 👇",
+    tags: "#dachshund #dachshundsofinstagram #frenchie #corgi #bassethound #doghipandjoint #dogmobility #seniordog #naturalpethealth #petsupplements #holisticpetcare #dogmom",
+    cta: "Answer in the comments · link in bio",
+    visual: "Marley is the whole reason this post has standing. Shoot the real stairs and the real ramp in your house. Don't dramatise it — slow is enough.",
+    src: "competitor",
+    why: "<b>IDEA-005</b>, marked high priority, and the breed-callout template is proven — Donna Thompson's IVDD ads run many variants on exactly this structure. Your sheet notes it's reusable per breed, so this becomes a series.",
+    flag: "Support, never prevent. Say 'supports joint comfort and mobility' — do not say it prevents IVDD, protects the spine or stops back problems. And keep the founder framing personal: this is what you do for Marley."
+  },
+  {
+    n: 8, date: "Thu Sep 17", pal: "bone", place: "center", motif: "m-leaf",
+    bucket: "product", format: "carousel", len: "5 slides",
+    product: "Parasite Cleanse",
+    tile: "four ingredients.<br>that's the whole thing.",
+    hook: "Four ingredients. That's the whole parasite cleanse.",
+    angle: "Transparency as the entire post. One ingredient per slide, what it is, what it's traditionally been used for. The short list is the argument.",
+    beatsLabel: "Slides",
+    beats: [
+      "<b>Hook</b> — Four ingredients. That's the whole parasite cleanse.",
+      "<b>Value</b> — Wormwood. Traditionally used in cleansing formulas for centuries.",
+      "<b>Value</b> — Black walnut hull. The classic partner to wormwood — they were never meant to work alone.",
+      "<b>Value</b> — Pumpkin seed and clove. Gentle, food-derived, and the reason this sits well on a stomach.",
+      "<b>CTA</b> — Four. Not fourteen, with the real ones at the bottom. Link in bio."
+    ],
+    caption: "four ingredients. that's the whole parasite cleanse.\n\nwormwood. black walnut hull. pumpkin seed. clove.\n\nthat's it — and it's short on purpose. these four have been used together traditionally for a very long time because they work in synergy, and adding nine more things to make the label look impressive would only mean less of each one.\n\nit supports your pet's natural cleansing process. it's unflavored, so picky eaters take it, and it's safe for dogs and cats.\n\nif you've ever turned a bottle over and counted eighteen ingredients wondering how much of any of them is actually in there — this is the opposite of that.\n\nwhich ingredient did you not expect to see? 👇",
+    tags: "#parasitecleanse #naturalpethealth #wormwood #blackwalnut #pumpkinseed #holisticpetcare #dogwellness #catwellness #petsupplements #cleaningredients #nofillers #dogmom",
+    cta: "Answer in the comments · link in bio",
+    visual: "Flat lay, one ingredient per slide, raw herb beside the open capsule. Neutral linen, hard natural light, real shadows. This is the most beautiful set of the month — shoot all five at once.",
+    src: "winner",
+    why: "Parasite Cleanse is the only product on the account with a <b>proven winner</b> behind it — 4,417 reach against 146 and 429 for the two reels either side of it. Mine the same product from a second angle while that audience is still warm.",
+    flag: null
+  },
+  {
+    n: 9, date: "Sat Sep 19", pal: "lime", place: "bottom", motif: "m-ripple",
+    bucket: "routine", format: "reel", len: "7 sec — do not go longer",
+    product: "Parasite Cleanse → Liver &amp; Kidney Support",
+    tile: "POV: a whole summer in the lake",
+    hook: "POV: your dog swam in lakes all summer and you've never done a cleanse.",
+    angle: "A straight re-cut of your best-performing post with a fall frame on it. Same POV structure, same length, new season, and it seeds the twice-a-year routine.",
+    beatsLabel: "Shot list",
+    beats: [
+      "<b>0–2s</b> Your existing summer lake clip. On-screen: the POV line, exactly as it ran before.",
+      "<b>2–4s</b> One autumn frame — same dog, leaves down, cooler light. On-screen: <i>summer's over. that stuff isn't.</i>",
+      "<b>4–6s</b> Bottle on the counter. On-screen: <i>cleanse, then liver &amp; kidney support.</i>",
+      "<b>6–7s</b> Cut back to the lake so it loops clean."
+    ],
+    caption: "POV: your dog swam in lakes all summer and you've never done a cleanse.\n\nwild fact — a single female roundworm can lay up to 200,000 eggs a day inside your pet. every single day. lake water, pond edges, other dogs' business at the park, whatever they licked off their paws in the car.\n\ntwice a year is the rhythm we use: a gentle parasite cleanse, then liver and kidney support to help the body do what it does with what's been stirred up. wormwood, black walnut hull, pumpkin seed and clove — and it supports their natural cleansing process rather than blasting anything.\n\nend of summer is one of the two windows. this is the reminder.\n\nlake dog or pool dog? 👇",
+    tags: "#parasitecleanse #dogdetox #lakedog #naturalpethealth #dogwellness #catwellness #holisticpetcare #petsupplements #wormwood #cleaningredients #dogmom #catmom",
+    cta: "Answer in the comments · link in bio",
+    visual: "You already have the footage. Do not reshoot and do not extend it — the length is the reason it worked.",
+    src: "winner",
+    why: "This is your <b>June 16 winner</b>, re-cut. 4,417 reach, 8 shares, and a 10.0-second average watch on a 6.2-second reel, which means people looped it. The on-screen hook was the POV line and the 200,000 stat lived in the caption — keep that split exactly. Also delivers <b>IDEA-011</b>'s twice-a-year framing.",
+    flag: null
+  },
+  {
+    n: 10, date: "Tue Sep 22", pal: "mist", place: "stack", motif: "m-moon",
+    bucket: "product", format: "reel", len: "15 sec",
+    kicker: "the drawer nobody shows",
+    product: "Calming Aid",
+    tile: "$300 of calming chews that did nothing",
+    hook: "I spent $300 on calming chews that did nothing.",
+    angle: "A personal story with a real number in it, turning on a mechanism the viewer hasn't considered. Confession first, product second.",
+    beatsLabel: "Shot list",
+    beats: [
+      "<b>0–3s</b> Open the actual drawer. Half-used bags and bottles. On-screen: the hook.",
+      "<b>3–7s</b> Pull them out one at a time, set them down. On-screen: <i>every one of them a chew. every one mostly filler.</i>",
+      "<b>7–11s</b> Turn one over, point at the panel. On-screen: <i>if the active is at the bottom of the list, you're paying for glycerin.</i>",
+      "<b>11–15s</b> The powder going into food. On-screen: <i>chamomile. valerian. L-theanine. supports calm — doesn't sedate.</i>"
+    ],
+    caption: "I spent $300 on calming chews that did nothing.\n\nstorms, the vacuum, the neighbour's kid on a scooter — I bought whatever was in front of me at the store for about a year. this drawer is the evidence.\n\nhere's what I eventually worked out: almost all of them were chews, which means most of what I was paying for was the thing holding the chew together. glycerin, pea flour, flavoring. the active ingredient was down at the bottom of the panel, underdosed, doing very little.\n\nour Calming Aid is chamomile, valerian root and L-theanine in an unflavored powder. it supports a calm state — it doesn't sedate, and it isn't supposed to knock anyone out.\n\nseptember is its own kind of stressful, too. new schedules, empty houses, everything different than it was in july.\n\nwhat's in your drawer that didn't work? no judgement, mine's right there 👇",
+    tags: "#doganxiety #calmingsupplement #reactivedog #separationanxiety #naturalpethealth #holisticpetcare #dogwellness #catanxiety #petsupplements #cleaningredients #dogmom #chamomile",
+    cta: "Answer in the comments · link in bio",
+    visual: "Shoot the real drawer. Do not tidy it. The mess is the credibility — a styled version of this post does not work.",
+    src: "competitor",
+    why: "<b>IDEA-004</b>, high priority. Sarah Mitchell's '$423 on CBD oils, then I learned about bioavailability' advertorial has been running long enough to prove the template converts. Bioavailability recurs across three separate advertisers in your sweep — it's a shared angle worth owning in your own words.",
+    flag: "Only use $300 if it's roughly true. If you'd rather not put a number on it, 'a drawer full of calming chews that did nothing' works just as well. And keep 'supports calm, doesn't sedate' — that line is honest and it pre-empts the obvious objection."
+  },
+  {
+    n: 11, date: "Thu Sep 24", pal: "bone", place: "center", motif: "m-check",
+    bucket: "community", format: "carousel", len: "6 slides",
+    product: "Hip &amp; Joint Support · Greens Superfood Blend",
+    tile: "green flags",
+    hook: "The green flags that say your senior pet is still doing well.",
+    angle: "Flip the dread. Every senior post on the internet is a list of decline; this one is a list of what's still going right, and it gives people something hopeful to tag each other in.",
+    beatsLabel: "Slides",
+    beats: [
+      "<b>Hook</b> — Nobody warns you how fast they go from puppy to gray muzzle.",
+      "<b>Value</b> — So here are the green flags. Still finds the sunny spot. Still knows the sound of your car.",
+      "<b>Value</b> — Still gets up for dinner. Still asks. Still leans on you.",
+      "<b>Value</b> — Gray muzzle, cloudy eyes, more naps — those are age, not alarm.",
+      "<b>Soft pitch</b> — What we can support is the comfort part. Joints, energy, the daily stuff.",
+      "<b>CTA</b> — Tag someone whose senior is still doing all of these. Link in bio."
+    ],
+    caption: "nobody warns you how fast they go from puppy to gray muzzle.\n\nso here's the list I'd rather you have — the green flags. still finds the sunny spot. still knows the sound of your car in the driveway. still gets up for dinner. still asks for the thing they want. still leans on you.\n\ngray muzzle, cloudy eyes, more naps: that's age. that's allowed. the part worth paying attention to is comfort — whether the stairs got harder, whether they stopped asking.\n\nglucosamine, MSM, boswellia and devil's claw for joint comfort, greens for daily support. it won't stop time. it can make the days more comfortable.\n\ntag someone whose senior is still doing every single one of these 🐾",
+    tags: "#seniordog #seniorcat #graymuzzle #olddogsrule #dogmobility #hipandjoint #naturalpethealth #holisticpetcare #petsupplements #dogmom #catmom #agingpet",
+    cta: "Tag someone · link in bio",
+    visual: "Gray muzzles in afternoon light. Slow, warm, a little overexposed. If you have followers with seniors, ask for photos in stories first and build the carousel from those — it doubles as community.",
+    src: "board",
+    why: "The senior multi-dog persona scored this <b>9 out of 10</b> — the highest single-persona score anywhere in your pipeline. Pairs with your account's proven share behaviour: emotional posts travel. The board's one note was to tighten the middle, which is why it's six slides and not eight.",
+    flag: null
+  },
+  {
+    n: 12, date: "Sat Sep 26", pal: "forest", place: "bottom", motif: "m-paw",
+    bucket: "community", format: "carousel", len: "5 slides",
+    product: "Brand — ambassador search",
+    tile: "we're looking for one of you",
+    hook: "We're looking for one of you.",
+    angle: "The ask, placed at the end of the month on purpose. By now the founder story, the cat post and the senior post have done the work — this is the point where a community request converts.",
+    beatsLabel: "Slides",
+    beats: [
+      "<b>Hook</b> — We're looking for one of you.",
+      "<b>Value</b> — If you're obsessed with your pet's health, make content, and actually read ingredient labels — keep going.",
+      "<b>Value</b> — You don't need a big following. You need a pet you're obsessed with and a real opinion about ingredients.",
+      "<b>Value</b> — Free product, early access to every launch, commission, and a group of people who care about the same things.",
+      "<b>CTA</b> — Comment PACK and we'll DM you the application."
+    ],
+    caption: "we're looking for one of you.\n\nnot influencers. pet parents. the ones who turn the bottle over in the aisle and read the whole panel before deciding, who've already tried the big brands and weren't impressed.\n\nyou don't need a huge following. you need a pet you're obsessed with, an actual opinion about ingredients, and the drive to make something that means something.\n\nwhat you get: free product and goodies, commission, early access to every launch, and a small group of people building this alongside us.\n\nwe're a small-batch brand made in california by one person and one very itchy dachshund. this isn't a promo-code situation — we want people who'll grow with us.\n\ncomment PACK and we'll send you the application 🐾",
+    tags: "#petambassador #dogambassador #catambassador #brandambassador #jointhepack #naturalpethealth #holisticpetcare #petsupplements #smallbatch #madeincalifornia #dogmom #catmom",
+    cta: "Comment PACK for the DM link",
+    visual: "Bold type on forest green, Marley front and centre with a product, high energy. Slide 5 gets the keyword huge with an arrow down. Let the copy breathe on slides 2 and 3.",
+    src: "brief",
+    why: "The ambassador carousel is already drafted in your Social Media Ideas doc, and 'Join The Pack' is the newsletter language on the site — so this stays consistent with what people already see. Placed last because posts 2, 5 and 11 build the goodwill an ask like this spends.",
+    flag: null
+  }
+];
+
+const BENCH = [
+  { t: "Dog breath that could clear a room? It starts in the gut.", p: "Activated Charcoal", b: "product", n: "IDEA-002. Fera runs many fresh-breath variants with BOGO offers, so the demand is proven — but it's a low-premium angle and one persona keeps scoring it down. Good October filler." },
+  { t: "The UTI signs most owners miss", p: "Bladder Health", b: "edu", n: "IDEA-003. Zesty Paws bets real ad spend on the urinary category and you have the product sitting unused. Needs a symptom-stack script written first." },
+  { t: "Your reactive dog's problem might be their gut", p: "Probiotics × Calming Aid", b: "edu", n: "IDEA-006. The gut-brain link is genuinely novel and it cross-sells two SKUs. Held back because post 6 already spends the gut angle this month." },
+  { t: "The dog you miss is still in there", p: "Greens · senior wellness", b: "community", n: "IDEA-008. Your sheet calls it devastatingly good, and it is — which is exactly why it shouldn't run in the same month as the senior green-flags carousel." },
+  { t: "The quiet signs your pet's heart needs support", p: "Heart Support", b: "edu", n: "IDEA-010. Hawthorn berry and CoQ10, and almost nobody in the category covers it. Low priority only because it needs the most careful compliance pass of anything on this list." },
+  { t: "Why a gentle liver and kidney reset twice a year", p: "Liver &amp; Kidney Support", b: "routine", n: "IDEA-011. Partly delivered by post 9's caption. Worth its own reel once the parasite cleanse post has warmed the idea up." },
+  { t: "How to actually get a capsule into your dog", p: "Any GPW", b: "routine", n: "From your FAQ list. Boring on paper, saved constantly in practice — and it removes the last objection before someone buys. Strong Highlight cover too." },
+  { t: "What's on the back of every packing slip", p: "Brand", b: "community", n: "From your reel ideas. The handwritten note and the product tips are the small-batch story told without saying 'small batch.' Costs nothing to shoot." },
+  { t: "Capsules and powders, and why not chews", p: "Brand", b: "edu", n: "You already have the full scene-by-scene script written. Overlaps with post 3's wedge this month — run it in October and cut it to 15 seconds." },
+  { t: "Lick mat recipes using the powders", p: "Probiotics · Greens", b: "routine", n: "From your brainstorm. Enrichment content travels well beyond your own audience and shows the powder in use. Needs a good mat and one good afternoon." },
+  { t: "Free sample, honest review", p: "Any GPW", b: "community", n: "Your own reel template. Best used as a stories arc feeding the ambassador search rather than a grid post competing with it." },
+  { t: "Fall shedding: what's normal and what isn't", p: "Greens · Allergy Relief", b: "edu", n: "Not in the sheet — a seasonal gap worth filling. October, when everyone's vacuum is full and they're wondering if it's a coat change or something else." }
+];
+
+/* ---------- state ---------- */
+const KEY = "gpw-grid-status-v1";
+let status = {};
+try { status = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { status = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(status)); } catch (e) { /* private mode */ } };
+
+let selected = 1;
+
+/* ---------- grid ---------- */
+const gridEl = document.getElementById("grid");
+
+function tileMarkup(p) {
+  const txt = p.place === "stack" && p.kicker
+    ? '<span class="kicker">' + p.kicker + "</span>" + p.tile
+    : p.tile;
+  return '<span class="num"><s>' + p.n + "</s></span>" +
+    '<svg class="fmt" aria-hidden="true"><use href="#i-' + p.format + '"></use></svg>' +
+    '<svg class="motif" aria-hidden="true"><use href="#' + p.motif + '"></use></svg>' +
+    '<span class="txt">' + txt + "</span>" +
+    '<span class="dot"></span>';
+}
+
+// newest first, top-left — the way the feed actually fills in
+[...POSTS].reverse().forEach((p, i) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "tile";
+  b.dataset.pal = p.pal;
+  b.dataset.place = p.place;
+  b.dataset.n = p.n;
+  b.dataset.status = status[p.n] || "idea";
+  b.style.animationDelay = (i * 26) + "ms";
+  b.setAttribute("aria-pressed", "false");
+  b.setAttribute("aria-label", "Post " + p.n + ", " + p.date + " — " + p.hook);
+  b.innerHTML = tileMarkup(p);
+  b.addEventListener("click", () => select(p.n));
+  gridEl.appendChild(b);
+});
+
+/* ---------- detail ---------- */
+const detailEl = document.getElementById("detail");
+const countEl = document.getElementById("briefCount");
+const STATUSES = ["idea", "drafted", "scheduled", "posted"];
+
+function render(p) {
+  const bk = BUCKETS[p.bucket];
+  const fmtLabel = p.format === "reel" ? "Reel" : "Carousel";
+
+  detailEl.style.setProperty("--bcolor", "var(" + bk.v + ")");
+  detailEl.innerHTML =
+    '<div class="d-top">' +
+      '<div class="d-meta">' +
+        '<span class="chip date"><svg aria-hidden="true"><use href="#i-cal"></use></svg>' + p.date + "</span>" +
+        '<span class="chip bucket">' + bk.label + "</span>" +
+        '<span class="chip"><svg aria-hidden="true"><use href="#i-' + p.format + '"></use></svg>' + fmtLabel + " · " + p.len + "</span>" +
+        '<span class="chip">' + p.product + "</span>" +
+      "</div>" +
+      '<h3 class="d-hook">' + p.hook + "</h3>" +
+      '<p class="d-angle">' + p.angle + "</p>" +
+      '<div class="statusrow"><span class="lbl">Status</span>' +
+        STATUSES.map(s =>
+          '<button type="button" class="sbtn" data-set="' + s + '" aria-pressed="' +
+          ((status[p.n] || "idea") === s) + '">' + s.charAt(0).toUpperCase() + s.slice(1) + "</button>"
+        ).join("") +
+      "</div>" +
+    "</div>" +
+    '<div class="d-body">' +
+      '<div class="blk">' +
+        "<h3>" + p.beatsLabel + "</h3>" +
+        '<ol class="beats">' + p.beats.map(b => "<li>" + b + "</li>").join("") + "</ol>" +
+      "</div>" +
+      '<div class="blk">' +
+        "<h3>Caption</h3>" +
+        '<div class="caption">' + p.caption + "</div>" +
+        '<div class="tags">' + p.tags + "</div>" +
+      "</div>" +
+      '<div class="blk span2">' +
+        "<h3>Notes</h3>" +
+        '<dl class="kv">' +
+          "<div><dt>CTA</dt><dd>" + p.cta + "</dd></div>" +
+          "<div><dt>Shoot it</dt><dd>" + p.visual + "</dd></div>" +
+          '<div><dt>Why now</dt><dd><div class="why">' + p.why + "</div>" +
+            '<span class="src"><i></i>' + SOURCES[p.src] + "</span></dd></div>" +
+        "</dl>" +
+        (p.flag
+          ? '<div class="flag"><svg aria-hidden="true"><use href="#i-warn"></use></svg><div><b>Compliance check.</b> ' + p.flag + "</div></div>"
+          : "") +
+      "</div>" +
+    "</div>";
+
+  detailEl.querySelectorAll(".sbtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      status[p.n] = btn.dataset.set;
+      save();
+      const tile = gridEl.querySelector('.tile[data-n="' + p.n + '"]');
+      if (tile) tile.dataset.status = status[p.n];
+      render(p);
+    });
+  });
+}
+
+function select(n) {
+  selected = n;
+  const p = POSTS.find(x => x.n === n);
+  gridEl.querySelectorAll(".tile").forEach(t =>
+    t.setAttribute("aria-pressed", String(Number(t.dataset.n) === n))
+  );
+  countEl.textContent = "Post " + n + " of 12";
+  render(p);
+}
+
+/* ---------- bench ---------- */
+document.getElementById("backlog").innerHTML = BENCH.map(b =>
+  '<div class="bl" style="--bcolor:var(' + BUCKETS[b.b].v + ')">' +
+    '<div class="p">' + b.p + "</div>" +
+    '<div class="t">' + b.t + "</div>" +
+    '<div class="n">' + b.n + "</div>" +
+  "</div>"
+).join("");
+
+select(1);
+</script>
