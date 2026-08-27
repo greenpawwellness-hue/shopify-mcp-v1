@@ -385,6 +385,62 @@
     white-space: nowrap;
   }
 
+  /* ---------- test table ---------- */
+
+  .tablewrap { overflow-x: auto; margin: 2rem 0 1.5rem; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 34rem;
+    font-size: 0.9375rem;
+  }
+
+  thead th {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-align: left;
+    padding: 0 0.9rem 0.7rem 0;
+    border-bottom: 2px solid var(--text);
+    vertical-align: bottom;
+  }
+
+  tbody td {
+    padding: 0.85rem 0.9rem 0.85rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.45;
+  }
+
+  tbody tr:last-child td { border-bottom: 2px solid var(--text); }
+
+  td:first-child, th:first-child { width: 40%; font-weight: 500; }
+
+  .yes, .no, .part {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 0.25rem;
+  }
+
+  .yes { color: var(--accent); }
+  .no { color: var(--alert); }
+  .part { color: var(--warn); }
+
+  td small {
+    display: block;
+    font-size: 0.8125rem;
+    color: var(--text-dim);
+    line-height: 1.45;
+  }
+
   /* ---------- callouts ---------- */
 
   .note {
@@ -592,6 +648,69 @@
   </section>
 
   <section class="col">
+    <p class="eyebrow">On being late</p>
+    <h2>Crowded isn’t the same as won</h2>
+    <p>Dental powder is genuinely busy — Native Pet, PetLab Co., pawTree, TropiClean, Arm &amp; Hammer, Wellnergy, Animal Essentials, Wild Acre, Oxyfresh, Virbac, and Pet Honesty, who launched a Fresh Breath Dental Powder back in June 2024. So the instinct that you’re late is factually right.</p>
+    <p>But look at what’s actually on that shelf. Most of it is one of two things: a repackaging of <em>Ascophyllum nodosum</em> — the same North Atlantic seaweed ProDen PlaqueOff built its entire line on — or an enzymatic, probiotic, or postbiotic blend with no controlled trial behind it. Meanwhile the Veterinary Oral Health Council awards its seal only after a minimum of two controlled clinical trials run to its protocols, and in the powder format that seal essentially belongs to PlaqueOff alone.</p>
+    <p><strong>A crowded category where nobody has proof isn’t closed. It’s waiting.</strong> Fifteen brands selling the same seaweed have not won anything; they’ve split a commodity. That is the exact position you’re already in with your current catalog, which is the reason to be careful here — entering dental as you are today means becoming Ascophyllum #16 and competing with Arm &amp; Hammer on Amazon price.</p>
+    <p>The one real differentiator in dental is the VOHC seal, and I want to be straight about it: two controlled clinical trials is six figures and a year or more. That is not fundable from a $12.99 SKU, and probably not from your first $39 one either. So my read is <strong>not now</strong> — not because you’re late, but because the only version of dental worth doing is out of financial reach this year.</p>
+
+    <div class="note">
+      <span class="note__label">The version of dental that would be worth it later</span>
+      <p>Cats. 85% of cats aged three and over have some form of dental disease, and periodontal disease is the single most commonly diagnosed condition in cats — 15.2% diagnosed annually in the UK’s largest primary-care dataset. Nearly every brand on that crowded list is dog-first. Pair feline dental with the “cats are not small dogs” angle and a VOHC trial, and you’d have something nobody has. Park it as a year-two thesis, not a next-product decision.</p>
+    </div>
+  </section>
+
+  <section class="col">
+    <p class="eyebrow">On individual packets</p>
+    <h2>Make the packet do a job</h2>
+    <p>Your read on packets is right, and the data backs it: 55% of pet owners say they prefer packaging with easy pouring and portion control, single-serve and lickable formats are growing fastest in the cat segment, and personalized-nutrition platforms have normalized custom sachets. Stick packs also run cheaper than sachets — 15–40% less material and faster line speeds.</p>
+    <p>But here’s the trap. Zyn’s pouch and Pet Honesty’s squeezable look like format wins and weren’t. The pouch removed spit and tobacco; the squeezable removed a cat’s refusal. In both cases <strong>the format was how the angle got delivered, not the angle itself.</strong> A packet wrapped around an undifferentiated powder is just more expensive packaging on a commodity.</p>
+    <p>So the test to run on any packet idea is: <em class="lede">what does the packet make possible that a tub cannot?</em> There are only four honest answers, and they don’t apply evenly.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">What the packet makes possible</th>
+            <th scope="col">Topper Balance</th>
+            <th scope="col">A dental powder</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Dose that changes meal to meal<small>One scoop can’t serve two variables</small></td>
+            <td><span class="yes">Core mechanic</span><small>The whole product logic is variable dose. The packet <em>is</em> the product.</small></td>
+            <td><span class="no">No</span><small>Fixed daily dose by weight. A scoop does this fine.</small></td>
+          </tr>
+          <tr>
+            <td>Potency held to expiry<small>A tub sits open for 90 days</small></td>
+            <td><span class="part">Partly</span><small>Matters for the actives that degrade; not for the mineral load.</small></td>
+            <td><span class="no">No</span><small>Seaweed is shelf-stable. Nothing to protect.</small></td>
+          </tr>
+          <tr>
+            <td>Two pets, two different doses<small>One tub, no way to keep it straight</small></td>
+            <td><span class="yes">Yes</span><small>Your catalog is entirely dogs-and-cats, so your base likely skews multi-pet. Worth confirming in Shopify.</small></td>
+            <td><span class="yes">Yes</span><small>Real, but not enough on its own to justify the cost.</small></td>
+          </tr>
+          <tr>
+            <td>A cheap first purchase<small>A 7-day strip instead of a $39 tub</small></td>
+            <td><span class="yes">Yes</span><small>Strong acquisition lever — and the natural trial offer for a subscription product.</small></td>
+            <td><span class="yes">Yes</span><small>Same lever, but on a product with no reason to be chosen.</small></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Three yeses and a partial on one side; one yes and a maybe on the other. That’s the difference between a format that carries an argument and a format that just costs more. On Topper Balance the packet earns its COGS because variable dosing is the product — you physically cannot ship that logic in a tub with one scoop. On a dental powder you’d be paying for packaging to sell the same seaweed as everyone else, more expensively.</p>
+
+    <div class="note note--risk">
+      <span class="note__label">The frame to drop</span>
+      <p>“Late to the party” is the wrong worry. Zyn was late to nicotine by roughly a century. Pet Honesty was late to cat supplements. Neither timing mattered, because both arrived with a job no incumbent product could do. Nobody has ever lost because they were late — they lose because they arrive with the same product as everyone already there. Stop timing the category and start auditing the job.</p>
+    </div>
+  </section>
+
+  <section class="col">
     <p class="eyebrow">The constraint</p>
     <h2>None of this is real at $12.99</h2>
     <p>This is the part I’d push back on hardest. $10.99–$14.99 is a private-label price point, and it is the actual thing limiting GPW — more than positioning, more than format.</p>
@@ -663,6 +782,13 @@
       <li><a href="https://shop.balance.it/products/balance-it-canine">Balance IT Canine</a> — competitive reference</li>
       <li><a href="https://www.bbb.org/us/tx/floyd/profile/pet-food/ruff-greens-inc-0875-91061016/complaints">Ruff Greens BBB complaints</a> — subscription-practice reference</li>
       <li><a href="https://solutionspetproducts.com/contamination-of-synthetic-minerals-with-heavy-metals-in-pet-and-agricultural-feed/">Heavy metal contamination in synthetic mineral premixes</a></li>
+      <li><a href="https://vohc.org/earn-the-vohc-seal/">Earn the VOHC seal</a> — Veterinary Oral Health Council (two-trial requirement)</li>
+      <li><a href="https://vohc.org/wp-content/uploads/2025/11/VOHCAcceptedProductsTable_Dogs-11-14-25.pdf">VOHC accepted products for dogs</a> — list current to November 2025</li>
+      <li><a href="https://us.swedencare.com/a-n-proden/">A.N ProDen / Ascophyllum nodosum</a> — Swedencare, on the single-active-ingredient line</li>
+      <li><a href="https://www.businesswire.com/news/home/20240625924695/en/Pet-Honesty-Launches-Fresh-Breath-Dental-Powder-to-Enhance-Pet-Oral-Health">Pet Honesty launches Fresh Breath Dental Powder</a> — Business Wire, June 2024</li>
+      <li><a href="https://www.rvc.ac.uk/vetcompass/news/the-uk-s-largest-ever-feline-dental-disease-study-identifies-age-and-breed-as-biggest-risk-factors">UK’s largest feline dental disease study</a> — RVC VetCompass</li>
+      <li><a href="https://www.petfoodindustry.com/packaging/pet-food-packaging/article/15821116/pet-food-packaging-trends-point-to-fresh-flexible-functional-formats">Pet food packaging trends</a> — Petfood Industry (portion control, single-serve)</li>
+      <li><a href="https://www.carepac.com/blog/sachet-vs-stick-pack-packaging/">Sachet vs stick pack packaging</a> — CarePac (material and line-speed economics)</li>
     </ol>
   </section>
 
