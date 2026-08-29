@@ -1,0 +1,361 @@
+<title>Website Change List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --ground:#EFF2EC; --surface:#F8FAF6; --surface-2:#E5EADF;
+    --ink:#16211C; --ink-soft:#4A5A50; --ink-faint:#74857A;
+    --rule:#D3DBCE; --rule-strong:#B7C3B0;
+    --accent:#5E7F3A; --accent-soft:#E2EBD4;
+    --critical:#A03826; --critical-bg:#F6E2DD;
+    --caution:#98670F; --caution-bg:#F6EAD1;
+    --ok:#2F6B4C; --ok-bg:#DCEBE1;
+    --f-display:"Spectral","Iowan Old Style",Georgia,serif;
+    --f-body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --pad:clamp(1.15rem,4vw,3rem);
+  }
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+    --ground:#0F1512; --surface:#161E1A; --surface-2:#1E2823;
+    --ink:#E4EBE1; --ink-soft:#A3B4A6; --ink-faint:#7E8F82;
+    --rule:#2A3830; --rule-strong:#3B4C42;
+    --accent:#A2C46C; --accent-soft:#26311D;
+    --critical:#E58C77; --critical-bg:#33201B;
+    --caution:#DCAE58; --caution-bg:#322715;
+    --ok:#74BE97; --ok-bg:#162D22;}}
+  :root[data-theme="dark"]{
+    --ground:#0F1512; --surface:#161E1A; --surface-2:#1E2823;
+    --ink:#E4EBE1; --ink-soft:#A3B4A6; --ink-faint:#7E8F82;
+    --rule:#2A3830; --rule-strong:#3B4C42;
+    --accent:#A2C46C; --accent-soft:#26311D;
+    --critical:#E58C77; --critical-bg:#33201B;
+    --caution:#DCAE58; --caution-bg:#322715;
+    --ok:#74BE97; --ok-bg:#162D22;}
+
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);font-family:var(--f-body);
+       font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;
+       margin:0;padding:0 var(--pad) 5rem}
+  .wrap{max-width:52rem;margin:0 auto;display:flex;flex-direction:column;gap:2.75rem}
+  p,li{max-width:66ch}
+  a{color:var(--accent);text-underline-offset:2px}
+  a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+  .masthead{padding-top:3.5rem;display:flex;flex-direction:column;gap:1rem}
+  .eyebrow{font-family:var(--f-mono);font-size:.7rem;font-weight:500;
+           letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+  h1{font-family:var(--f-display);font-weight:700;font-size:clamp(2rem,5.5vw,2.9rem);
+     line-height:1.08;letter-spacing:-.015em;text-wrap:balance;margin:0;max-width:18ch}
+  .standfirst{font-family:var(--f-display);font-size:clamp(1.02rem,2.3vw,1.2rem);
+              line-height:1.5;color:var(--ink-soft);margin:0;max-width:54ch}
+
+  .banner{background:var(--caution-bg);border-left:4px solid var(--caution);
+          padding:1rem 1.2rem;border-radius:2px}
+  .banner p{margin:0;color:var(--ink);font-size:.95rem}
+  .banner b{color:var(--caution)}
+
+  section{display:flex;flex-direction:column;gap:1.1rem}
+  .sec-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:.75rem;
+            padding-bottom:.7rem;border-bottom:2px solid var(--ink)}
+  h2{font-family:var(--f-display);font-weight:600;font-size:clamp(1.4rem,3.4vw,1.85rem);
+     line-height:1.15;letter-spacing:-.012em;margin:0}
+  .when{font-family:var(--f-mono);font-size:.66rem;font-weight:600;letter-spacing:.1em;
+        text-transform:uppercase;padding:.28em .6em;border-radius:2px;white-space:nowrap}
+  .when.now{background:var(--ok-bg);color:var(--ok)}
+  .when.print{background:var(--caution-bg);color:var(--caution)}
+  .when.later{background:var(--surface-2);color:var(--ink-soft)}
+
+  h3{font-family:var(--f-body);font-weight:600;font-size:1.02rem;margin:1rem 0 -.3rem}
+  p{margin:0}
+  ul{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.45rem}
+  li::marker{color:var(--ink-faint)}
+
+  .page{background:var(--surface);border:1px solid var(--rule);
+        border-left:4px solid var(--rule-strong);padding:1.1rem 1.25rem;
+        display:flex;flex-direction:column;gap:.8rem}
+  .page.hot{border-left-color:var(--critical)}
+  .page-title{font-family:var(--f-mono);font-size:.74rem;font-weight:600;
+              letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0}
+  .page h4{font-family:var(--f-body);font-size:1.04rem;font-weight:600;margin:0}
+
+  .act{display:grid;grid-template-columns:5.5rem 1fr;gap:.3rem .8rem;
+       padding:.5rem 0;border-bottom:1px dotted var(--rule)}
+  .act:last-of-type{border-bottom:none}
+  .act .k{font-family:var(--f-mono);font-size:.68rem;font-weight:600;letter-spacing:.08em;
+          text-transform:uppercase;padding-top:.28em}
+  .act .k.cut{color:var(--critical)}
+  .act .k.add{color:var(--ok)}
+  .act .k.fix{color:var(--caution)}
+  .act .k.chk{color:var(--ink-faint)}
+  .act .v{margin:0;font-size:.96rem;line-height:1.5;max-width:none}
+
+  .was{font-family:var(--f-display);font-style:italic;color:var(--ink-soft);
+       border-left:2px solid var(--rule-strong);padding-left:.8rem;margin:.35rem 0;
+       font-size:.97rem;max-width:none}
+
+  .paste{font-family:var(--f-mono);font-size:.85rem;line-height:1.6;
+         background:var(--accent-soft);color:var(--ink);padding:.85rem 1rem;
+         border-radius:2px;white-space:pre-wrap;max-width:none}
+  .paste b{display:block;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+           color:var(--accent);margin-bottom:.5rem;font-weight:600;
+           font-family:var(--f-mono)}
+
+  .note{background:var(--surface-2);padding:.95rem 1.15rem;border-radius:2px;
+        font-size:.94rem;color:var(--ink-soft)}
+  .note b{color:var(--ink)}
+
+  footer{border-top:1px solid var(--rule);padding-top:1.2rem;font-family:var(--f-mono);
+         font-size:.72rem;line-height:1.7;color:var(--ink-faint);max-width:70ch}
+
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">Green Paw Wellness · Companion to the formulation review</div>
+    <h1>Website Change List</h1>
+    <p class="standfirst">Page by page, what to cut, what to add, and paste-ready copy for each. Nothing here waits on the formula — it is all wording.</p>
+  </header>
+
+  <div class="banner">
+    <p><b>Verify before you edit.</b> greenpawwellness.com is blocked from the environment I am working in, so the quoted lines below are reconstructed from search-engine indexing rather than read off your live pages. The <em>patterns</em> will hold; the exact wording may differ. Paste me the real copy any time and I will mark it up properly.</p>
+  </div>
+
+  <section>
+    <div class="sec-head">
+      <h2>Product page — Parasite Cleanse</h2>
+      <span class="when now">Do now</span>
+    </div>
+
+    <div class="page hot">
+      <p class="page-title">Cut these</p>
+      <div class="act">
+        <span class="k cut">Cut</span>
+        <div>
+          <p class="v">The mechanism sentence. Do not rewrite it — delete it.</p>
+          <p class="was">“Pumpkin seed contains cucurbitacin, an amino acid that paralyzes intestinal worms so they release their grip on the gut wall…”</p>
+          <p class="v">FDA cited nearly this exact construction in a warning letter. There is no safe version, because the mechanism <em>is</em> the claim. The chemistry is also wrong — cucurbitin is the amino acid, cucurbitacin B is a triterpenoid — but fix that by deleting rather than correcting.</p>
+        </div>
+      </div>
+      <div class="act">
+        <span class="k cut">Cut</span>
+        <p class="v">Any use of <strong>dewormer</strong>, <strong>deworming</strong>, <strong>wormer</strong> — in body copy, headings, alt text and the SEO title field.</p>
+      </div>
+      <div class="act">
+        <span class="k cut">Cut</span>
+        <p class="v">“Removal of unwanted organisms.” The euphemism reads as parasites to any reviewer and looks like awareness of the problem.</p>
+      </div>
+      <div class="act">
+        <span class="k cut">Cut</span>
+        <p class="v">“Supports gut health,” “supports digestion,” and any organ-support phrasing. Legal on a human supplement, a drug claim on an animal one.</p>
+      </div>
+    </div>
+
+    <div class="page">
+      <p class="page-title">Add these</p>
+      <div class="act"><span class="k add">Add</span><p class="v">The two gates — under 8 lb, and under 6 months.</p></div>
+      <div class="act"><span class="k add">Add</span><p class="v">The binder separation note.</p></div>
+      <div class="act"><span class="k add">Add</span><p class="v">The revised directions, matching what will go on the label.</p></div>
+      <div class="act"><span class="k add">Add</span><p class="v">The monitoring list — what to watch for, in plain language.</p></div>
+      <div class="act"><span class="k add">Add</span><p class="v">The invitation to report anything odd.</p></div>
+      <div class="act"><span class="k chk">Check</span><p class="v">Shopify → Products → Parasite Cleanse → Search engine listing → Edit. The indexed title reads “Dewormer for Dogs | Natural Parasite Cleanse Supplement.”</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Blog — “The Three Herbs That Do the Work”</h2>
+      <span class="when now">Do now</span>
+    </div>
+
+    <div class="page hot">
+      <div class="act">
+        <span class="k fix">Reframe</span>
+        <div>
+          <p class="v">The lifecycle passage. This is your best content — do not delete it, move it from <em>what the product does</em> to <em>why these plants were chosen</em>.</p>
+          <p class="was">“Clove on eggs, wormwood on adults, black walnut on motility and protozoa — together they cover the parasite’s full timeline.”</p>
+        </div>
+      </div>
+      <div class="act">
+        <span class="k fix">Reframe</span>
+        <p class="v">The title itself. “The Three Herbs That Do the Work” asserts efficacy in five words. Something like “The Three Herbs In Our Blend, And Why” keeps the search intent without the claim.</p>
+      </div>
+      <div class="act"><span class="k add">Add</span><p class="v">The gates and the binder note at the foot of the post.</p></div>
+      <div class="act"><span class="k chk">Check</span><p class="v">The SEO title and meta description on this post too.</p></div>
+    </div>
+
+    <div class="paste"><b>Replacement for the lifecycle passage</b>These four plants have been paired in Western herbal traditions for generations. Wormwood takes its English name from that history. Black walnut hull, clove and pumpkin seed appear alongside it in the same traditional formulas, and pumpkin seed in particular has been studied for a compound called cucurbitin.
+
+We use all four because that is the combination our formulator developed and refined over years of work — not because any one of them is doing a specific job we can point to.</div>
+
+    <p class="note"><b>Why this works.</b> It keeps the authority, the formulator's credibility and the reason a reader trusts the blend was thought about — while making no claim about what happens inside an animal. It is also simply more honest than the original, which asserted a stage-by-stage division of labour that the evidence does not support.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Blog — “Natural Parasite Cleanse for Dogs &amp; Cats”</h2>
+      <span class="when now">Do now</span>
+    </div>
+    <div class="page">
+      <div class="act"><span class="k chk">Check</span><p class="v">This is your cat-facing page and probably out-traffics the product page. Whatever else you do, the gates belong here.</p></div>
+      <div class="act"><span class="k cut">Cut</span><p class="v">Run the full term list below over it — this post is older and likely carries more of the risky phrasing than the product page.</p></div>
+      <div class="act"><span class="k add">Add</span><p class="v">Gates, binder note, and a link through to the revised directions.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Detox Bundle, and any charcoal listing</h2>
+      <span class="when now">Do now</span>
+    </div>
+    <div class="page hot">
+      <div class="act">
+        <span class="k chk">Check</span>
+        <p class="v">Does the bundle pair activated charcoal with the Parasite Cleanse? If so you are currently selling the interaction — charcoal adsorbs the herbs in the gut before they can act, and every customer following the bundle as intended gets a weakened cleanse.</p>
+      </div>
+      <div class="act">
+        <span class="k fix">Re-sequence</span>
+        <p class="v">Present the binder as the <strong>rest-phase</strong> product, used in the 14 days between cycles — not alongside. This sequences your products instead of having them cancel each other.</p>
+      </div>
+      <div class="act">
+        <span class="k add">Add</span>
+        <p class="v">The separation note on the <em>charcoal</em> listing as well. The customer combining them is reading that page, not the cleanse page.</p>
+      </div>
+      <div class="act">
+        <span class="k cut">Cut</span>
+        <p class="v">“Binds toxins” and “die-off” framing. Both are claims in their own right and the die-off idea is not well substantiated. Sequence on use, not mechanism.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Reviews, emails and everything else</h2>
+      <span class="when now">Do now</span>
+    </div>
+    <div class="page">
+      <div class="act">
+        <span class="k fix">Curate</span>
+        <p class="v">Your review widget. Under FTC rules a testimonial carries the same claim as if you wrote it — “passed worms in three days” on your page is now your claim. You are permitted to choose which reviews you feature, and you should.</p>
+      </div>
+      <div class="act"><span class="k add">Add</span><p class="v">A line in the order-confirmation email for this product. Reaches the buyer just before the first dose, zero lead time.</p></div>
+      <div class="act"><span class="k add">Add</span><p class="v">A one-off email to existing customers, cat owners first if you can segment. This is the only thing that reaches the ~80 people who already bought.</p></div>
+      <div class="act"><span class="k chk">Check</span><p class="v">Any reposted customer content on social, and any affiliate or influencer copy written on your behalf. Same rules apply.</p></div>
+    </div>
+
+    <h3>Search these terms across everything</h3>
+    <p>Page copy, headings, alt text, title tags, meta descriptions, FAQ blocks, email flows, ad copy.</p>
+    <div class="paste"><b>Find and remove</b>dewormer · deworming · wormer · anthelmintic
+kills · paralyzes · expels · eliminates · destroys · flushes out · eradicates
+treats · cures · prevents · protects against · fights · combats · gets rid of
+roundworm · tapeworm · hookworm · whipworm · giardia · coccidia · protozoa · worms
+lifecycle · full timeline · on eggs · on adults · in 3 days · % of
+supports gut health · promotes digestion · boosts immunity · detoxifies · liver support
+natural alternative to · instead of chemical · as effective as · vet-strength</div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Paste-ready blocks</h2>
+      <span class="when now">Use everywhere</span>
+    </div>
+
+    <div class="paste"><b>Directions</b>Give with food, every day of the 14-day cycle.
+
+Up to 39 lb — 1 capsule daily
+40–59 lb — 2 capsules daily
+60–79 lb — 3 capsules daily
+80 lb and over — 4 capsules daily
+
+Never more than 4 capsules in one day, whatever your pet weighs.
+Always give whole capsules. Never open or split one.
+If you are giving more than one a day, split them between morning and evening.
+If you are unsure, give less rather than more.</div>
+
+    <div class="paste"><b>The cycle</b>This is a 14-day cycle, not a daily supplement.
+
+Give for 14 days in a row, then stop completely. Allow at least 14 days off
+before starting another cycle, and no more than 4 cycles in a year.
+
+The rest between cycles is part of how this is meant to be used, not an
+optional pause.</div>
+
+    <div class="paste"><b>The gates</b>Not for puppies or kittens under 6 months. Young animals are the most likely
+to carry a real worm burden, and your veterinarian can test for it and treat
+directly — that is the right route for them.
+
+If your pet is under 8 lb, please check with your veterinarian before starting.
+
+Also not for pregnant or nursing pets, pets with a history of seizures, pets
+with liver or kidney disease, or pets on medication or due for surgery —
+ask your veterinarian first.</div>
+
+    <div class="paste"><b>Binders</b>Do not give activated charcoal, bentonite clay, zeolite or any other binder
+during the 14 days. Binders soak up the herbs in the gut before they can do
+anything — you would be paying for the capsules and removing them at the
+same time.
+
+If you use a binder, save it for the rest period between cycles.</div>
+
+    <div class="paste"><b>What to watch for</b>Start slowly. Give one capsule, then wait two days and see how your pet does
+before continuing.
+
+Stop and call your veterinarian if you notice:
+· Vomiting or diarrhoea that does not settle
+· Tremors, shaking, wobbliness or disorientation
+· Loss of appetite, or unusual tiredness
+· Yellowing of the gums or eyes, or dark urine
+· Pale, grey or muddy-looking gums, or fast breathing (cats especially)
+· Drooling or pawing at the mouth just after a dose
+· Anything else that worries you
+
+Stopping is always the right call if something seems off.</div>
+
+    <div class="paste"><b>Ask them to tell you</b>If anything seems off, please tell us — write to [email]. It helps us make
+this better, and we would always rather hear about it.</div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Notes</h2>
+    </div>
+
+    <h3>What not to change</h3>
+    <ul>
+      <li><strong>Your brand voice.</strong> None of this requires you to sound clinical. Warm and plain-spoken is fine — it is the <em>claims</em> that need to go, not the personality.</li>
+      <li><strong>The herb education.</strong> Traditional-use content is your best asset and it is safe when framed as history rather than performance. Keep writing it.</li>
+      <li><strong>The product name, for now.</strong> “Dewormer” must go. “Parasite Cleanse” is a different order of risk and renaming costs you ranking, brand equity and every printed thing you own. Put it to an FDA/CVM attorney as its own question, later.</li>
+      <li><strong>The formula.</strong> Decided — clove stays at 75 mg this cycle, behind the gates.</li>
+    </ul>
+
+    <h3>What to add that you do not have yet</h3>
+    <p>Once the assays are back, the strongest page on your site will be a quality one. It carries no claim risk and almost nobody in this category can write it:</p>
+    <ul>
+      <li>We publish every amount on the label. Nothing proprietary.</li>
+      <li>We assay our wormwood for thujone and hold each batch to a range.</li>
+      <li>We test for heavy metals, microbiology and pesticides — and mycotoxins on the black walnut.</li>
+      <li>We keep a certificate of analysis for every lot.</li>
+      <li>We set a maximum daily amount, a defined cycle and a rest period.</li>
+      <li>We tell you which animals should not take it, and exactly what to watch for.</li>
+    </ul>
+
+    <h3>Order of work</h3>
+    <ul>
+      <li><strong>Today:</strong> the SEO title field, the mechanism sentence, and the Detox Bundle check. Three edits, maybe twenty minutes, and they remove most of the exposure.</li>
+      <li><strong>This week:</strong> the gates and binder note on all three pages, the order-confirmation line, the customer email.</li>
+      <li><strong>Next:</strong> the term sweep across everything, and the review-widget audit.</li>
+      <li><strong>With the reprint:</strong> make the label and the site say the same thing. Mismatches between them are their own problem.</li>
+    </ul>
+
+    <p class="note"><b>One last thing.</b> Warnings are a weak control — people read them least when they are confident and in a hurry. What actually protects an animal is instructions with nothing to estimate, one default for every ambiguity, explicit permission to stop, signs in words an owner recognises, and a real person to reach. Most of the blocks above are built that way rather than as disclaimers, which is why they are worth more than their length suggests.</p>
+  </section>
+
+  <footer>
+    Companion to the Parasite Cleanse formulation review · 29 August 2026<br>
+    Not legal advice. Quoted lines are reconstructed from search indexing and must be checked against the live pages before editing.
+  </footer>
+
+</div>
